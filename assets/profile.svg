@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Placeholder avatar. Swap in your real photo: see PROFILE_PHOTO in js/app.js -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffd6ec"/>
+      <stop offset="1" stop-color="#b9dcff"/>
+    </linearGradient>
+    <linearGradient id="skin" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8a5a3c"/>
+      <stop offset="1" stop-color="#6b4129"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" fill="url(#bg)"/>
+  <circle cx="30" cy="34" r="4" fill="#fff" opacity=".8"/>
+  <circle cx="168" cy="52" r="3" fill="#fff" opacity=".8"/>
+  <circle cx="150" cy="22" r="2" fill="#fff" opacity=".8"/>
+  <!-- hair -->
+  <ellipse cx="100" cy="92" rx="58" ry="60" fill="#2b1a12"/>
+  <!-- shoulders -->
+  <path d="M34 200c4-38 32-58 66-58s62 20 66 58z" fill="#ff8fc6"/>
+  <!-- neck + face -->
+  <rect x="88" y="120" width="24" height="26" rx="10" fill="url(#skin)"/>
+  <ellipse cx="100" cy="98" rx="38" ry="42" fill="url(#skin)"/>
+  <!-- headphones -->
+  <path d="M52 100a48 48 0 0 1 96 0" fill="none" stroke="#f4f4f4" stroke-width="8" stroke-linecap="round"/>
+  <rect x="44" y="92" width="16" height="28" rx="7" fill="#f4f4f4" stroke="#ccc"/>
+  <rect x="140" y="92" width="16" height="28" rx="7" fill="#f4f4f4" stroke="#ccc"/>
+  <!-- face -->
+  <ellipse cx="86" cy="98" rx="4" ry="5" fill="#1a0f0a"/>
+  <ellipse cx="114" cy="98" rx="4" ry="5" fill="#1a0f0a"/>
+  <circle cx="87.5" cy="96" r="1.4" fill="#fff"/>
+  <circle cx="115.5" cy="96" r="1.4" fill="#fff"/>
+  <ellipse cx="78" cy="111" rx="6" ry="3.5" fill="#ff7fb0" opacity=".45"/>
+  <ellipse cx="122" cy="111" rx="6" ry="3.5" fill="#ff7fb0" opacity=".45"/>
+  <path d="M91 116q9 8 18 0" fill="none" stroke="#1a0f0a" stroke-width="3" stroke-linecap="round"/>
+</svg>

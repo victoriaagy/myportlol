@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Victoria Agyare · Portfolio</title>
+  <meta name="description" content="Victoria Agyare — Georgia State University, Class of 2028. A retro, early-2000s portfolio.">
+  <link rel="icon" href="assets/profile.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ==========================================================
+     1. SIGN-IN SCREEN  (Messenger, circa 2008)
+     ========================================================== -->
+<div id="login-screen" class="desktop">
+  <div class="wlm-window" id="login-window" role="dialog" aria-labelledby="login-title">
+    <div class="wlm-titlebar">
+      <span class="wlm-title-icon" aria-hidden="true"><span class="buddy buddy-green"></span><span class="buddy buddy-blue"></span></span>
+      <span class="wlm-title-text">Victoria Live Messenger</span>
+      <div class="wlm-controls">
+        <button class="wlm-ctrl" data-joke="min" aria-label="Minimize">&#8211;</button>
+        <button class="wlm-ctrl" data-joke="max" aria-label="Maximize">&#9633;</button>
+        <button class="wlm-ctrl wlm-close" data-joke="close" aria-label="Close">&#10005;</button>
+      </div>
+    </div>
+
+    <div class="wlm-body">
+      <!-- form view -->
+      <div id="login-form-view">
+        <div class="avatar-frame status-available" id="login-avatar">
+          <img class="js-profile-photo" src="assets/profile.svg" alt="Victoria Agyare">
+        </div>
+        <h1 class="login-name">Victoria Agyare</h1>
+
+        <h2 id="login-title" class="login-heading">Sign in</h2>
+        <p class="login-sub">Sign in with your Victoria Live ID to view the complete portfolio. Don't have one? <a href="#" data-toast="Good news: you don't need one. Just press Sign in ✿">Sign up.</a></p>
+
+        <form id="login-form" autocomplete="off">
+          <label class="sr-only" for="login-email">Live ID</label>
+          <div class="wlm-input wlm-combo">
+            <input id="login-email" type="text" value="victoria.agyare@live.gsu" spellcheck="false">
+            <span class="combo-arrow" aria-hidden="true">&#9662;</span>
+          </div>
+          <label class="sr-only" for="login-pass">Password</label>
+          <div class="wlm-input">
+            <input id="login-pass" type="password" value="shinzouwosasageyo">
+          </div>
+
+          <div class="signin-as">
+            Sign in as:
+            <button type="button" class="status-picker" id="status-picker" aria-haspopup="listbox" aria-expanded="false">
+              <span class="status-dot available"></span><span class="status-label">Available</span> &#9662;
+            </button>
+            <ul class="status-menu" id="status-menu" role="listbox" hidden>
+              <li role="option" data-status="available"><span class="status-dot available"></span>Available</li>
+              <li role="option" data-status="busy"><span class="status-dot busy"></span>Busy</li>
+              <li role="option" data-status="away"><span class="status-dot away"></span>Away</li>
+              <li role="option" data-status="offline"><span class="status-dot offline"></span>Appear offline</li>
+            </ul>
+          </div>
+
+          <label class="wlm-check"><input type="checkbox" checked> Remember me</label>
+          <label class="wlm-check"><input type="checkbox" checked> Remember my password</label>
+          <label class="wlm-check"><input type="checkbox"> Sign me in automatically</label>
+
+          <a href="#" class="forgot" data-toast="Password hint: what the Survey Corps salute means 🫡">Forgot your password?</a>
+
+          <button type="submit" class="aero-btn signin-btn">Sign in</button>
+        </form>
+      </div>
+
+      <!-- signing-in view -->
+      <div id="login-loading-view" hidden>
+        <div class="avatar-frame status-available" id="login-avatar-loading">
+          <img class="js-profile-photo" src="assets/profile.svg" alt="">
+        </div>
+        <div class="spinner" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <p class="loading-text" id="loading-text" aria-live="polite">Signing in...</p>
+        <button type="button" class="aero-btn" id="cancel-signin">Cancel</button>
+      </div>
+    </div>
+
+    <div class="wlm-footer">
+      <a href="#" data-toast="We don't collect anything. Pinky promise.">Privacy statement</a>
+      <a href="#" data-toast="Server status: vibing ✓">Server status</a>
+    </div>
+  </div>
+
+  <!-- taskbar -->
+  <div class="taskbar">
+    <span class="orb" aria-hidden="true">V</span>
+    <span class="task-item"><span class="buddy buddy-green"></span> Victoria Live Messenger</span>
+    <span class="task-clock" id="task-clock"></span>
+  </div>
+</div>
+
+<!-- MSN-style toast (used everywhere) -->
+<div class="toast" id="toast" role="status" aria-live="polite" hidden>
+  <div class="toast-head"><span class="buddy buddy-green"></span> Victoria Live Messenger</div>
+  <div class="toast-body" id="toast-body"></div>
+</div>
+
+<!-- ==========================================================
+     2. THE PORTFOLIO  (apple.com, circa 2001)
+     ========================================================== -->
+<div id="site" hidden>
+  <header class="site-header">
+    <nav class="tabs" aria-label="Main">
+      <a href="#home" class="tab tab-logo" data-page="home" aria-label="Home"><span class="gel-logo">V</span></a>
+      <a href="#about" class="tab" data-page="about">About</a>
+      <a href="#projects" class="tab" data-page="projects">Projects</a>
+      <a href="#ipod" class="tab" data-page="ipod">iPod</a>
+      <a href="#anime" class="tab" data-page="anime">Anime</a>
+      <a href="#contact" class="tab" data-page="contact">Contact</a>
+    </nav>
+    <div class="subnav">
+      <a href="#home" data-page="home">Hot News</a>
+      <a href="#about" data-page="about">Georgia State</a>
+      <a href="#about" data-page="about">Class of 2028</a>
+      <a href="#ipod" data-page="ipod">Music</a>
+      <a href="#anime" data-page="anime">Watchlist</a>
+      <a href="#projects" data-page="projects">Made4Victoria</a>
+      <a href="#" id="open-messenger">Messenger</a>
+      <a href="#" id="sign-out">Sign out</a>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ---------- HOME ---------- -->
+    <section class="page" data-page="home">
+      <div class="hero">
+        <div class="hero-left">
+          <div class="hero-photo"><img class="js-profile-photo" src="assets/profile.svg" alt="Victoria Agyare"></div>
+          <h1 class="garamond hero-name">Victoria<br>Agyare</h1>
+        </div>
+        <div class="hero-right">
+          <p class="garamond tagline grey">Super curious.</p>
+          <p class="garamond tagline grey">Super creative.</p>
+          <p class="garamond tagline">Super hire.</p>
+          <p class="garamond save">Class of <em>2028</em></p>
+        </div>
+      </div>
+
+      <div class="timestamp" id="timestamp"></div>
+
+      <div class="hotnews">
+        <span class="hotnews-label">Hot News Headlines</span>
+        <span class="hotnews-text" id="hotnews-text"></span>
+      </div>
+
+      <div class="promos">
+        <a class="promo" href="#ipod" data-page="ipod">
+          <span class="promo-art ipod-mini" aria-hidden="true"><span class="ipm-screen"></span><span class="ipm-wheel"></span></span>
+          <span class="garamond promo-title">Say hello to iPod.</span>
+          <span class="promo-sub">My playlist, in your pocket.</span>
+        </a>
+        <a class="promo" href="#about" data-page="about">
+          <span class="promo-art panther" aria-hidden="true">GSU</span>
+          <span class="garamond promo-title">Georgia State.</span>
+          <span class="promo-sub">Panther. Atlanta. Graduating May 2028.</span>
+        </a>
+        <a class="promo" href="#anime" data-page="anime">
+          <span class="promo-art anime-stack" aria-hidden="true"><span>AoT</span><span>DN</span><span>JJK</span></span>
+          <span class="garamond promo-title">Now watching.</span>
+          <span class="promo-sub">Titans, notebooks &amp; cursed energy.</span>
+        </a>
+        <a class="promo" href="#projects" data-page="projects">
+          <span class="promo-art store" aria-hidden="true">&#10047;</span>
+          <span class="garamond promo-title">Projects now open.</span>
+          <span class="promo-sub">Come see what I've built.</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ---------- ABOUT ---------- -->
+    <section class="page" data-page="about" hidden>
+      <h1 class="garamond page-title">The center of my<br>digital lifestyle.</h1>
+
+      <div class="orbit">
+        <div class="orbit-disc">
+          <div class="disc">
+            <div class="disc-hole"></div>
+            <span class="disc-label garamond">Victoria</span>
+            <span class="disc-badge"><small>Class of</small>2028</span>
+          </div>
+        </div>
+        <button class="orbit-item o1" data-fact="🎧 I always have music on — check out my iPod tab.">
+          <span class="o-icon">🎧</span>Rip playlists.</button>
+        <button class="orbit-item o2" data-fact="🐾 Proud Georgia State Panther in downtown Atlanta.">
+          <span class="o-icon">🐾</span>Go Panthers.</button>
+        <button class="orbit-item o3" data-fact="📓 I love a good mystery — Death Note ruined me (in a good way).">
+          <span class="o-icon">📓</span>Solve mysteries.</button>
+        <button class="orbit-item o4" data-fact="💻 I build things for the web — like this site!">
+          <span class="o-icon">💻</span>Build websites.</button>
+        <button class="orbit-item o5" data-fact="⚔️ Dedicate your heart! Attack on Titan is my all-time favorite.">
+          <span class="o-icon">⚔️</span>Fight titans.</button>
+        <button class="orbit-item o6" data-fact="🌀 Jujutsu Kaisen fights live in my head rent free.">
+          <span class="o-icon">🌀</span>Expand domains.</button>
+      </div>
+      <p class="fact-bubble" id="fact-bubble">Click an icon to learn something about me.</p>
+
+      <div class="about-grid">
+        <div class="aqua-panel">
+          <h3>About Victoria</h3>
+          <p>Hi! I'm <strong>Victoria Agyare</strong>, a student at <strong>Georgia State University</strong> in Atlanta, graduating in <strong>May 2028</strong>.</p>
+          <p>I like building things that feel fun to use, a lot like the web used to be. When I'm not coding you'll find me with headphones on, rewatching Attack on Titan, or arguing about who really won in Death Note.</p>
+          <p class="edit-note">✎ Edit this blurb in <code>index.html</code> to make it yours.</p>
+        </div>
+        <div class="aqua-panel">
+          <h3>System Profile</h3>
+          <table class="specs">
+            <tr><th>Name</th><td>Victoria Agyare</td></tr>
+            <tr><th>School</th><td>Georgia State University</td></tr>
+            <tr><th>Graduation</th><td>May 2028</td></tr>
+            <tr><th>Location</th><td>Atlanta, GA</td></tr>
+            <tr><th>Soundtrack</th><td id="spec-nowplaying">Paused</td></tr>
+            <tr><th>Favorite anime</th><td>Attack on Titan, Death Note, Jujutsu Kaisen</td></tr>
+            <tr><th>Status</th><td><span class="status-dot available js-status-dot"></span> <span class="js-status-text">Available</span></td></tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- PROJECTS ---------- -->
+    <section class="page" data-page="projects" hidden>
+      <h1 class="garamond page-title">Made4Victoria.</h1>
+      <p class="page-sub">Things I've built. More shipping soon.</p>
+
+      <div class="product-grid">
+        <article class="product">
+          <div class="product-art art-blue"><span class="garamond">This Site</span></div>
+          <h3>Retro Portfolio</h3>
+          <p>The site you're on: a Messenger sign-in, an early-2000s Apple look, and an iPod that actually plays music.</p>
+          <p class="tags"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>Web Audio</span></p>
+          <a href="#ipod" data-page="ipod" class="aqua-btn">Try the iPod</a>
+        </article>
+        <article class="product">
+          <div class="product-art art-pink"><span class="garamond">Project Two</span></div>
+          <h3>Coming soon</h3>
+          <p>Swap this card for one of your projects: a short description, what you used, and a link.</p>
+          <p class="tags"><span>Tech</span><span>Stack</span></p>
+          <a href="#" class="aqua-btn" data-toast="Add your project link in index.html ✎">View project</a>
+        </article>
+        <article class="product">
+          <div class="product-art art-green"><span class="garamond">Project Three</span></div>
+          <h3>Coming soon</h3>
+          <p>Class projects, hackathons, and design work all count. Show off what you're proud of.</p>
+          <p class="tags"><span>Tech</span><span>Stack</span></p>
+          <a href="#" class="aqua-btn" data-toast="Add your project link in index.html ✎">View project</a>
+        </article>
+      </div>
+    </section>
+
+    <!-- ---------- IPOD ---------- -->
+    <section class="page" data-page="ipod" hidden>
+      <div class="ipod-hero">
+        <div class="ipod-stage">
+          <div class="ipod" id="ipod" tabindex="0" aria-label="iPod music player. Use arrow keys to scroll, Enter to select, Escape for menu, Space to play or pause.">
+            <div class="ipod-screen" id="ipod-screen">
+              <div class="ipod-statusbar">
+                <span class="ipod-play-indicator" id="ipod-play-indicator"></span>
+                <span class="ipod-screen-title" id="ipod-screen-title">iPod</span>
+                <span class="ipod-battery" aria-hidden="true"><span></span></span>
+              </div>
+              <div class="ipod-content" id="ipod-content"></div>
+            </div>
+            <div class="wheel" id="wheel">
+              <span class="wheel-label w-menu">MENU</span>
+              <span class="wheel-label w-prev">&#9664;&#9664;</span>
+              <span class="wheel-label w-next">&#9654;&#9654;</span>
+              <span class="wheel-label w-play">&#9654;&#10074;&#10074;</span>
+              <button class="wheel-center" id="wheel-center" aria-label="Select"></button>
+            </div>
+          </div>
+          <p class="ipod-hint">Drag around the wheel (or use your scroll wheel / arrow keys) to scroll. Click the center to select.</p>
+        </div>
+        <div class="ipod-copy">
+          <h1 class="garamond">Say hello to iPod.</h1>
+          <p class="garamond grey">My favorite songs in your pocket.</p>
+          <div class="ipod-help aqua-panel">
+            <h3>How to use</h3>
+            <ul>
+              <li><b>MENU</b>: go back</li>
+              <li><b>&#9664;&#9664; / &#9654;&#9654;</b>: previous / next song</li>
+              <li><b>&#9654;&#10074;&#10074;</b>: play / pause</li>
+              <li><b>Scroll the wheel on Now Playing</b>: volume</li>
+            </ul>
+            <label class="aqua-btn file-btn">Add your own songs…
+              <input type="file" id="ipod-file" accept="audio/*" multiple>
+            </label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- ANIME ---------- -->
+    <section class="page" data-page="anime" hidden>
+      <h1 class="garamond page-title">Think different.<br><span class="grey">Watch different.</span></h1>
+      <p class="page-sub">My favorite anime. Click a card to flip it.</p>
+
+      <div class="anime-grid">
+        <button class="icard" data-theme="aot">
+          <span class="icard-inner">
+            <span class="icard-front">
+              <span class="icard-emblem aot-emblem" aria-hidden="true"><span></span><span></span></span>
+              <span class="garamond icard-title">Attack on Titan</span>
+              <span class="icard-tag">All-time favorite</span>
+            </span>
+            <span class="icard-back">
+              <span class="icard-row"><b>Fave character</b> Levi / Eren (it's complicated)</span>
+              <span class="icard-row"><b>Why I love it</b> The plot twists. The music. The <i>walls</i>.</span>
+              <span class="icard-row"><b>Rating</b> ★★★★★</span>
+              <span class="icard-quote">"Shinzou wo sasageyo!"</span>
+            </span>
+          </span>
+        </button>
+        <button class="icard" data-theme="dn">
+          <span class="icard-inner">
+            <span class="icard-front">
+              <span class="icard-emblem dn-emblem" aria-hidden="true">DEATH<br>NOTE</span>
+              <span class="garamond icard-title">Death Note</span>
+              <span class="icard-tag">Big-brain classic</span>
+            </span>
+            <span class="icard-back">
+              <span class="icard-row"><b>Team</b> L. Always L.</span>
+              <span class="icard-row"><b>Why I love it</b> A mind game where every episode is chess.</span>
+              <span class="icard-row"><b>Rating</b> ★★★★★</span>
+              <span class="icard-quote">Ryuk would love this site. It's full of apples. 🍎</span>
+            </span>
+          </span>
+        </button>
+        <button class="icard" data-theme="jjk">
+          <span class="icard-inner">
+            <span class="icard-front">
+              <span class="icard-emblem jjk-emblem" aria-hidden="true"><span></span></span>
+              <span class="garamond icard-title">Jujutsu Kaisen</span>
+              <span class="icard-tag">Currently obsessed</span>
+            </span>
+            <span class="icard-back">
+              <span class="icard-row"><b>Fave character</b> Gojo, obviously</span>
+              <span class="icard-row"><b>Why I love it</b> The fight animation is unreal.</span>
+              <span class="icard-row"><b>Rating</b> ★★★★★</span>
+              <span class="icard-quote">"Domain Expansion…" 🌀</span>
+            </span>
+          </span>
+        </button>
+      </div>
+
+      <div class="aqua-panel poll">
+        <h3>Quick poll: who wins?</h3>
+        <div class="poll-options" id="poll">
+          <button class="aqua-btn" data-vote="Levi">Levi</button>
+          <button class="aqua-btn" data-vote="L">L</button>
+          <button class="aqua-btn" data-vote="Gojo">Gojo</button>
+        </div>
+        <p id="poll-result" class="poll-result"></p>
+      </div>
+    </section>
+
+    <!-- ---------- CONTACT ---------- -->
+    <section class="page" data-page="contact" hidden>
+      <h1 class="garamond page-title">Let's talk.</h1>
+      <p class="page-sub">Internships, projects, anime recs: my inbox is open.</p>
+
+      <div class="contact-wrap">
+        <form class="mail-window" id="contact-form">
+          <div class="mail-titlebar">
+            <span class="traffic"><i></i><i></i><i></i></span>
+            New Message
+          </div>
+          <div class="mail-fields">
+            <label>To: <span class="mail-to">Victoria Agyare</span></label>
+            <label for="c-name">From: <input id="c-name" required placeholder="Your name"></label>
+            <label for="c-subject">Subject: <input id="c-subject" required placeholder="Hi Victoria!"></label>
+          </div>
+          <textarea id="c-msg" required placeholder="Write your message…"></textarea>
+          <div class="mail-actions"><button class="aqua-btn aqua-blue" type="submit">Send</button></div>
+        </form>
+
+        <div class="aqua-panel links-panel">
+          <h3>Find me online</h3>
+          <ul class="link-list">
+            <li><a href="#" data-link="linkedin">LinkedIn</a></li>
+            <li><a href="#" data-link="github">GitHub</a></li>
+            <li><a href="#" data-link="email">Email</a></li>
+            <li><a href="#" data-link="resume">Résumé (PDF)</a></li>
+          </ul>
+          <p class="edit-note">✎ Set your links in <code>SOCIAL_LINKS</code> in <code>js/app.js</code>.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <form class="search" id="site-search" role="search">
+      <label class="sr-only" for="search-input">Search</label>
+      <input id="search-input" type="search" placeholder="">
+      <button class="aqua-btn" type="submit">Search</button>
+    </form>
+    <p class="small-links"><a href="#home" data-page="home">Site Map</a> | <a href="#" data-toast="Try searching: music, anime, projects, gsu">Search Tips</a></p>
+    <p>Visit the Victoria Store <a href="#projects" data-page="projects"><b>online</b></a> or at <a href="#contact" data-page="contact"><b>retail</b></a> locations.<br>1-800-MY-VICTORIA</p>
+    <p>Visit other Victoria sites around the world:</p>
+    <select class="aqua-select" id="world-select" aria-label="Other sites">
+      <option value="">Choose…</option>
+      <option value="github">GitHub</option>
+      <option value="linkedin">LinkedIn</option>
+      <option value="email">Email</option>
+    </select>
+    <p class="small-links"><a href="#contact" data-page="contact">Contact Us</a> | <a href="#" data-toast="No cookies here, just vibes.">Privacy Policy</a><br>
+      Copyright &copy; <span id="year"></span> Victoria Agyare. All rights reserved.</p>
+    <p class="powered">Powered by HTML, CSS &amp; a lot of iced coffee</p>
+  </footer>
+
+  <!-- floating buddy list -->
+  <aside class="wlm-window buddy-window" id="buddy-window" hidden>
+    <div class="wlm-titlebar" data-drag="buddy-window">
+      <span class="wlm-title-icon" aria-hidden="true"><span class="buddy buddy-green"></span><span class="buddy buddy-blue"></span></span>
+      <span class="wlm-title-text">Victoria Live Messenger</span>
+      <div class="wlm-controls">
+        <button class="wlm-ctrl" id="buddy-min" aria-label="Minimize">&#8211;</button>
+        <button class="wlm-ctrl wlm-close" id="buddy-close" aria-label="Close">&#10005;</button>
+      </div>
+    </div>
+    <div class="buddy-me">
+      <div class="avatar-frame small status-available js-status-frame"><img class="js-profile-photo" src="assets/profile.svg" alt=""></div>
+      <div>
+        <button class="me-name" id="me-status-btn">Victoria <span class="js-status-paren">(Available)</span> &#9662;</button>
+        <ul class="status-menu me-menu" id="me-status-menu" hidden>
+          <li data-status="available"><span class="status-dot available"></span>Available</li>
+          <li data-status="busy"><span class="status-dot busy"></span>Busy</li>
+          <li data-status="away"><span class="status-dot away"></span>Away</li>
+          <li data-status="offline"><span class="status-dot offline"></span>Appear offline</li>
+        </ul>
+        <div class="me-psm" id="me-psm">&lt;Share a quick message&gt;</div>
+      </div>
+    </div>
+    <div class="buddy-search"><input type="text" id="buddy-filter" placeholder="Find a contact…" aria-label="Find a contact"></div>
+    <div class="buddy-list" id="buddy-list"></div>
+    <div class="buddy-ad" data-page="ipod">
+      <span class="ad-big">NEED A NEW PLAYLIST?</span>
+      <span class="ad-small">Victoria's iPod is on right now ▸</span>
+    </div>
+  </aside>
+  <button class="buddy-tab" id="buddy-tab" hidden><span class="buddy buddy-green"></span> Messenger</button>
+
+  <!-- chat window -->
+  <aside class="wlm-window chat-window" id="chat-window" hidden>
+    <div class="wlm-titlebar" data-drag="chat-window">
+      <span class="wlm-title-icon" aria-hidden="true"><span class="buddy buddy-green"></span></span>
+      <span class="wlm-title-text" id="chat-title">Conversation</span>
+      <div class="wlm-controls">
+        <button class="wlm-ctrl wlm-close" id="chat-close" aria-label="Close">&#10005;</button>
+      </div>
+    </div>
+    <div class="chat-head">
+      <span class="chat-avatar" id="chat-avatar"></span>
+      <div><b id="chat-name"></b><div class="chat-psm" id="chat-psm"></div></div>
+    </div>
+    <div class="chat-log" id="chat-log" aria-live="polite"></div>
+    <div class="chat-toolbar">
+      <button id="chat-nudge" title="Send a nudge">📳 Nudge</button>
+      <button id="chat-wink" title="Send a wink">😉 Wink</button>
+    </div>
+    <form class="chat-input" id="chat-form">
+      <textarea id="chat-text" rows="2" placeholder="Type a message…" aria-label="Message"></textarea>
+      <button class="aero-btn" type="submit">Send</button>
+    </form>
+  </aside>
+</div>
+
+<script src="js/sfx.js"></script>
+<script src="js/chiptune.js"></script>
+<script src="js/ipod.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
