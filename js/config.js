@@ -185,7 +185,7 @@ const CONFIG = {
     { title: 'Jujutsu Kaisen', search: 'Jujutsu Kaisen', theme: 'jjk', tag: 'Currently watching', status: 'Watching',
       facts: ['MAPPA', '2020–present', 'Action · Supernatural'],
       favorite: '', note: '' },
-    { title: 'The Apothecary Diaries', search: 'Kusuriya no Hitorigoto', theme: 'ad', tag: 'Palace mysteries', status: '',
+    { title: 'The Apothecary Diaries', search: 'Kusuriya no Hitorigoto', cover: 'assets/anime/apothecary-diaries.jpg', theme: 'ad', tag: 'Palace mysteries', status: '',
       facts: ['TOHO animation Studio / OLM', '2023–present', 'Mystery · Historical drama'],
       favorite: '', note: '' },
     { title: 'Haikyuu!!', search: 'Haikyuu!!', theme: 'hq', tag: 'Volleyball', status: '',
