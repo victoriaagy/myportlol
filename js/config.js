@@ -188,7 +188,7 @@ const CONFIG = {
     { title: 'The Apothecary Diaries', search: 'Kusuriya no Hitorigoto', cover: 'assets/anime/apothecary-diaries.jpg', theme: 'ad', tag: 'Palace mysteries', status: '',
       facts: ['TOHO animation Studio / OLM', '2023–present', 'Mystery · Historical drama'],
       favorite: '', note: '' },
-    { title: 'Haikyuu!!', search: 'Haikyuu!!', theme: 'hq', tag: 'Volleyball', status: '',
+    { title: 'Haikyuu!!', search: 'Haikyuu!!', cover: 'assets/anime/haikyuu.jpg', theme: 'hq', tag: 'Volleyball', status: '',
       facts: ['Production I.G', '2014–2020', 'Sports'],
       favorite: '', note: '' },
     { title: 'Your Lie in April', search: 'Shigatsu wa Kimi no Uso', theme: 'lie', tag: 'Music & heartbreak', status: '',
