@@ -3,6 +3,10 @@
    Part 1: Messenger sign-in (c. 2008)   Part 2: apple.com (c. 2001)
    ============================================================ */
 
+/* Cute card fonts, self-hosted (SIL Open Font License) */
+@font-face { font-family: "Fredoka"; src: url("../assets/fonts/fredoka-latin.woff2") format("woff2"); font-weight: 300 700; font-display: swap; }
+@font-face { font-family: "Nunito"; src: url("../assets/fonts/nunito-latin.woff2") format("woff2"); font-weight: 200 1000; font-display: swap; }
+
 :root {
   --link: #0000cc;
   --text: #222;
@@ -605,11 +609,32 @@ main { max-width: 760px; margin: 0 auto; padding: 0 16px; }
   content: ""; position: absolute; left: 0; right: 0; top: 0; height: 50%;
   background: linear-gradient(rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0));
 }
-.icard-back { transform: rotateY(180deg); background: #fff; border: 1px solid #bbb; color: #222; gap: 8px; font-size: 12px; }
+.icard-back {
+  transform: rotateY(180deg); border: 1px solid #d6d6d6; color: #3a3a3a; gap: 9px; font: 700 12.5px/1.35 "Nunito", var(--mac-font);
+  --accent: #6b8ebc;
+  background:
+    repeating-linear-gradient(transparent 0 23px, color-mix(in srgb, var(--accent) 14%, transparent) 23px 24px),
+    linear-gradient(color-mix(in srgb, var(--accent) 9%, #fff), #fff);
+  border-top: 8px solid var(--accent);
+}
 .icard-title { font-size: 28px; line-height: 1; margin-top: 12px; }
 .icard-tag { font-size: 11px; opacity: 0.85; margin-top: 4px; }
-.icard-row b { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: #888; }
-.icard-quote { margin-top: auto; font-family: var(--serif); font-size: 17px; font-style: italic; color: #444; }
+.icard-row { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+.icard-row b {
+  font: 800 9.5px "Nunito", sans-serif; letter-spacing: 0.04em; text-transform: uppercase; color: #fff;
+  background: var(--accent); padding: 2px 8px; border-radius: 999px;
+}
+.icard-fave { color: color-mix(in srgb, var(--accent) 80%, #000); font-size: 14px; }
+.icard-facts { display: flex; flex-direction: column; gap: 3px; }
+.icard-fact { display: flex; gap: 6px; align-items: baseline; }
+.icard-fact i { font-style: normal; font-size: 11px; }
+.icard-pill {
+  align-self: flex-start; font: 700 10.5px "Nunito", sans-serif; padding: 2px 10px; border-radius: 999px;
+  color: color-mix(in srgb, var(--accent) 85%, #000); background: color-mix(in srgb, var(--accent) 16%, #fff);
+  border: 1.5px dashed color-mix(in srgb, var(--accent) 55%, #fff);
+}
+.icard-quote { margin-top: auto; font: 600 14px/1.25 "Fredoka", sans-serif; color: color-mix(in srgb, var(--accent) 75%, #000); background: color-mix(in srgb, var(--accent) 12%, #fff); border-radius: 10px; padding: 8px 10px; }
+body.nap .icard-quote { background: #2c2c2c; color: #e6e6e6; }
 .icard-emblem { flex: 1; display: grid; place-items: center; }
 /* official cover art */
 .icard-cover { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; }
@@ -619,12 +644,11 @@ main { max-width: 760px; margin: 0 auto; padding: 0 16px; }
 /* the posters already show the show's name, so hide the card title (the button's aria-label still names it) */
 .icard.has-cover .icard-title, .icard.has-cover .icard-tag { display: none; }
 .icard.has-cover .icard-front::before { display: none; }
-.icard-back-head { font-family: var(--serif); font-size: 20px; line-height: 1.1; }
-.icard-back-head small { display: block; font-family: var(--mac-font); font-size: 11px; color: #888; margin-top: 2px; }
+.icard-back-head { font: 600 23px/1.05 "Fredoka", "Nunito", sans-serif; color: var(--accent); letter-spacing: -0.01em; }
 .anime-credit { text-align: center; font-size: 11px; color: var(--grey); margin: -4px 0 36px; }
 
 .icard[data-theme="aot"] .icard-front { background: linear-gradient(#6b8a45, #3c4f22); }
-.icard[data-theme="aot"] .icard-back { border-top: 6px solid #5b7a3a; }
+.icard[data-theme="aot"] .icard-back { --accent: #5b7a3a; }
 .aot-emblem { position: relative; width: 110px; }
 .aot-emblem span {
   position: absolute; top: 50%; width: 60px; height: 76px; margin-top: -38px;
@@ -634,14 +658,14 @@ main { max-width: 760px; margin: 0 auto; padding: 0 16px; }
 .aot-emblem span:last-child { right: 2px; background: linear-gradient(135deg, #fff, #d9d9d9); transform: scaleX(-1) rotate(-12deg); }
 
 .icard[data-theme="dn"] .icard-front { background: linear-gradient(#2a2a2a, #050505); }
-.icard[data-theme="dn"] .icard-back { border-top: 6px solid #111; }
+.icard[data-theme="dn"] .icard-back { --accent: #2b2b2b; }
 .dn-emblem {
   font: 700 26px/0.95 "Old English Text MT", "UnifrakturMaguntia", var(--serif);
   letter-spacing: 0.08em; color: #f2f2f2; text-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
 }
 
 .icard[data-theme="jjk"] .icard-front { background: linear-gradient(#3b2a78, #140c33); }
-.icard[data-theme="jjk"] .icard-back { border-top: 6px solid #5a3fa0; }
+.icard[data-theme="jjk"] .icard-back { --accent: #5a3fa0; }
 .jjk-emblem span {
   width: 90px; height: 90px; border-radius: 50%;
   background: conic-gradient(#b99bff, #5e3be0, #1c0f55, #b99bff);
@@ -652,13 +676,13 @@ main { max-width: 760px; margin: 0 auto; padding: 0 16px; }
 }
 .emoji-emblem { font-size: 64px; filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35)); }
 .icard[data-theme="ad"] .icard-front { background: linear-gradient(#5f9e8a, #1f4d45); }
-.icard[data-theme="ad"] .icard-back { border-top: 6px solid #3d7a6a; }
+.icard[data-theme="ad"] .icard-back { --accent: #3d7a6a; }
 .icard[data-theme="hq"] .icard-front { background: linear-gradient(#f39a3a, #1c1c1c 85%); }
-.icard[data-theme="hq"] .icard-back { border-top: 6px solid #f08a24; }
+.icard[data-theme="hq"] .icard-back { --accent: #f08a24; }
 .icard[data-theme="lie"] .icard-front { background: linear-gradient(160deg, #d9679a, #4a7fcf); }
-.icard[data-theme="lie"] .icard-back { border-top: 6px solid #f28db5; }
+.icard[data-theme="lie"] .icard-back { --accent: #e0659b; }
 .icard[data-theme="erased"] .icard-front { background: linear-gradient(#b01e2f, #2a0d12); }
-.icard[data-theme="erased"] .icard-back { border-top: 6px solid #b01e2f; }
+.icard[data-theme="erased"] .icard-back { --accent: #b01e2f; }
 .icard:hover .icard-inner { transform: translateY(-4px); }
 .icard.flipped:hover .icard-inner { transform: rotateY(180deg) translateY(-4px); }
 
@@ -1136,8 +1160,15 @@ body.nap .mail-to { background: #3a3a3a; border-color: #555; color: #eee; }
 body.nap .mail-actions { background: #1d1d1d; border-color: var(--n-line); }
 
 /* anime card backs, pins, misc */
-body.nap .icard-back { background: #232323; border-color: var(--n-line); color: var(--n-text); }
-body.nap .icard-quote { color: #cfcfcf; }
+body.nap .icard-back {
+  color: var(--n-text); border-color: var(--n-line);
+  background: repeating-linear-gradient(transparent 0 23px, rgba(255, 255, 255, 0.05) 23px 24px), #232323;
+}
+body.nap .icard-back-head { color: color-mix(in srgb, var(--accent) 45%, #fff); }
+body.nap .icard-back { border-top-color: var(--accent); }
+body.nap .icard[data-theme="dn"] .icard-back { --accent: #8a8a8a; }
+body.nap .icard-pill { background: #2e2e2e; color: #ddd; border-color: #555; }
+body.nap .icard-fave { color: #eee; }
 body.nap .pin figcaption { color: var(--n-text); }
 body.nap .empty, body.nap .saved-count { color: var(--n-dim); }
 body.nap .site-footer { border-color: var(--n-line); }
@@ -1178,6 +1209,7 @@ body.nap .hero-photo { box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5), 0 0 0 6px #2a
   .icard { height: 250px; }
   .icard-title { font-size: 20px; }
   .icard-back { font-size: 11px; padding: 10px; gap: 5px; }
+  .icard-back-head { font-size: 18px; }
   .tab { min-width: 0; padding: 0 12px; font-size: 13px; }
   .tab-logo { min-width: 50px; }
 }
