@@ -57,6 +57,7 @@ function timeAgo(iso) {
 
 /* ---------- photo, clocks ---------- */
 $$('.js-profile-photo').forEach((img) => { img.src = CONFIG.profilePhoto; });
+if (CONFIG.aboutPhoto) $('#about-photo').src = CONFIG.aboutPhoto; else $('.polaroid').remove();
 
 function tickClocks() {
   const now = new Date();

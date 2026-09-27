@@ -8,6 +8,7 @@ const CONFIG = {
   location: 'Atlanta, GA',
 
   profilePhoto: 'assets/profile.jpg',
+  aboutPhoto: 'assets/about.jpg', // the Polaroid on the About page
 
   // Leave a link empty ('') to hide it everywhere on the site.
   links: {
@@ -56,7 +57,7 @@ const CONFIG = {
       gallery: {
         title: 'SEO Tech Developer <tech devcon> · New York City',
         photos: [
-          { src: 'assets/nyc/1-flight.jpg', caption: 'On the flight to New York' },
+          { src: 'assets/nyc/1-flight.jpg', caption: 'Flying ATL → Dallas → New York' },
           { src: 'assets/nyc/2-devcon.jpg', caption: 'SEO Tech Developer <tech devcon>' },
           { src: 'assets/nyc/3-badge.jpg', caption: 'My devcon badge: Tech Developer Student' },
           { src: 'assets/nyc/4-midtown.jpg', caption: 'Walking through Midtown Manhattan' },
