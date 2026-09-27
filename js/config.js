@@ -145,6 +145,7 @@ const CONFIG = {
       // starts at the chorus, "erase me from here and set me free" (1:43)
       { title: 'homesick', artist: 'wave to earth', url: 'https://open.spotify.com/track/3pGoYGGOTvThnFcJpBh293', startAt: 103 },
       { title: 'Go Slowly', artist: 'Radiohead', url: 'https://open.spotify.com/track/6yiSyupeI7KYdBZKJdnIUO' },
+      { title: 'Young Lion', artist: 'Sade', url: 'https://open.spotify.com/track/4RE2d0lbKxbndeTy73eu4d' },
     ],
   },
 
