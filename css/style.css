@@ -822,8 +822,57 @@ main { max-width: 760px; margin: 0 auto; padding: 0 16px; }
 .task-item:hover { background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.2)); }
 
 /* subnav buttons look like links */
-.subnav button { border: 0; background: none; padding: 0; cursor: var(--cursor-point); color: #222; font-size: 12px; font-family: var(--mac-font); }
-.subnav button:hover { text-decoration: underline; }
+.subnav { height: 7px; padding: 0; overflow: hidden; }
+
+/* ============================================================
+   Mini original iPhone (2007)
+   ============================================================ */
+.iphone { position: fixed; left: 18px; bottom: 18px; z-index: 35; transition: transform 0.35s ease; }
+.iphone-body {
+  position: relative; width: 112px; height: 212px; border-radius: 18px; padding: 22px 7px 0;
+  background: linear-gradient(90deg, #141414, #2b2b2b 50%, #141414);
+  border: 3px solid #c9ccd1;
+  box-shadow: 0 0 0 1px #8d9097, inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 12px 26px rgba(0, 0, 0, 0.35);
+}
+.iphone-speaker { position: absolute; top: 9px; left: 50%; width: 26px; height: 3px; margin-left: -13px; border-radius: 2px; background: #3a3a3a; box-shadow: inset 0 1px 1px #000; }
+.iphone-screen {
+  position: relative; height: 150px; border-radius: 2px; overflow: hidden;
+  background: radial-gradient(ellipse at 50% 20%, #2d6fb8, #0d2a55 70%, #061429);
+  box-shadow: inset 0 0 0 1px #000;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; color: #fff;
+}
+.iphone-screen::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0) 45%); }
+.iphone-status { display: flex; justify-content: space-between; align-items: center; height: 11px; padding: 0 4px; background: rgba(0, 0, 0, 0.55); font-size: 7px; font-weight: 700; }
+.iphone-batt { width: 11px; height: 5px; border: 1px solid #fff; border-radius: 1px; background: linear-gradient(90deg, #fff 75%, transparent 75%); }
+.iphone-clock { text-align: center; font-size: 20px; font-weight: 300; letter-spacing: -0.5px; margin: 5px 0 4px; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); }
+.iphone-apps { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 2px; padding: 0 4px; }
+.app { display: flex; flex-direction: column; align-items: center; gap: 2px; border: 0; background: none; padding: 0; color: #fff; }
+.app-icon {
+  position: relative; width: 30px; height: 30px; border-radius: 7px; display: grid; place-items: center; overflow: hidden;
+  font-size: 16px; line-height: 1; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+.app-icon::after { content: ""; position: absolute; left: -10%; right: -10%; top: -35%; height: 80%; border-radius: 0 0 50% 50%;
+  background: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.12)); pointer-events: none; }
+.app:hover .app-icon { filter: brightness(1.12); }
+.app:active .app-icon { filter: brightness(0.7); }
+.app-label { font-size: 7.5px; font-weight: 700; text-shadow: 0 1px 1px #000; white-space: nowrap; }
+.app-nap { background: linear-gradient(#4a5a9e, #1b2350); color: #ffe9a8; }
+.app-msn { background: linear-gradient(#ffffff, #cfe3f8); display: flex; align-items: flex-end; justify-content: center; padding-bottom: 7px; }
+.app-msn .buddy { transform: scale(1.2); }
+.app-ipod { background: linear-gradient(#ffb347, #f06a12); color: #fff; font-size: 17px; }
+.app-exit { background: linear-gradient(#9aa0a8, #50555c); color: #fff; font-size: 15px; }
+.iphone-home {
+  position: absolute; left: 50%; bottom: 8px; width: 26px; height: 26px; margin-left: -13px; border-radius: 50%; padding: 0;
+  border: 1px solid #000; background: radial-gradient(circle at 50% 35%, #2a2a2a, #0b0b0b); box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
+}
+.iphone-home span { display: block; width: 9px; height: 9px; margin: auto; border: 1px solid #8a8a8a; border-radius: 2px; }
+.iphone.tucked { transform: translateY(calc(100% - 44px)) rotate(-4deg); }
+.iphone.tucked .iphone-body { cursor: var(--cursor-point); }
+@media (max-width: 700px) {
+  .iphone { left: 8px; bottom: 8px; transform-origin: bottom left; transform: scale(0.82); }
+  .iphone.tucked { transform: scale(0.82) translateY(calc(100% - 44px)) rotate(-4deg); }
+}
 
 /* home */
 .hero-meta { margin: 18px 0 0; color: #666; font-size: 13px; }
@@ -1026,7 +1075,7 @@ body.nap .tab::before { background: linear-gradient(#636363, #4a4a4a 45%, #3c3c3
 body.nap .tab:hover::before { background: linear-gradient(#6e6e6e, #555 45%, #474747 55%, #515151); }
 body.nap .tab.active::before { background: linear-gradient(#8a8a8a, #6a6a6a 50%, #5a5a5a); }
 body.nap .subnav { background: var(--n-brushed); border-color: #151515; box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05); }
-body.nap .subnav a, body.nap .subnav button { color: #dcdcdc; }
+
 
 /* hot news */
 body.nap .hotnews { background: #262626; border-color: #111; }

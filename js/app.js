@@ -62,6 +62,9 @@ if (CONFIG.aboutPhoto) $('#about-photo').src = CONFIG.aboutPhoto; else $('.polar
 
 function tickClocks() {
   const now = new Date();
+  const hm = now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+  $('#iphone-time').textContent = hm;
+  $('#iphone-clock').textContent = hm.replace(/\s?[AP]M$/i, '');
   $('#task-clock').textContent = now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
   $('#timestamp').textContent = `${now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} ${now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}`;
 }
@@ -874,7 +877,8 @@ function setNap(on, announce = true) {
   const heroSrc = on && CONFIG.nightPhoto ? CONFIG.nightPhoto : (CONFIG.homePhoto || CONFIG.profilePhoto);
   if (!hero.src.endsWith(heroSrc)) { hero.src = heroSrc; shake(hero, 'photo-swap'); }
   $('#nap-toggle').setAttribute('aria-pressed', String(on));
-  $('#nap-toggle').textContent = on ? '☀ Wake up' : '☾ Nap mode';
+  $('#nap-label').textContent = on ? 'Wake up' : 'Nap';
+  $('.app-nap').textContent = on ? '☀' : '☾';
   if (on) { statusBeforeNap = myStatus; setStatus('away', false); }
   else if (statusBeforeNap) { setStatus(statusBeforeNap, false); statusBeforeNap = null; }
   if (!visitorPlaying) $('#me-psm').textContent = on ? '💤 Napping' : "Viewing Tori's portfolio";
@@ -883,6 +887,21 @@ function setNap(on, announce = true) {
 }
 $('#nap-toggle').addEventListener('click', () => setNap(!document.body.classList.contains('nap')));
 if (store.get('nap')) setNap(true, false);
+
+/* ---------- mini iPhone: home button tucks it away ---------- */
+const iphone = $('#iphone');
+// remembered choice; otherwise start tucked on small screens so it doesn't cover the page
+const iphonePref = store.get('iphoneHidden');
+if (iphonePref === '1' || (iphonePref === null && window.innerWidth <= 700)) iphone.classList.add('tucked');
+$('#iphone-home').addEventListener('click', () => {
+  store.set('iphoneHidden', iphone.classList.toggle('tucked') ? '1' : '0');
+});
+iphone.addEventListener('click', (e) => {
+  if (iphone.classList.contains('tucked') && !e.target.closest('.iphone-home')) {
+    e.stopPropagation(); e.preventDefault(); // first tap only opens it
+    iphone.classList.remove('tucked'); store.set('iphoneHidden', '0');
+  }
+}, true);
 
 /* ---------- restore session / auto sign-in ---------- */
 if (session.get('signedIn')) enterSite(false);

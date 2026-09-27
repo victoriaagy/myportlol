@@ -116,11 +116,7 @@
       <a href="#anime" class="tab" data-page="anime">Anime</a>
       <a href="#contact" class="tab" data-page="contact">Contact</a>
     </nav>
-    <div class="subnav">
-      <button type="button" id="nap-toggle" aria-pressed="false">☾ Nap mode</button>
-      <button type="button" id="open-messenger">Messenger</button>
-      <button type="button" id="sign-out">Sign out</button>
-    </div>
+    <div class="subnav" aria-hidden="true"></div>
   </header>
 
   <main id="main">
@@ -407,6 +403,24 @@
       <textarea id="chat-text" rows="2" placeholder="Type a message to Tori…" aria-label="Message"></textarea>
       <button class="aero-btn" type="submit">Send</button>
     </form>
+  </aside>
+
+  <!-- mini original iPhone (2007): site controls -->
+  <aside class="iphone" id="iphone" aria-label="Quick controls">
+    <div class="iphone-body">
+      <span class="iphone-speaker" aria-hidden="true"></span>
+      <div class="iphone-screen">
+        <div class="iphone-status"><span>Tori</span><span id="iphone-time"></span><span class="iphone-batt" aria-hidden="true"></span></div>
+        <div class="iphone-clock" id="iphone-clock"></div>
+        <div class="iphone-apps">
+          <button type="button" class="app" id="nap-toggle" aria-pressed="false"><span class="app-icon app-nap">☾</span><span class="app-label" id="nap-label">Nap</span></button>
+          <button type="button" class="app" id="open-messenger"><span class="app-icon app-msn"><span class="buddy buddy-green"></span><span class="buddy buddy-blue"></span></span><span class="app-label">Messenger</span></button>
+          <button type="button" class="app" data-page="ipod"><span class="app-icon app-ipod">♫</span><span class="app-label">iPod</span></button>
+          <button type="button" class="app" id="sign-out"><span class="app-icon app-exit">⏻</span><span class="app-label">Sign out</span></button>
+        </div>
+      </div>
+      <button type="button" class="iphone-home" id="iphone-home" aria-label="Hide or show the iPhone"><span></span></button>
+    </div>
   </aside>
 
   <!-- lightbox (pins + photos) -->
