@@ -322,6 +322,7 @@
           </div>
           <textarea id="c-msg" required placeholder="Write your message…" aria-label="Message"></textarea>
           <input type="checkbox" name="botcheck" class="sr-only" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <div class="captcha" id="c-captcha"></div>
           <div class="mail-actions"><span class="mail-status" id="c-status" aria-live="polite"></span><button class="aqua-btn aqua-blue" type="submit" id="c-send">Send</button></div>
         </form>
 
@@ -403,6 +404,7 @@
     </div>
     <form class="chat-input" id="chat-form">
       <input id="chat-email" type="email" placeholder="Your email (so Tori can reply)" aria-label="Your email" autocomplete="email">
+      <div class="captcha" id="chat-captcha"></div>
       <textarea id="chat-text" rows="2" placeholder="Type a message to Tori…" aria-label="Message"></textarea>
       <button class="aero-btn" type="submit">Send</button>
     </form>
@@ -439,6 +441,9 @@
 
 </div>
 
+<!-- "I am human" check for the message forms (hCaptcha, verified by Web3Forms) -->
+<script>window.onCaptchaReady = function () { window.captchaLoaded = true; };</script>
+<script src="https://js.hcaptcha.com/1/api.js?render=explicit&onload=onCaptchaReady" async defer></script>
 <script src="js/config.js"></script>
 <script src="js/sfx.js"></script>
 <script src="js/chiptune.js"></script>

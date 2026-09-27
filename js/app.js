@@ -698,8 +698,29 @@ loadAnimeCovers();
 /* ============================================================
    CONTACT + LINKS
    ============================================================ */
+/* ---------- "I am human" check (hCaptcha via Web3Forms) ---------- */
+// Web3Forms' public hCaptcha site key; Web3Forms verifies the token server-side.
+const CAPTCHA_SITEKEY = '50b2fe65-b00b-4b9e-ad62-3ba471098be2';
+const captchaIds = {};
+function renderCaptchas() {
+  ['c-captcha', 'chat-captcha'].forEach((id) => {
+    if (captchaIds[id] !== undefined) return;
+    try { captchaIds[id] = window.hcaptcha.render(id, { sitekey: CAPTCHA_SITEKEY }); } catch (e) { /* ignore */ }
+  });
+}
+// the hCaptcha script may finish loading before or after this file runs
+window.onCaptchaReady = renderCaptchas;
+if (window.captchaLoaded) renderCaptchas();
+function captchaToken(id) {
+  if (!window.hcaptcha || captchaIds[id] === undefined) return null;
+  return window.hcaptcha.getResponse(captchaIds[id]) || '';
+}
+function resetCaptcha(id) {
+  if (window.hcaptcha && captchaIds[id] !== undefined) window.hcaptcha.reset(captchaIds[id]);
+}
+
 /** Send a message to Tori's inbox via Web3Forms. Resolves true on success. */
-async function sendMessage({ subject, name, email, message }) {
+async function sendMessage({ subject, name, email, message, captcha }) {
   if (!CONFIG.messageKey) return false;
   try {
     const res = await fetch('https://api.web3forms.com/submit', {
@@ -709,6 +730,7 @@ async function sendMessage({ subject, name, email, message }) {
         access_key: CONFIG.messageKey,
         subject, from_name: name || 'Portfolio visitor', name: name || 'Portfolio visitor',
         ...(email ? { email } : {}), message,
+        ...(captcha ? { 'h-captcha-response': captcha } : {}),
       }),
     });
     const data = await res.json().catch(() => ({}));
@@ -728,18 +750,20 @@ $('#contact-form').addEventListener('submit', async (e) => {
   if (e.target.botcheck.checked) return; // spam bot filled the hidden box
   const status = $('#c-status');
   const btn = $('#c-send');
-  const msg = { subject: `Portfolio: ${$('#c-subject').value}`, name: $('#c-name').value, email: $('#c-email').value, message: $('#c-msg').value };
+  const captcha = captchaToken('c-captcha');
+  if (captcha === '') { status.textContent = 'Please tick "I am human" first.'; return; }
+  const msg = { subject: `Portfolio: ${$('#c-subject').value}`, name: $('#c-name').value, email: $('#c-email').value, message: $('#c-msg').value, captcha };
   btn.disabled = true;
   status.textContent = 'Sending…';
   const ok = await sendMessage(msg);
   btn.disabled = false;
+  resetCaptcha('c-captcha');
   if (ok) {
     status.textContent = 'Message sent ✓';
     Sfx.message();
     e.target.reset();
-  } else {
-    status.textContent = "Couldn't send, opening your email app instead.";
-    mailto(msg.subject, `${msg.message}\n\n- ${msg.name}`);
+  } else if (!mailto(msg.subject, `${msg.message}\n\n- ${msg.name}`)) {
+    status.textContent = "Couldn't send right now. Please try again, or reach Tori on LinkedIn.";
   }
 });
 
@@ -862,16 +886,20 @@ $('#chat-form').addEventListener('submit', (e) => {
   e.preventDefault();
   const v = $('#chat-text').value.trim();
   if (!v) return;
+  const captcha = captchaToken('chat-captcha');
+  if (captcha === '') { addLine('', 'Please tick "I am human" before sending.', 'system'); return; }
   addLine('You', v, 'me');
   $('#chat-text').value = '';
   Sfx.message();
   const email = $('#chat-email').value.trim();
   if (email && !$('#chat-email').checkValidity()) { addLine('', 'That email address looks off. Check it so Tori can reply.', 'system'); return; }
   addLine('', 'Sending...', 'system sending');
-  sendMessage({ subject: 'Portfolio Messenger message', name: email || 'Messenger visitor', email, message: v }).then((ok) => {
+  sendMessage({ subject: 'Portfolio Messenger message', name: email || 'Messenger visitor', email, message: v, captcha }).then((ok) => {
     $$('.sending', $('#chat-log')).forEach((n) => n.remove());
+    resetCaptcha('chat-captcha');
     if (ok) addLine('', email ? 'Delivered to Tori. She can reply to your email.' : 'Delivered to Tori.', 'system');
     else if (mailto('Hi Tori! (from your portfolio)', v)) addLine('', "Couldn't send directly, so your email app is opening instead.", 'system');
+    else addLine('', "Couldn't send right now. Please try again, or reach Tori on LinkedIn.", 'system');
   });
 });
 $('#chat-text').addEventListener('keydown', (e) => {
