@@ -633,6 +633,7 @@ $('#anime-grid').innerHTML = CONFIG.anime.map((a) => {
         <span class="icard-tag">${esc(a.tag)}</span>
       </span>
       <span class="icard-back">
+        <span class="icard-back-head">${esc(a.title)}<small>${esc(a.tag)}</small></span>
         ${a.status ? `<span class="icard-row"><b>Status</b> ${esc(a.status)}</span>` : ''}
         ${a.facts.map((f) => `<span class="icard-row">${esc(f)}</span>`).join('')}
         ${a.favorite ? `<span class="icard-row"><b>Favorite character</b> ${esc(a.favorite)}</span>` : ''}

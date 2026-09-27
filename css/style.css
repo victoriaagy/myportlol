@@ -616,6 +616,11 @@ main { max-width: 760px; margin: 0 auto; padding: 0 16px; }
 .icard.has-cover .icard-emblem { visibility: hidden; }
 .icard.has-cover .icard-front::before { top: auto; bottom: 0; height: 55%; background: linear-gradient(transparent, rgba(0, 0, 0, 0.85)); z-index: 1; }
 .icard.has-cover .icard-title, .icard.has-cover .icard-tag { position: relative; z-index: 2; text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6); }
+/* the posters already show the show's name, so hide the card title (the button's aria-label still names it) */
+.icard.has-cover .icard-title, .icard.has-cover .icard-tag { display: none; }
+.icard.has-cover .icard-front::before { display: none; }
+.icard-back-head { font-family: var(--serif); font-size: 20px; line-height: 1.1; }
+.icard-back-head small { display: block; font-family: var(--mac-font); font-size: 11px; color: #888; margin-top: 2px; }
 .anime-credit { text-align: center; font-size: 11px; color: var(--grey); margin: -4px 0 36px; }
 
 .icard[data-theme="aot"] .icard-front { background: linear-gradient(#6b8a45, #3c4f22); }
