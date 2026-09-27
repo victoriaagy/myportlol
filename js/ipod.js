@@ -247,7 +247,7 @@ const IPod = (() => {
   ]);
 
   const aboutMenu = () => listScreen('About', () => [
-    { label: "Victoria's iPod" },
+    { label: "Tori's iPod" },
     { label: `Songs: ${tracks.length}` },
     { label: lists.demo.length ? 'Source: Demo' : 'Source: Spotify' },
     { label: 'Georgia State' },
@@ -258,7 +258,7 @@ const IPod = (() => {
     const items = [];
     if (liveIndex >= 0) items.push({ label: 'Listening Now', live: true, onSelect: () => play(liveIndex) });
     if (lists.recent.length) items.push({ label: 'Recently Played', arrow: true, onSelect: () => push(songList('Recently Played', lists.recent)) });
-    if (lists.picks.length) items.push({ label: "Victoria's Picks", arrow: true, onSelect: () => push(songList("Victoria's Picks", lists.picks)) });
+    if (lists.picks.length) items.push({ label: "Tori's Picks", arrow: true, onSelect: () => push(songList("Tori's Picks", lists.picks)) });
     items.push(
       { label: 'Songs', arrow: true, onSelect: () => push(songList('Songs', tracks.map((_, i) => i))) },
       { label: 'Artists', arrow: true, onSelect: () => push(artistsMenu()) },

@@ -146,11 +146,11 @@ const spotifyPromise = loadSpotify();
 
 /** The track to feature: what Victoria is playing now, else her latest. */
 function featuredTrack() {
-  if (music.nowPlaying && music.nowPlaying.isPlaying) return { t: music.nowPlaying, label: 'Victoria is listening now', live: true };
-  if (themeTrack) return { t: themeTrack, label: "Victoria's theme song" };
-  if (music.nowPlaying) return { t: music.nowPlaying, label: 'Victoria paused' };
-  if (music.recent[0]) return { t: music.recent[0], label: `Victoria played this ${timeAgo(music.recent[0].playedAt)}` };
-  if (music.picks[0]) return { t: music.picks[0], label: "Victoria's pick" };
+  if (music.nowPlaying && music.nowPlaying.isPlaying) return { t: music.nowPlaying, label: 'Tori is listening now', live: true };
+  if (themeTrack) return { t: themeTrack, label: "Tori's theme song" };
+  if (music.nowPlaying) return { t: music.nowPlaying, label: 'Tori paused' };
+  if (music.recent[0]) return { t: music.recent[0], label: `Tori played this ${timeAgo(music.recent[0].playedAt)}` };
+  if (music.picks[0]) return { t: music.picks[0], label: "Tori's pick" };
   return null;
 }
 
@@ -181,7 +181,7 @@ function renderNowCard() {
   }
   if (!t) {
     const first = IPod.tracks[0];
-    $('#now-label').textContent = "On Victoria's iPod";
+    $('#now-label').textContent = "On Tori's iPod";
     $('#now-title').textContent = first ? first.title : 'Open the iPod to start listening';
     $('#now-artist').textContent = first ? first.artist : '';
     art.innerHTML = '<span>♫</span>';
@@ -224,7 +224,7 @@ IPod.init({
     visitorPlaying = playing;
     const psm = $('#me-psm');
     if (track && playing) { psm.textContent = `♫ ${track.title} - ${track.artist}`; psm.classList.add('music'); }
-    else { psm.textContent = document.body.classList.contains('nap') ? '💤 Napping' : "Viewing Victoria's portfolio"; psm.classList.remove('music'); }
+    else { psm.textContent = document.body.classList.contains('nap') ? '💤 Napping' : "Viewing Tori's portfolio"; psm.classList.remove('music'); }
     renderNowCard();
     const np = $('#profile-soundtrack');
     if (np) np.textContent = track ? `${track.title} - ${track.artist}${playing ? '' : ' (paused)'}` : 'Nothing playing';
@@ -294,7 +294,7 @@ function enterSite(animate) {
   showPage(location.hash.slice(1) || 'home', false);
   if (window.innerWidth >= 1380) openBuddy(); else $('#buddy-tab').hidden = false;
   const f = featuredTrack();
-  setTimeout(() => toast(`<b>Victoria Agyare</b> is online.${f ? `<br><span class="toast-psm">♫ ${esc(f.t.title)} - ${esc(f.t.artist)}</span>` : ''}`), animate ? 700 : 200);
+  setTimeout(() => toast(`<b>Tori</b> is online.${f ? `<br><span class="toast-psm">♫ ${esc(f.t.title)} - ${esc(f.t.artist)}</span>` : ''}`), animate ? 700 : 200);
   IPod.warmUp();
 }
 
@@ -343,7 +343,7 @@ function buildHeadlines() {
   const f = featuredTrack();
   headlines = [
     { text: '1st place: Quest wins the Cox track at the hackathon.', page: 'projects' },
-    { text: 'Victoria completes the SEO Tech Developer program, Summer 2026.', page: 'experience' },
+    { text: 'Tori completes the SEO Tech Developer program, Summer 2026.', page: 'experience' },
     ...(f ? [{ text: `${f.live ? 'Now playing' : 'Recently played'}: ${f.t.title} by ${f.t.artist}.`, page: 'ipod' }] : []),
     { text: 'Selected as an MLT Career Prep Tech Fellow.', page: 'experience' },
     { text: 'New builds: Kindred and Groundtruth.', page: 'projects' },
@@ -623,9 +623,9 @@ $('#anime-grid').innerHTML = CONFIG.anime.map((a) => {
     lie: '<span class="icard-emblem emoji-emblem" aria-hidden="true">🎹</span>',
     erased: '<span class="icard-emblem emoji-emblem" aria-hidden="true">❄️</span>',
   }[a.theme] || '<span class="icard-emblem"></span>';
-  return `<button class="icard" data-theme="${esc(a.theme)}" aria-label="${esc(a.title)}: flip for details">
+  return `<button class="icard" data-theme="${esc(a.theme)}" data-title="${esc(a.title)}" aria-label="${esc(a.title)}: flip for details">
     <span class="icard-inner">
-      <span class="icard-front">${emblem}
+      <span class="icard-front"><img class="icard-cover" alt="" hidden>${emblem}
         <span class="garamond icard-title">${esc(a.title)}</span>
         <span class="icard-tag">${esc(a.tag)}</span>
       </span>
@@ -642,6 +642,49 @@ $('#anime-grid').addEventListener('click', (e) => {
   const c = e.target.closest('.icard');
   if (c) c.classList.toggle('flipped');
 });
+
+/* Official cover art, fetched by the visitor's browser from AniList's public API.
+   If it can't load, the cards keep their illustrated designs. */
+function showCover(title, url) {
+  const card = $(`.icard[data-title="${CSS.escape(title)}"]`);
+  if (!card || !url) return;
+  const img = $('.icard-cover', card);
+  img.onload = () => { img.hidden = false; card.classList.add('has-cover'); };
+  img.onerror = () => { img.hidden = true; card.classList.remove('has-cover'); };
+  img.src = url;
+}
+async function loadAnimeCovers() {
+  const CACHE = 'animeCovers.v1';
+  let cache = {};
+  try { cache = JSON.parse(store.get(CACHE) || '{}'); } catch (e) { cache = {}; }
+  const need = [];
+  CONFIG.anime.forEach((a) => {
+    if (a.cover) showCover(a.title, a.cover);
+    else if (cache[a.title]) showCover(a.title, cache[a.title]);
+    else need.push(a);
+  });
+  if (!need.length) return;
+  const query = `query {${need.map((a, i) =>
+    `a${i}: Page(perPage: 1) { media(search: ${JSON.stringify(a.search || a.title)}, type: ANIME, sort: [SEARCH_MATCH]) { coverImage { extraLarge large } } }`).join(' ')}}`;
+  try {
+    const res = await fetch('https://graphql.anilist.co', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({ query }),
+    });
+    if (!res.ok) return;
+    const { data } = await res.json();
+    need.forEach((a, i) => {
+      const m = data && data[`a${i}`] && data[`a${i}`].media[0];
+      const url = m && (m.coverImage.extraLarge || m.coverImage.large);
+      if (!url) return;
+      cache[a.title] = url;
+      showCover(a.title, url);
+    });
+    store.set(CACHE, JSON.stringify(cache));
+  } catch (e) { /* offline or blocked: keep the illustrated cards */ }
+}
+loadAnimeCovers();
 
 /* ============================================================
    CONTACT + LINKS
@@ -708,8 +751,8 @@ function victoriaMessage() {
 function renderBuddies() {
   const vPsm = victoriaMessage();
   const groups = [
-    { name: 'Victoria (1/1)', key: 'v', rows: [{ kind: 'chat', name: 'Victoria Agyare', psm: vPsm, status: 'available' }] },
-    { name: `Find Victoria (${activeLinks().length})`, key: 'links', rows: activeLinks().map((k) => ({ kind: 'link', key: k, name: LINK_META[k].label, psm: k === 'email' ? LINKS.email : '' })) },
+    { name: 'Tori (1/1)', key: 'v', rows: [{ kind: 'chat', name: 'Tori', psm: vPsm, status: 'available' }] },
+    { name: `Find Tori (${activeLinks().length})`, key: 'links', rows: activeLinks().map((k) => ({ kind: 'link', key: k, name: LINK_META[k].label, psm: k === 'email' ? LINKS.email : '' })) },
   ];
   const box = $('#buddy-list');
   box.innerHTML = '';
@@ -766,7 +809,7 @@ function addLine(who, text, cls = '') {
 function openChat() {
   $('#chat-psm').textContent = victoriaMessage();
   if (!$('#chat-log').children.length) {
-    addLine('', 'Write Victoria a message. When you press Send, it opens in your email app so she gets it directly.', 'system');
+    addLine('', 'Write Tori a message. When you press Send, it opens in your email app so she gets it directly.', 'system');
   }
   chatWindow.hidden = false;
   $('#chat-text').focus();
@@ -778,7 +821,7 @@ $('#chat-form').addEventListener('submit', (e) => {
   addLine('You', v, 'me');
   $('#chat-text').value = '';
   Sfx.message();
-  if (mailto('Hi Victoria! (from your portfolio)', v)) addLine('', 'Opening your email app...', 'system');
+  if (mailto('Hi Tori! (from your portfolio)', v)) addLine('', 'Opening your email app...', 'system');
 });
 $('#chat-text').addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); $('#chat-form').requestSubmit(); }
@@ -834,7 +877,7 @@ function setNap(on, announce = true) {
   $('#nap-toggle').textContent = on ? '☀ Wake up' : '☾ Nap mode';
   if (on) { statusBeforeNap = myStatus; setStatus('away', false); }
   else if (statusBeforeNap) { setStatus(statusBeforeNap, false); statusBeforeNap = null; }
-  if (!visitorPlaying) $('#me-psm').textContent = on ? '💤 Napping' : "Viewing Victoria's portfolio";
+  if (!visitorPlaying) $('#me-psm').textContent = on ? '💤 Napping' : "Viewing Tori's portfolio";
   on ? store.set('nap', '1') : store.del('nap');
   if (announce) toast(on ? 'Nap mode on. Your status is set to Away.' : 'Welcome back. Your status is Available again.', 2500);
 }

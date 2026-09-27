@@ -3,6 +3,7 @@
    ============================================================ */
 const CONFIG = {
   name: 'Victoria Agyare',
+  nickname: 'Tori', // what people call you; used in the casual spots
   school: 'Georgia State University',
   gradDate: 'May 2028',
   location: 'Atlanta, GA',
@@ -171,27 +172,29 @@ const CONFIG = {
     { src: 'assets/pins/me-night-out.jpg', title: 'Night out 🌙', board: 'Me' },
   ],
 
+  // Cover art loads from AniList (https://anilist.co) using `search`.
+  // To use your own image instead, add  cover: 'assets/anime/name.jpg'  to a show.
   anime: [
-    { title: 'Attack on Titan', theme: 'aot', tag: 'All-time favorite', status: 'Completed',
+    { title: 'Attack on Titan', search: 'Shingeki no Kyojin', theme: 'aot', tag: 'All-time favorite', status: 'Completed',
       facts: ['Wit Studio / MAPPA', '2013–2023', 'Action · Dark fantasy'],
       favorite: 'Eren',
       note: '' },   // e.g. why you love it
-    { title: 'Death Note', theme: 'dn', tag: 'Classic', status: 'Completed',
+    { title: 'Death Note', search: 'Death Note', theme: 'dn', tag: 'Classic', status: 'Completed',
       facts: ['Madhouse', '2006–2007 · 37 episodes', 'Psychological thriller'],
       favorite: '', note: '' },
-    { title: 'Jujutsu Kaisen', theme: 'jjk', tag: 'Currently watching', status: 'Watching',
+    { title: 'Jujutsu Kaisen', search: 'Jujutsu Kaisen', theme: 'jjk', tag: 'Currently watching', status: 'Watching',
       facts: ['MAPPA', '2020–present', 'Action · Supernatural'],
       favorite: '', note: '' },
-    { title: 'The Apothecary Diaries', theme: 'ad', tag: 'Palace mysteries', status: '',
+    { title: 'The Apothecary Diaries', search: 'Kusuriya no Hitorigoto', theme: 'ad', tag: 'Palace mysteries', status: '',
       facts: ['TOHO animation Studio / OLM', '2023–present', 'Mystery · Historical drama'],
       favorite: '', note: '' },
-    { title: 'Haikyuu!!', theme: 'hq', tag: 'Volleyball', status: '',
+    { title: 'Haikyuu!!', search: 'Haikyuu!!', theme: 'hq', tag: 'Volleyball', status: '',
       facts: ['Production I.G', '2014–2020', 'Sports'],
       favorite: '', note: '' },
-    { title: 'Your Lie in April', theme: 'lie', tag: 'Music & heartbreak', status: '',
+    { title: 'Your Lie in April', search: 'Shigatsu wa Kimi no Uso', theme: 'lie', tag: 'Music & heartbreak', status: '',
       facts: ['A-1 Pictures', '2014–2015 · 22 episodes', 'Drama · Music'],
       favorite: '', note: '' },
-    { title: 'Erased', theme: 'erased', tag: 'Time-travel thriller', status: '',
+    { title: 'Erased', search: 'Boku dake ga Inai Machi', theme: 'erased', tag: 'Time-travel thriller', status: '',
       facts: ['A-1 Pictures', '2016 · 12 episodes', 'Mystery · Thriller'],
       favorite: '', note: '' },
   ],
