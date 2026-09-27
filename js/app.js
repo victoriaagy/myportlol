@@ -57,6 +57,7 @@ function timeAgo(iso) {
 
 /* ---------- photo, clocks ---------- */
 $$('.js-profile-photo').forEach((img) => { img.src = CONFIG.profilePhoto; });
+$('#home-photo').src = CONFIG.homePhoto || CONFIG.profilePhoto;
 if (CONFIG.aboutPhoto) $('#about-photo').src = CONFIG.aboutPhoto; else $('.polaroid').remove();
 
 function tickClocks() {
@@ -827,7 +828,7 @@ let statusBeforeNap = null;
 function setNap(on, announce = true) {
   document.body.classList.toggle('nap', on);
   const hero = $('.hero-photo img');
-  const heroSrc = on && CONFIG.nightPhoto ? CONFIG.nightPhoto : CONFIG.profilePhoto;
+  const heroSrc = on && CONFIG.nightPhoto ? CONFIG.nightPhoto : (CONFIG.homePhoto || CONFIG.profilePhoto);
   if (!hero.src.endsWith(heroSrc)) { hero.src = heroSrc; shake(hero, 'photo-swap'); }
   $('#nap-toggle').setAttribute('aria-pressed', String(on));
   $('#nap-toggle').textContent = on ? '☀ Wake up' : '☾ Nap mode';

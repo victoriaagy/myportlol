@@ -7,7 +7,8 @@ const CONFIG = {
   gradDate: 'May 2028',
   location: 'Atlanta, GA',
 
-  profilePhoto: 'assets/profile.jpg',
+  profilePhoto: 'assets/profile.jpg', // small avatar: sign-in window + Messenger
+  homePhoto: 'assets/home.jpg',    // big photo on the home page
   aboutPhoto: 'assets/about.jpg', // the Polaroid on the About page
   nightPhoto: 'assets/profile-night.jpg', // home page photo while Nap mode is on
   // Your Messenger personal message (shown when you're not playing anything on Spotify)
