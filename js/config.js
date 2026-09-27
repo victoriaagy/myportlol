@@ -144,6 +144,7 @@ const CONFIG = {
       { title: 'I Know You', artist: 'Faye Webster', url: 'https://open.spotify.com/track/71BWZa1liIRyUiuJ3MB66o' },
       // TODO: set startAt to where "erase me from here and set me free" begins (seconds)
       { title: 'homesick', artist: 'wave to earth', url: 'https://open.spotify.com/track/3pGoYGGOTvThnFcJpBh293', startAt: 0 },
+      { title: 'Go Slowly', artist: 'Radiohead', url: 'https://open.spotify.com/track/6yiSyupeI7KYdBZKJdnIUO' },
     ],
   },
 
@@ -158,10 +159,13 @@ const CONFIG = {
     { src: 'assets/pins/meme-whole-point.jpg', title: 'Almost forgot this is the whole point ❤️', board: 'Mood' },
     { src: 'assets/pins/sunset-plane.jpg', title: 'Sunset from the window seat', board: 'Sunsets', ratio: 0.75 }, // ratio = height / width, for landscape photos
     { src: 'assets/pins/nature-summer-tree.jpg', title: 'Big tree, summer day', board: 'Nature' },
+    { src: 'assets/pins/sunset-moon-palms.jpg', title: 'Moon over the palms', board: 'Sunsets' },
+    { src: 'assets/pins/nature-rainbow.jpg', title: 'Rainbow after the rain', board: 'Nature' },
     { src: 'assets/pins/boba-mixue.jpg', title: 'Pearl milk tea from Mixue', board: 'Boba' },
     { src: 'assets/pins/boba-bubble-milk-tea.jpg', title: 'Bubble milk tea, 70% sweet', board: 'Boba' },
     { src: 'assets/pins/boba-tiger.jpg', title: 'Glaze Tea, round two', board: 'Boba' },
     { src: 'assets/pins/nature-late-fall.jpg', title: 'Late fall', board: 'Nature' },
+    { src: 'assets/pins/sunset-silhouettes.jpg', title: 'Tree silhouettes at dusk', board: 'Sunsets', ratio: 0.75 },
     { src: 'assets/pins/me-night-out.jpg', title: 'Night out 🌙', board: 'Me' },
   ],
 
