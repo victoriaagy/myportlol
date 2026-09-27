@@ -826,6 +826,9 @@ $$('[data-drag]').forEach((bar) => {
 let statusBeforeNap = null;
 function setNap(on, announce = true) {
   document.body.classList.toggle('nap', on);
+  const hero = $('.hero-photo img');
+  const heroSrc = on && CONFIG.nightPhoto ? CONFIG.nightPhoto : CONFIG.profilePhoto;
+  if (!hero.src.endsWith(heroSrc)) { hero.src = heroSrc; shake(hero, 'photo-swap'); }
   $('#nap-toggle').setAttribute('aria-pressed', String(on));
   $('#nap-toggle').textContent = on ? '☀ Wake up' : '☾ Nap mode';
   if (on) { statusBeforeNap = myStatus; setStatus('away', false); }

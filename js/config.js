@@ -9,6 +9,7 @@ const CONFIG = {
 
   profilePhoto: 'assets/profile.jpg',
   aboutPhoto: 'assets/about.jpg', // the Polaroid on the About page
+  nightPhoto: 'assets/profile-night.jpg', // home page photo while Nap mode is on
   // Your Messenger personal message (shown when you're not playing anything on Spotify)
   personalMessage: "i think i'm pretty cool, ngl",
 
@@ -149,7 +150,7 @@ const CONFIG = {
   // Pinterest-style moodboard. Put images in assets/pins/ and list them here, e.g.
   //   { src: 'assets/pins/my-fit.jpg', title: 'Vinted find', board: 'Fits' },
   // Boards only appear once they have at least one pin.
-  boards: ['Sunsets', 'Nature', 'Boba', 'Fits', 'Anime', 'Music', 'Mood'],
+  boards: ['Me', 'Sunsets', 'Nature', 'Boba', 'Fits', 'Anime', 'Music', 'Mood'],
   pins: [
     { src: 'assets/pins/sunset-street.jpg', title: 'That sky', board: 'Sunsets' },
     { src: 'assets/pins/boba-glaze.jpg', title: 'Tiger brown sugar milk tea', board: 'Boba' },
@@ -161,6 +162,7 @@ const CONFIG = {
     { src: 'assets/pins/boba-bubble-milk-tea.jpg', title: 'Bubble milk tea, 70% sweet', board: 'Boba' },
     { src: 'assets/pins/boba-tiger.jpg', title: 'Glaze Tea, round two', board: 'Boba' },
     { src: 'assets/pins/nature-late-fall.jpg', title: 'Late fall', board: 'Nature' },
+    { src: 'assets/pins/me-night-out.jpg', title: 'Night out 🌙', board: 'Me' },
   ],
 
   anime: [
