@@ -179,7 +179,7 @@ const CONFIG = {
       facts: ['Wit Studio / MAPPA', '2013–2023', 'Action · Dark fantasy'],
       favorite: 'Eren',
       note: '' },   // e.g. why you love it
-    { title: 'Death Note', search: 'Death Note', theme: 'dn', tag: 'Classic', status: 'Completed',
+    { title: 'Death Note', search: 'Death Note', cover: 'assets/anime/death-note.jpg', theme: 'dn', tag: 'Classic', status: 'Completed',
       facts: ['Madhouse', '2006–2007 · 37 episodes', 'Psychological thriller'],
       favorite: '', note: '' },
     { title: 'Jujutsu Kaisen', search: 'Jujutsu Kaisen', theme: 'jjk', tag: 'Currently watching', status: 'Watching',
