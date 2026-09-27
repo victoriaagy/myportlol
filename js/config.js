@@ -52,14 +52,15 @@ const CONFIG = {
         'Developed a full-stack web application with HTML, CSS, JavaScript, Flask and MySQL, building responsive frontend features on a Scrum team.',
         'Integrated REST APIs and authenticated workflows, using GitHub for version control and testing to cut post-deployment bug tickets by 20%.',
       ],
-      // NYC conference photos: put them in assets/nyc/ and set src, e.g. { src: 'assets/nyc/1.jpg', caption: '...' }
+      // Photos live in assets/nyc/. Add more by appending { src, caption }.
       gallery: {
-        title: 'SEO Conference · New York City',
+        title: 'SEO Tech Developer <tech devcon> · New York City',
         photos: [
-          { src: '', caption: 'New York City' },
-          { src: '', caption: 'The conference' },
-          { src: '', caption: 'My SEO cohort' },
-          { src: '', caption: 'Around Manhattan' },
+          { src: 'assets/nyc/1-flight.jpg', caption: 'On the flight to New York' },
+          { src: 'assets/nyc/2-devcon.jpg', caption: 'SEO Tech Developer <tech devcon>' },
+          { src: 'assets/nyc/3-badge.jpg', caption: 'My devcon badge: Tech Developer Student' },
+          { src: 'assets/nyc/4-midtown.jpg', caption: 'Walking through Midtown Manhattan' },
+          { src: 'assets/nyc/5-28th-street.jpg', caption: '28th Street subway station' },
         ],
       } },
     { org: 'Management Leadership for Tomorrow (MLT)', short: 'MLT', role: 'Career Prep Tech Fellow', dates: 'March 2026 – Present', icon: '🎓',

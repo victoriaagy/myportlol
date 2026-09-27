@@ -169,7 +169,7 @@ function renderNowCard() {
     const first = IPod.tracks[0];
     $('#now-label').textContent = "On Victoria's iPod";
     $('#now-title').textContent = first ? first.title : 'Open the iPod to start listening';
-    $('#now-artist').textContent = first ? `${first.artist} · connect Spotify to show real listening` : '';
+    $('#now-artist').textContent = first ? first.artist : '';
     art.innerHTML = '<span>♫</span>';
   } else {
     $('#now-label').innerHTML = `${live ? '<i class="live-dot"></i>' : ''}${esc(label)}`;
