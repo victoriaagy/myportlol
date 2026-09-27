@@ -633,12 +633,16 @@ $('#anime-grid').innerHTML = CONFIG.anime.map((a) => {
         <span class="icard-tag">${esc(a.tag)}</span>
       </span>
       <span class="icard-back">
-        <span class="icard-back-head">${esc(a.title)}</span>
-        <span class="icard-pill">${esc(a.tag)}</span>
-        ${a.status ? `<span class="icard-row"><b>Status</b>${esc(a.status)}</span>` : ''}
-        <span class="icard-facts">${a.facts.map((f, i) => `<span class="icard-fact"><i aria-hidden="true">${['🎬', '📅', '✨'][i] || '•'}</i>${esc(f)}</span>`).join('')}</span>
-        ${a.favorite ? `<span class="icard-row icard-fave"><b>Favorite character</b>${esc(a.favorite)} ♡</span>` : ''}
-        ${a.note ? `<span class="icard-quote">${esc(a.note)}</span>` : ''}
+        <span class="info-bar"><span class="traffic"><i></i><i></i><i></i></span>${esc(a.title)} Info</span>
+        <span class="info-body">
+          <span class="info-title garamond">${esc(a.title)}</span>
+          <span class="info-tag">${esc(a.tag)}</span>
+          <span class="info-rows">
+            ${[['Status', a.status], ['Studio', a.facts[0]], ['Aired', a.facts[1]], ['Genre', a.facts[2]], ['Favorite', a.favorite]]
+              .filter(([, v]) => v).map(([k, v]) => `<span class="info-row"><b>${k}</b><span>${esc(v)}</span></span>`).join('')}
+          </span>
+          ${a.note ? `<span class="sticky">${esc(a.note)}</span>` : ''}
+        </span>
       </span>
     </span>
   </button>`;

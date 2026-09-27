@@ -175,10 +175,10 @@ const CONFIG = {
   // Cover art loads from AniList (https://anilist.co) using `search`.
   // To use your own image instead, add  cover: 'assets/anime/name.jpg'  to a show.
   anime: [
-    { title: 'Attack on Titan', search: 'Shingeki no Kyojin', cover: 'assets/anime/attack-on-titan.jpg', theme: 'aot', tag: 'All-time favorite', status: 'Saving the finale',
+    { title: 'Attack on Titan', search: 'Shingeki no Kyojin', cover: 'assets/anime/attack-on-titan.jpg', theme: 'aot', tag: 'All-time favorite', status: 'Watching',
       facts: ['Wit Studio / MAPPA', '2013–2023', 'Action · Dark fantasy'],
       favorite: 'Eren',
-      note: 'Fun fact: I still haven\'t watched the finale 🫣 no spoilers, please!' },
+      note: 'Fun fact: I haven\'t watched the finale yet.' },
     { title: 'Death Note', search: 'Death Note', cover: 'assets/anime/death-note.jpg', theme: 'dn', tag: 'Classic', status: 'Completed',
       facts: ['Madhouse', '2006–2007 · 37 episodes', 'Psychological thriller'],
       favorite: '', note: '' },
