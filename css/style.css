@@ -997,54 +997,93 @@ a.buddy-row { text-decoration: none; }
 /* ============================================================
    Nap mode (night theme)
    ============================================================ */
-.stars { display: none; }
-body.nap { background: #0c1330; color: #dfe6ff; }
-body.nap .stars {
-  display: block; position: fixed; inset: 0; z-index: -1; pointer-events: none;
-  background:
-    radial-gradient(1.5px 1.5px at 10% 20%, #fff, transparent), radial-gradient(1px 1px at 30% 70%, #fff, transparent),
-    radial-gradient(1.5px 1.5px at 55% 30%, #fff, transparent), radial-gradient(1px 1px at 75% 60%, #fff, transparent),
-    radial-gradient(2px 2px at 88% 15%, #fff, transparent), radial-gradient(1px 1px at 20% 90%, #fff, transparent),
-    radial-gradient(1.5px 1.5px at 65% 85%, #fff, transparent), radial-gradient(1px 1px at 45% 50%, #fff, transparent),
-    linear-gradient(#0c1330, #1c1f4a);
-  animation: twinkle 4s ease-in-out infinite alternate;
+/* Nap mode = Mac OS X "Graphite": charcoal pinstripes, grey gel controls,
+   brushed-metal bars. No gradients-for-the-sake-of-it, no neon. */
+body.nap {
+  --n-text: #e4e4e4;
+  --n-dim: #9a9a9a;
+  --n-line: #3b3b3b;
+  --n-surface: #232323;
+  --n-link: #aac4de;
+  --n-gel: linear-gradient(#a3a3a3 0%, #767676 49%, #5d5d5d 50%, #838383 100%);
+  --n-brushed: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 3px), #2e2e2e;
+  --n-pinstripe: repeating-linear-gradient(#2f2f2f 0 2px, #2a2a2a 2px 4px);
+  background: repeating-linear-gradient(#181818 0 2px, #1b1b1b 2px 4px);
+  color: var(--n-text);
 }
-@keyframes twinkle { to { opacity: 0.75; } }
-body.nap #site { position: relative; z-index: 0; }
-body.nap .grey, body.nap .page-sub, body.nap .hero-meta, body.nap .timestamp { color: #8e9ac4; }
-body.nap .tab { color: #dfe6ff; }
-body.nap .tab::before { background: linear-gradient(#3a4270, #262c55); border-color: #545c8f; box-shadow: none; }
-body.nap .tab.active::before { background: linear-gradient(#4d5796, #353d73); }
-body.nap .subnav { background: linear-gradient(#2c3363, #20264e); border-color: #545c8f; }
-body.nap .subnav a, body.nap .subnav button { color: #dfe6ff; }
-body.nap .hotnews { background: #1a2048; border-color: #545c8f; }
-body.nap .hotnews-label { background: linear-gradient(#4d5796, #353d73); color: #fff; border-color: #545c8f; }
-body.nap .hotnews-text { color: #dfe6ff; }
+body.nap .grey, body.nap .page-sub, body.nap .hero-meta, body.nap .timestamp, body.nap .quote-by { color: var(--n-dim); }
+body.nap a, body.nap .site-footer a, body.nap .link-list a { color: var(--n-link); }
+
+/* tabs + menu bar */
+body.nap .tab { color: #f0f0f0; text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5); }
+body.nap .tab::before { background: linear-gradient(#636363, #4a4a4a 45%, #3c3c3c 55%, #464646); border-color: #151515; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18); }
+body.nap .tab:hover::before { background: linear-gradient(#6e6e6e, #555 45%, #474747 55%, #515151); }
+body.nap .tab.active::before { background: linear-gradient(#8a8a8a, #6a6a6a 50%, #5a5a5a); }
+body.nap .subnav { background: var(--n-brushed); border-color: #151515; box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05); }
+body.nap .subnav a, body.nap .subnav button { color: #dcdcdc; }
+
+/* hot news */
+body.nap .hotnews { background: #262626; border-color: #111; }
+body.nap .hotnews-label { background: var(--n-gel); color: #fff; border-color: #111; text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.45); }
+body.nap .hotnews-text { color: var(--n-text); }
+
+/* cards and panels */
 body.nap .promo, body.nap .now-card, body.nap .product, body.nap .aqua-panel, body.nap .finder, body.nap .mail-window {
-  background: linear-gradient(#1f2656, #171c42); border-color: #454d80; color: #dfe6ff; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  background: var(--n-surface); border-color: var(--n-line); color: var(--n-text);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0, 0, 0, 0.45);
 }
-body.nap .promo { color: #dfe6ff; }
-body.nap .promo-sub, body.nap .product-date, body.nap .product-more, body.nap .now-artist, body.nap .exp-dates { color: #9aa6d1; }
-body.nap .aqua-panel h3, body.nap .finder-bar, body.nap .mail-titlebar { background: #2a3163; color: #fff; border-color: #454d80; text-shadow: none; }
-body.nap .specs th { color: #9aa6d1; }
-body.nap .specs tr:nth-child(odd) td, body.nap .specs tr:nth-child(odd) th { background: rgba(255, 255, 255, 0.05); }
-body.nap .finder-side { background: #1a2048; border-color: #454d80; }
-body.nap .finder-side button { color: #dfe6ff; }
-body.nap .finder-side button:not(.sel):hover { background: #2a3163; }
-body.nap .exp-icon, body.nap .o-icon { background: #2a3163; border-color: #454d80; }
-body.nap .orbit-item { color: #dfe6ff; }
-body.nap .disc { filter: brightness(0.8) saturate(1.2); }
-body.nap .fact-bubble { background: #1f2656; border-color: #545c8f; color: #dfe6ff; }
-body.nap .mail-fields input, body.nap .mail-window textarea { background: transparent; color: #fff; }
-body.nap .mail-fields label { border-color: #353d73; }
-body.nap .mail-actions { background: #1a2048; border-color: #353d73; }
-body.nap .site-footer { border-color: #353d73; }
-body.nap .site-footer a, body.nap .link-list a { color: #9cc4ff; }
-body.nap .powered { color: #9aa6d1; }
-body.nap .ipod { filter: brightness(0.9); }
-body.nap .pin figcaption { color: #dfe6ff; }
-body.nap code { background: #2a3163; }
-body.nap .now-label { color: #8ff06a; }
+body.nap .promo-sub, body.nap .product-date, body.nap .product-more, body.nap .now-artist, body.nap .exp-dates, body.nap .product-sum, body.nap .edit-note { color: var(--n-dim); }
+body.nap .now-label { color: #cfcfcf; }
+body.nap .live-dot { background: #7bd35a; }
+body.nap .aqua-panel h3, body.nap .finder-bar, body.nap .mail-titlebar {
+  background: var(--n-pinstripe); color: #f2f2f2; border-color: #151515; text-shadow: 0 -1px 0 #000;
+}
+body.nap .specs th { color: var(--n-dim); }
+body.nap .specs tr:nth-child(odd) td, body.nap .specs tr:nth-child(odd) th { background: rgba(255, 255, 255, 0.04); }
+body.nap .profiler details { border-color: var(--n-line); }
+body.nap .profiler summary::before { color: var(--n-dim); }
+
+/* Finder sidebar: graphite selection instead of blue */
+body.nap .finder-side { background: #1d1d1d; border-color: var(--n-line); }
+body.nap .finder-side button { color: var(--n-text); }
+body.nap .finder-side button.sel { background: linear-gradient(#8d8d8d, #626262); color: #fff; }
+body.nap .finder-side button:not(.sel):hover { background: #2c2c2c; }
+body.nap .exp-icon, body.nap .o-icon { background: linear-gradient(#3a3a3a, #2a2a2a); border-color: #151515; }
+body.nap .orbit-item { color: var(--n-text); }
+body.nap .orbit-item.picked { color: #fff; }
+body.nap .disc { filter: grayscale(0.6) brightness(0.85); }
+body.nap .disc-badge { filter: grayscale(1) brightness(1.1); }
+body.nap .fact-bubble { background: #262626; border-color: var(--n-line); color: var(--n-text); }
+
+/* controls: graphite gel buttons, chips, fields */
+body.nap .aqua-btn, body.nap .aqua-blue, body.nap .chip.on {
+  background: var(--n-gel); border-color: #222; color: #fff; text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.45);
+}
+body.nap .skill-chip, body.nap .chip, body.nap .tags button, body.nap .artist-chip {
+  background: #2c2c2c; border-color: #444; color: #d8d8d8;
+}
+body.nap .artist-chip a { color: #e0e0e0; }
+body.nap .artist-play { background: #3a3a3a; border-color: #444; color: #e0e0e0; }
+body.nap .search input { background: #111; border-color: #444; color: #eee; }
+body.nap .aqua-select { background: var(--n-gel); color: #fff; border-color: #222; }
+body.nap .mail-fields input, body.nap .mail-window textarea { background: transparent; color: #f0f0f0; }
+body.nap .mail-fields label { border-color: var(--n-line); color: var(--n-dim); }
+body.nap .mail-to { background: #3a3a3a; border-color: #555; color: #eee; }
+body.nap .mail-actions { background: #1d1d1d; border-color: var(--n-line); }
+
+/* anime card backs, pins, misc */
+body.nap .icard-back { background: #232323; border-color: var(--n-line); color: var(--n-text); }
+body.nap .icard-quote { color: #cfcfcf; }
+body.nap .pin figcaption { color: var(--n-text); }
+body.nap .empty, body.nap .saved-count { color: var(--n-dim); }
+body.nap .site-footer { border-color: var(--n-line); }
+body.nap .powered { color: var(--n-dim); background: none; }
+body.nap code { background: #2c2c2c; }
+body.nap .product-art { filter: saturate(0.55) brightness(0.85); }
+body.nap .now-art { background: linear-gradient(135deg, #5a5a5a, #3a3a3a); }
+body.nap .link-list li::before { color: var(--n-dim); }
+body.nap .link-list li { border-color: var(--n-line); }
+body.nap .hero-photo { box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5), 0 0 0 6px #2a2a2a; border-color: #111; }
 .ipod-help .artist-label { display: none; }
 
 /* ============================================================
