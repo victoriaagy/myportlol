@@ -2,13 +2,26 @@
 
 A 2000s-inspired portfolio: you sign in through a Messenger-style window, then land on a portfolio styled like apple.com in 2001. It has a click-wheel iPod that plays what I've actually been listening to on Spotify.
 
-Plain HTML, CSS and JavaScript, with no build step. To preview it locally:
+Plain HTML, CSS and JavaScript, with no build step.
 
-```bash
-python3 -m http.server 8000   # then visit http://localhost:8000
-```
+## Run it on your computer
 
-Locally (and on GitHub Pages) the iPod plays built-in demo songs. Deploy to **Vercel** to connect Spotify.
+1. Install [Node.js](https://nodejs.org) (the "LTS" version) if you don't have it.
+2. Open Terminal in this folder and run:
+   ```bash
+   npm start
+   ```
+3. Visit **http://localhost:3000**. Press `Ctrl + C` in Terminal to stop.
+
+Friends on the **same Wi-Fi** can open the "Network" address `serve` prints (like `http://192.168.1.23:3000`) while your laptop is on. For anyone else, deploy it (below).
+
+## Share it online (free, about 5 minutes)
+
+1. Go to <https://vercel.com/new> and sign in with GitHub.
+2. Import the **myportlol** repository. Leave every setting as it is and click **Deploy**.
+3. You get a public link like `https://myportlol.vercel.app`. Rename it under **Settings → Domains** (e.g. `tori-agyare.vercel.app`).
+
+Every push to GitHub updates the live site automatically. The music (your picks and theme song) works right away; follow "Connect Spotify" below to also show what you've actually been listening to.
 
 ## Editing content
 

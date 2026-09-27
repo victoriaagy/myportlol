@@ -1,0 +1,8 @@
+{
+  "name": "tori-portfolio",
+  "private": true,
+  "description": "Victoria (Tori) Agyare's retro portfolio",
+  "scripts": {
+    "start": "npx --yes serve@14 --listen 3000 ."
+  }
+}
