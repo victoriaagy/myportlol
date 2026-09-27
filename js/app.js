@@ -408,7 +408,7 @@ function renderExperience() {
       <ul class="exp-bullets">${x.bullets.map((b) => `<li>${esc(b)}</li>`).join('')}</ul>`;
   if (x.gallery && x.gallery.photos.length) {
     html += `<h3 class="gallery-title">📷 ${esc(x.gallery.title)}</h3><div class="gallery">${x.gallery.photos.map((p, i) =>
-      `<button class="photo" data-i="${i}">${p.src ? `<img src="${esc(p.src)}" alt="${esc(p.caption)}" loading="lazy">` : '<span class="photo-ph"></span>'}
+      `<button class="photo${p.video ? ' is-video' : ''}" data-i="${i}">${p.src ? `<img src="${esc(p.src)}" alt="${esc(p.caption)}" loading="lazy">` : '<span class="photo-ph"></span>'}
         <span class="photo-cap">${esc(p.caption)}</span></button>`).join('')}</div>`;
   }
   $('#finder-pane').innerHTML = html;
@@ -430,7 +430,7 @@ $('#finder-pane').addEventListener('click', (e) => {
   const p = e.target.closest('.photo');
   if (!p) return;
   const photos = CONFIG.experience[expIndex].gallery.photos;
-  Lightbox.open(photos.map((ph) => ({ src: ph.src, caption: ph.caption, colors: ['#1d2a3a', '#c9a86a'] })), Number(p.dataset.i));
+  Lightbox.open(photos.map((ph) => ({ src: ph.src, video: ph.video, caption: ph.caption, colors: ['#1d2a3a', '#c9a86a'] })), Number(p.dataset.i));
 });
 renderExperience();
 
@@ -544,13 +544,19 @@ const Lightbox = (() => {
   const box = $('#lightbox');
   function show() {
     const it = items[idx];
-    $('#lb-media').innerHTML = it.src
+    if (it.video) IPod.pause(); // don't play two things at once
+    $('#lb-media').innerHTML = it.video
+      ? `<video poster="${esc(it.src || '')}" controls autoplay muted loop playsinline aria-label="${esc(it.caption)}">
+          <source src="${esc(it.video)}" type="video/mp4">
+          <source src="${esc(it.video.replace(/\.mp4$/, '.webm'))}" type="video/webm">
+        </video>`
+      : it.src
       ? `<img src="${esc(it.src)}" alt="${esc(it.caption)}">`
       : `<span class="lb-ph" style="background:linear-gradient(160deg,${it.colors[0]},${it.colors[1]})"></span>`;
     $('#lb-caption').textContent = `${it.caption}  (${idx + 1}/${items.length})`;
   }
   function open(list, i) { items = list; idx = Math.max(0, i); box.hidden = false; show(); $('#lb-close').focus(); }
-  function close() { box.hidden = true; }
+  function close() { box.hidden = true; $('#lb-media').innerHTML = ''; }
   function step(d) { idx = (idx + d + items.length) % items.length; show(); }
   $('#lb-close').addEventListener('click', close);
   $('#lb-prev').addEventListener('click', () => step(-1));

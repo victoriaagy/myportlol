@@ -61,7 +61,12 @@ const CONFIG = {
           { src: 'assets/nyc/2-devcon.jpg', caption: 'SEO Tech Developer <tech devcon>' },
           { src: 'assets/nyc/3-badge.jpg', caption: 'My devcon badge: Tech Developer Student' },
           { src: 'assets/nyc/4-midtown.jpg', caption: 'Walking through Midtown Manhattan' },
-          { src: 'assets/nyc/5-28th-street.jpg', caption: '28th Street subway station' },
+          { src: 'assets/nyc/5-library.jpg', caption: 'New York Public Library' },
+          { src: 'assets/nyc/6-flags.jpg', caption: 'Midtown at dusk' },
+          { src: 'assets/nyc/7-i-love-ny.jpg', caption: 'I ❤ NY, on the sidewalk' },
+          { src: 'assets/nyc/8-28th-street.jpg', caption: '28th Street subway station' },
+          // Videos: an .mp4 (plus an optional .webm with the same name) and a poster image for the thumbnail
+          { video: 'assets/nyc/9-statue-of-liberty.mp4', src: 'assets/nyc/9-statue-of-liberty-poster.jpg', caption: 'The Statue of Liberty at night, from the water' },
         ],
       } },
     { org: 'Management Leadership for Tomorrow (MLT)', short: 'MLT', role: 'Career Prep Tech Fellow', dates: 'March 2026 – Present', icon: '🎓',
