@@ -31,6 +31,12 @@ const SpotifyEmbed = (() => {
             const d = e.data || {};
             const prev = state;
             state = { paused: !!d.isPaused, position: (d.position || 0) / 1000, duration: (d.duration || 0) / 1000, buffering: !!d.isBuffering };
+            // jump to the start time once playback begins, if the full song is available
+            // (logged-out visitors only get a 30s preview, which can't be skipped into)
+            if (pendingSeek !== null && !state.paused && state.duration > 0) {
+              if (state.duration > pendingSeek + 5) c.seek(pendingSeek);
+              pendingSeek = null;
+            }
             onUpdate(state, prev);
           });
           resolve(c);
@@ -54,7 +60,9 @@ const SpotifyEmbed = (() => {
     });
   }
 
-  async function play(uri) {
+  let pendingSeek = null;
+
+  async function play(uri, startAt = 0) {
     const c = await readyPromise;
     if (uri !== currentUri) {
       currentUri = uri;
@@ -63,6 +71,7 @@ const SpotifyEmbed = (() => {
       c.loadUri(uri);
       await ready;
     }
+    pendingSeek = startAt > 0 ? startAt : null;
     c.play();
   }
 
@@ -117,6 +126,8 @@ const IPod = (() => {
 
   /* ---------- library ---------- */
   function setLibrary({ recent = [], picks = [], nowPlaying = null } = {}) {
+    const prevUri = current >= 0 && tracks[current] ? tracks[current].uri : null;
+    const wasOnNowPlaying = stack.length > 0 && top().type === 'now';
     tracks = [];
     lists = { recent: [], picks: [], demo: [] };
     liveIndex = -1;
@@ -133,8 +144,10 @@ const IPod = (() => {
     picks.forEach((t) => lists.picks.push(addSpotify(t)));
     if (!tracks.length) DEMO_SONGS.forEach((t) => lists.demo.push(add({ kind: 'audio', ...t })));
 
-    current = -1;
+    // keep whatever is already playing when the library refreshes
+    current = prevUri ? tracks.findIndex((t) => t.uri === prevUri) : -1;
     stack = [mainMenu()];
+    if (current >= 0 && wasOnNowPlaying) stack.push({ type: 'now', title: 'Now Playing' });
     if (tracks.some((t) => t.kind === 'spotify')) {
       el.dock.hidden = false;
       SpotifyEmbed.load(el.embed, tracks.find((t) => t.kind === 'spotify').uri).catch(() => {
@@ -164,7 +177,7 @@ const IPod = (() => {
     try {
       if (t.kind === 'spotify') {
         audio.pause();
-        await SpotifyEmbed.play(t.uri);
+        await SpotifyEmbed.play(t.uri, t.startAt || 0);
       } else {
         if (prevWasSpotify) SpotifyEmbed.pause();
         const url = await ensureUrl(t);

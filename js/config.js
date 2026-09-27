@@ -9,6 +9,8 @@ const CONFIG = {
 
   profilePhoto: 'assets/profile.jpg',
   aboutPhoto: 'assets/about.jpg', // the Polaroid on the About page
+  // Your Messenger personal message (shown when you're not playing anything on Spotify)
+  personalMessage: "i think i'm pretty cool, ngl",
 
   // Leave a link empty ('') to hide it everywhere on the site.
   links: {
@@ -31,7 +33,8 @@ const CONFIG = {
   ],
 
   hobbies: [
-    { icon: '🎧', label: 'Music on repeat', text: 'Malcolm Todd, The Marías and Radiohead are always in rotation. My iPod shows what I\'ve actually been playing.' },
+    { icon: '🧋', label: 'Boba', text: 'New York turned me into a boba person. Tiger brown sugar milk tea from Glaze Tea is the current favorite (see the Boba board on my Pins page).' },
+    { icon: '🎧', label: 'Music', text: 'Malcolm Todd, The Marías and Radiohead are always in rotation. My iPod shows what I\'ve actually been playing.' },
     { icon: '📌', label: 'Pinterest', text: 'I can scroll Pinterest for hours: outfits, room ideas, anime edits. Some of it ends up on my moodboard.' },
     { icon: '🛍️', label: 'Vinted finds', text: 'Most of my free time goes to hunting for clothes on Vinted.' },
     { icon: '💤', label: 'Naps', text: 'A good nap is part of the routine. Try Nap mode in the menu bar.' },
@@ -116,6 +119,15 @@ const CONFIG = {
       tags: ['JavaScript', 'HTML', 'CSS', 'Spotify API', 'Vercel'], link: 'https://github.com/victoriaagy/myportlol' },
   ],
 
+  // Plays when a visitor clicks "Sign in". startAt is in seconds (68 = 1:08, where the
+  // second half starts). Visitors not logged in to Spotify hear Spotify's 30-second preview instead.
+  themeSong: {
+    title: 'Lovebird', artist: 'Malcolm Todd',
+    url: 'https://open.spotify.com/track/27K5vumkmzbBAjw3JMbcJ2',
+    startAt: 68,
+    playOnSignIn: true,
+  },
+
   spotify: {
     // The serverless function in /api/spotify.js (see README → "Connect Spotify").
     apiUrl: '/api/spotify',
@@ -127,8 +139,13 @@ const CONFIG = {
 
   // Pinterest-style moodboard. Put images in assets/pins/ and list them here.
   // Pins without an image show as a colored tile.
-  boards: ['Fits', 'Aesthetic', 'Anime', 'Music', 'Campus'],
+  boards: ['Boba', 'Fits', 'Aesthetic', 'Anime', 'Music', 'Campus', 'Mood'],
   pins: [
+    { src: 'assets/pins/boba-glaze.jpg', title: 'Tiger brown sugar milk tea', board: 'Boba' },
+    { src: 'assets/pins/meme-whole-point.jpg', title: 'Almost forgot this is the whole point ❤️', board: 'Mood' },
+    { src: 'assets/pins/boba-mixue.jpg', title: 'Pearl milk tea from Mixue', board: 'Boba' },
+    { src: 'assets/pins/boba-bubble-milk-tea.jpg', title: 'Bubble milk tea, 70% sweet', board: 'Boba' },
+    { src: 'assets/pins/boba-tiger.jpg', title: 'Glaze Tea, round two', board: 'Boba' },
     { title: 'Vinted finds', board: 'Fits', colors: ['#6f8fb8', '#c7d6ea'], h: 300 },
     { title: 'Soft pink mornings', board: 'Aesthetic', colors: ['#ffd6e8', '#ffeef5'], h: 260 },
     { title: 'Survey Corps', board: 'Anime', colors: ['#5b7a3a', '#9fb87a'], h: 340 },

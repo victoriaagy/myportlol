@@ -111,12 +111,21 @@ let visitorPlaying = false;
 
 function parsePick(p) {
   const m = /track[/:]([A-Za-z0-9]+)/.exec(p.url || p.uri || '');
-  return m ? { id: m[1], uri: `spotify:track:${m[1]}`, title: p.title, artist: p.artist, art: p.art || '', url: p.url } : null;
+  return m ? { id: m[1], uri: `spotify:track:${m[1]}`, title: p.title, artist: p.artist, art: p.art || '', url: p.url, startAt: p.startAt || 0 } : null;
 }
+
+const themeTrack = CONFIG.themeSong ? parsePick(CONFIG.themeSong) : null;
 
 async function loadSpotify() {
   await null; // let the rest of app.js finish setting up first
-  const picks = (CONFIG.spotify.picks || []).map(parsePick).filter(Boolean);
+  const picks = [themeTrack, ...(CONFIG.spotify.picks || []).map(parsePick)]
+    .filter(Boolean)
+    .filter((t, i, all) => all.findIndex((x) => x.uri === t.uri) === i);
+  // show the theme song + picks right away so the player can load during sign-in
+  music = { nowPlaying: null, recent: [], picks };
+  IPod.setLibrary(music);
+  renderMusicBits();
+
   let data = null;
   if (location.protocol.startsWith('http') && CONFIG.spotify.apiUrl) {
     try {
@@ -127,7 +136,8 @@ async function loadSpotify() {
       if (res.ok && (res.headers.get('content-type') || '').includes('json')) data = await res.json();
     } catch (e) { /* not deployed with the API yet: use picks or demo songs */ }
   }
-  music = { nowPlaying: (data && data.nowPlaying) || null, recent: (data && data.recent) || [], picks };
+  if (!data) return;
+  music = { nowPlaying: data.nowPlaying || null, recent: data.recent || [], picks };
   IPod.setLibrary(music);
   renderMusicBits();
 }
@@ -135,7 +145,9 @@ const spotifyPromise = loadSpotify();
 
 /** The track to feature: what Victoria is playing now, else her latest. */
 function featuredTrack() {
-  if (music.nowPlaying) return { t: music.nowPlaying, label: music.nowPlaying.isPlaying ? 'Victoria is listening now' : 'Victoria paused', live: music.nowPlaying.isPlaying };
+  if (music.nowPlaying && music.nowPlaying.isPlaying) return { t: music.nowPlaying, label: 'Victoria is listening now', live: true };
+  if (themeTrack) return { t: themeTrack, label: "Victoria's theme song" };
+  if (music.nowPlaying) return { t: music.nowPlaying, label: 'Victoria paused' };
   if (music.recent[0]) return { t: music.recent[0], label: `Victoria played this ${timeAgo(music.recent[0].playedAt)}` };
   if (music.picks[0]) return { t: music.picks[0], label: "Victoria's pick" };
   return null;
@@ -257,7 +269,11 @@ function startSignIn() {
     enterSite(true);
   });
 }
-$('#login-form').addEventListener('submit', (e) => { e.preventDefault(); startSignIn(); });
+$('#login-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  if (themeTrack && CONFIG.themeSong.playOnSignIn) IPod.playUri(themeTrack.uri);
+  startSignIn();
+});
 $('#cancel-signin').addEventListener('click', () => {
   clearInterval(signInTimer);
   $('#login-loading-view').hidden = true;
@@ -330,6 +346,7 @@ function buildHeadlines() {
     { text: 'Selected as an MLT Career Prep Tech Fellow.', page: 'experience' },
     { text: 'New builds: Kindred and Groundtruth.', page: 'projects' },
     { text: 'Programming Club at GSU: now on the executive board.', page: 'experience' },
+    { text: 'New on the moodboard: the Boba board, from the NYC trip.', page: 'pins' },
   ];
 }
 function nextHeadline() {
@@ -348,7 +365,7 @@ setInterval(nextHeadline, 5000);
    ABOUT
    ============================================================ */
 const orbit = $('#orbit');
-CONFIG.hobbies.slice(0, 6).forEach((h, i) => {
+CONFIG.hobbies.slice(0, 7).forEach((h, i) => {
   const b = document.createElement('button');
   b.className = `orbit-item o${i + 1}`;
   b.innerHTML = `<span class="o-icon">${h.icon}</span>${esc(h.label)}`;
@@ -655,9 +672,15 @@ $('#site-search').addEventListener('submit', (e) => {
 const buddyWindow = $('#buddy-window');
 const collapsed = new Set();
 
+/** Victoria's Messenger personal message: live music if she's listening, else her status line. */
+function victoriaMessage() {
+  const now = music.nowPlaying;
+  if (now && now.isPlaying) return `♫ ${now.title} - ${now.artist}`;
+  return CONFIG.personalMessage || `${CONFIG.degree} · ${CONFIG.school}`;
+}
+
 function renderBuddies() {
-  const f = featuredTrack();
-  const vPsm = f ? `♫ ${f.t.title} - ${f.t.artist}` : `${CONFIG.degree} · ${CONFIG.school}`;
+  const vPsm = victoriaMessage();
   const groups = [
     { name: 'Victoria (1/1)', key: 'v', rows: [{ kind: 'chat', name: 'Victoria Agyare', psm: vPsm, status: 'available' }] },
     { name: `Find Victoria (${activeLinks().length})`, key: 'links', rows: activeLinks().map((k) => ({ kind: 'link', key: k, name: LINK_META[k].label, psm: k === 'email' ? LINKS.email : '' })) },
@@ -715,8 +738,7 @@ function addLine(who, text, cls = '') {
   log.scrollTop = log.scrollHeight;
 }
 function openChat() {
-  const f = featuredTrack();
-  $('#chat-psm').textContent = f ? `♫ ${f.t.title} - ${f.t.artist}` : `${CONFIG.degree} · ${CONFIG.school}`;
+  $('#chat-psm').textContent = victoriaMessage();
   if (!$('#chat-log').children.length) {
     addLine('', 'Write Victoria a message. When you press Send, it opens in your email app so she gets it directly.', 'system');
   }

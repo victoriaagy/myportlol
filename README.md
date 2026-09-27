@@ -17,6 +17,7 @@ Almost everything personal is in **`js/config.js`**: links, bio facts, skills, e
 | What | How |
 | --- | --- |
 | NYC conference photos | Put them in `assets/nyc/` and set each `src` under `experience → gallery` in `config.js` |
+| Theme song (plays on Sign in) | `themeSong` in `config.js`: Spotify link plus `startAt` in seconds |
 | Moodboard pins | Put images in `assets/pins/`, then add `src: 'assets/pins/name.jpg'` to a pin (or add new ones). Pins without `src` show as color tiles |
 | Pinterest / Spotify profile links | `links.pinterest`, `links.spotify` |
 | Résumé | Add a PDF to `assets/` and set `links.resume`. Consider removing your phone number from the public copy first |
