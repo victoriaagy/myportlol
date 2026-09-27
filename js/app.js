@@ -323,6 +323,7 @@ function showPage(name, scroll = true) {
   if (location.hash.slice(1) !== name) history.replaceState(null, '', `#${name}`);
   if (scroll) window.scrollTo({ top: 0, behavior: 'smooth' });
   if (name === 'ipod') setTimeout(() => $('#ipod').focus({ preventScroll: true }), 50);
+  if (name === 'pins') renderPins();
 }
 document.addEventListener('click', (e) => {
   const link = e.target.closest('[data-page]');
@@ -346,7 +347,7 @@ function buildHeadlines() {
     { text: 'Selected as an MLT Career Prep Tech Fellow.', page: 'experience' },
     { text: 'New builds: Kindred and Groundtruth.', page: 'projects' },
     { text: 'Programming Club at GSU: now on the executive board.', page: 'experience' },
-    { text: 'New on the moodboard: the Boba board, from the NYC trip.', page: 'pins' },
+    { text: 'New on the moodboard: Sunsets, Nature and Boba boards.', page: 'pins' },
   ];
 }
 function nextHeadline() {
@@ -365,7 +366,7 @@ setInterval(nextHeadline, 5000);
    ABOUT
    ============================================================ */
 const orbit = $('#orbit');
-CONFIG.hobbies.slice(0, 8).forEach((h, i) => {
+CONFIG.hobbies.slice(0, 9).forEach((h, i) => {
   const b = document.createElement('button');
   b.className = `orbit-item o${i + 1}`;
   b.innerHTML = `<span class="o-icon">${h.icon}</span>${esc(h.label)}`;
@@ -502,17 +503,19 @@ renderProjects();
    ============================================================ */
 let board = 'All';
 let pinOrder = CONFIG.pins.map((_, i) => i);
+let visiblePins = [];
 let saved = new Set();
 try { saved = new Set(JSON.parse(store.get('savedPins') || '[]')); } catch (e) { /* ignore */ }
 
 function renderPins() {
-  $('#board-filters').innerHTML = ['All', ...CONFIG.boards, 'Saved'].map((b) =>
+  const boards = CONFIG.boards.filter((b) => CONFIG.pins.some((p) => p.board === b));
+  $('#board-filters').innerHTML = ['All', ...boards, 'Saved'].map((b) =>
     `<button class="chip${b === board ? ' on' : ''}" data-board="${esc(b)}">${esc(b)}</button>`).join('');
-  const visible = pinOrder.filter((i) => {
+  const visible = visiblePins = pinOrder.filter((i) => {
     const p = CONFIG.pins[i];
     return board === 'All' || (board === 'Saved' ? saved.has(p.title) : p.board === board);
   });
-  $('#masonry').innerHTML = visible.length ? visible.map((i) => {
+  const pinHtml = visible.map((i) => {
     const p = CONFIG.pins[i];
     const media = p.src
       ? `<img src="${esc(p.src)}" alt="${esc(p.title)}" loading="lazy">`
@@ -522,9 +525,27 @@ function renderPins() {
       <button class="pin-save${saved.has(p.title) ? ' on' : ''}" aria-label="Save ${esc(p.title)}" aria-pressed="${saved.has(p.title)}">♥</button>
       <figcaption>${esc(p.title)}<small>${esc(p.board)}</small></figcaption>
     </figure>`;
-  }).join('') : '<p class="empty">Nothing saved yet. Tap ♥ on a pin to save it.</p>';
+  });
+  const box = $('#masonry');
+  if (!visible.length) {
+    box.innerHTML = '<p class="empty">Nothing saved yet. Tap ♥ on a pin to save it.</p>';
+  } else {
+    // deal pins into columns so they read left to right (CSS columns fill top to bottom)
+    const cols = Math.max(1, Math.min(4, Math.floor(box.clientWidth / 170) || 2));
+    const heights = new Array(cols).fill(0);
+    const columns = Array.from({ length: cols }, () => []);
+    visible.forEach((i, n) => {
+      const p = CONFIG.pins[i];
+      const c = heights.indexOf(Math.min(...heights));
+      columns[c].push(pinHtml[n]);
+      heights[c] += p.src ? (p.ratio || 1.33) : (p.h || 240) / 180; // approx height per unit width
+    });
+    box.innerHTML = columns.map((c) => `<div class="masonry-col">${c.join('')}</div>`).join('');
+  }
   $('#saved-count').textContent = saved.size ? `${saved.size} saved` : '';
 }
+let pinsResizeTimer = null;
+window.addEventListener('resize', () => { clearTimeout(pinsResizeTimer); pinsResizeTimer = setTimeout(() => { if (!$('.page[data-page="pins"]').hidden) renderPins(); }, 200); });
 $('#board-filters').addEventListener('click', (e) => {
   const b = e.target.closest('[data-board]');
   if (b) { board = b.dataset.board; renderPins(); }
@@ -540,7 +561,7 @@ $('#masonry').addEventListener('click', (e) => {
     renderPins();
     return;
   }
-  const list = $$('.pin', $('#masonry')).map((f) => CONFIG.pins[Number(f.dataset.i)]);
+  const list = visiblePins.map((n) => CONFIG.pins[n]);
   Lightbox.open(list.map((q) => ({ src: q.src, caption: `${q.title} · ${q.board}`, colors: q.colors })), list.indexOf(p));
 });
 $('#pins-shuffle').addEventListener('click', () => {

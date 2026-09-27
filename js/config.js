@@ -41,6 +41,7 @@ const CONFIG = {
     { icon: '🛍️', label: 'Vinted finds', text: 'Most of my free time goes to hunting for clothes on Vinted.' },
     { icon: '💤', label: 'Naps', text: 'A good nap is part of the routine. Try Nap mode in the menu bar.' },
     { icon: '⚔️', label: 'Anime', text: 'Attack on Titan (Eren is my favorite), Death Note, Jujutsu Kaisen, The Apothecary Diaries, Haikyuu!!, Your Lie in April and Erased. See the Anime tab.' },
+    { icon: '🌅', label: 'Nature & sunsets', text: 'I love nature a lot, and I will always stop to take a picture of a good sunset. My favorites are on the Sunsets and Nature boards on my Pins page.' },
     { icon: '🍏', label: 'Apple', text: 'I love Apple: the old iPods, the Aqua buttons, the whole look. That\'s why this site is styled like apple.com in the early 2000s.' },
     { icon: '💻', label: 'Building', text: 'I build full-stack web apps with React, Next.js, Flask and Node.' },
   ],
@@ -145,30 +146,21 @@ const CONFIG = {
     ],
   },
 
-  // Pinterest-style moodboard. Put images in assets/pins/ and list them here.
-  // Pins without an image show as a colored tile.
-  boards: ['Boba', 'Fits', 'Aesthetic', 'Anime', 'Music', 'Campus', 'Mood'],
+  // Pinterest-style moodboard. Put images in assets/pins/ and list them here, e.g.
+  //   { src: 'assets/pins/my-fit.jpg', title: 'Vinted find', board: 'Fits' },
+  // Boards only appear once they have at least one pin.
+  boards: ['Sunsets', 'Nature', 'Boba', 'Fits', 'Anime', 'Music', 'Mood'],
   pins: [
+    { src: 'assets/pins/sunset-street.jpg', title: 'That sky', board: 'Sunsets' },
     { src: 'assets/pins/boba-glaze.jpg', title: 'Tiger brown sugar milk tea', board: 'Boba' },
+    { src: 'assets/pins/nature-fall-downtown.jpg', title: 'Fall colors downtown', board: 'Nature' },
     { src: 'assets/pins/meme-whole-point.jpg', title: 'Almost forgot this is the whole point ❤️', board: 'Mood' },
+    { src: 'assets/pins/sunset-plane.jpg', title: 'Sunset from the window seat', board: 'Sunsets', ratio: 0.75 }, // ratio = height / width, for landscape photos
+    { src: 'assets/pins/nature-summer-tree.jpg', title: 'Big tree, summer day', board: 'Nature' },
     { src: 'assets/pins/boba-mixue.jpg', title: 'Pearl milk tea from Mixue', board: 'Boba' },
     { src: 'assets/pins/boba-bubble-milk-tea.jpg', title: 'Bubble milk tea, 70% sweet', board: 'Boba' },
     { src: 'assets/pins/boba-tiger.jpg', title: 'Glaze Tea, round two', board: 'Boba' },
-    { title: 'Vinted finds', board: 'Fits', colors: ['#6f8fb8', '#c7d6ea'], h: 300 },
-    { title: 'Soft pink mornings', board: 'Aesthetic', colors: ['#ffd6e8', '#ffeef5'], h: 260 },
-    { title: 'Survey Corps', board: 'Anime', colors: ['#5b7a3a', '#9fb87a'], h: 340 },
-    { title: 'Vinyl corner', board: 'Music', colors: ['#2b2b2b', '#7a6a5a'], h: 220 },
-    { title: 'Downtown Atlanta', board: 'Campus', colors: ['#0039a6', '#7fa6ec'], h: 300 },
-    { title: 'Nap spot', board: 'Aesthetic', colors: ['#c9d8ff', '#f3f0ff'], h: 200 },
-    { title: 'Gojo', board: 'Anime', colors: ['#3b2a78', '#b99bff'], h: 280 },
-    { title: 'The Marías on vinyl', board: 'Music', colors: ['#8a1d2c', '#e07a86'], h: 320 },
-    { title: 'Study desk', board: 'Campus', colors: ['#e9dcc7', '#fff7ea'], h: 240 },
-    { title: 'Vintage tee', board: 'Fits', colors: ['#b8a07a', '#efe3cc'], h: 250 },
-    { title: 'Death Note', board: 'Anime', colors: ['#050505', '#555555'], h: 230 },
-    { title: 'Golden hour', board: 'Aesthetic', colors: ['#ffb46b', '#ffe3b8'], h: 330 },
-    { title: 'In Rainbows', board: 'Music', colors: ['#f2a93b', '#6fb3ee'], h: 260 },
-    { title: 'Layered fit', board: 'Fits', colors: ['#3d3a36', '#a39a8e'], h: 330 },
-    { title: 'Library nights', board: 'Campus', colors: ['#1d2a3a', '#58718f'], h: 210 },
+    { src: 'assets/pins/nature-late-fall.jpg', title: 'Late fall', board: 'Nature' },
   ],
 
   anime: [

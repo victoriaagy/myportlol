@@ -392,7 +392,7 @@ main { max-width: 760px; margin: 0 auto; padding: 0 16px; }
 .ipm-wheel { width: 26px; height: 26px; border-radius: 50%; background: radial-gradient(#fff 30%, #ddd 32%); border: 1px solid #bbb; }
 
 /* ---------- about ---------- */
-.orbit { position: relative; height: 500px; margin: 20px auto 0; max-width: 680px; }
+.orbit { position: relative; height: 520px; margin: 20px auto 0; max-width: 680px; }
 .orbit-disc { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); margin-top: -40px; }
 .disc {
   position: relative; width: 300px; height: 300px; border-radius: 50%;
@@ -437,8 +437,9 @@ main { max-width: 760px; margin: 0 auto; padding: 0 16px; }
 .o4 { right: 0; top: 10px; }
 .o5 { right: -20px; top: 140px; }
 .o6 { right: 0; top: 270px; }
-.o7 { left: calc(50% - 150px); top: 405px; }
-.o8 { left: calc(50% + 30px); top: 405px; }
+.o7 { left: calc(50% - 220px); top: 405px; }
+.o8 { left: calc(50% - 60px); top: 425px; }
+.o9 { left: calc(50% + 100px); top: 405px; }
 
 .fact-bubble {
   max-width: 420px; margin: 10px auto 30px; padding: 10px 16px; text-align: center;
@@ -946,7 +947,8 @@ main { max-width: 760px; margin: 0 auto; padding: 0 16px; }
 .pins-toolbar .chips { margin: 0; justify-content: flex-start; }
 .pins-actions { display: flex; align-items: center; gap: 8px; }
 .saved-count { font-size: 11px; color: #d6247a; }
-.masonry { columns: 4 160px; column-gap: 12px; margin-bottom: 36px; }
+.masonry { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 36px; }
+.masonry-col { flex: 1; min-width: 0; }
 .pin { break-inside: avoid; margin: 0 0 14px; position: relative; }
 .pin.drop { animation: drop 0.4s both; }
 @keyframes drop { from { opacity: 0; transform: translateY(-10px); } }
@@ -1055,7 +1057,6 @@ body.nap .now-label { color: #8ff06a; }
   .finder-body { grid-template-columns: 1fr; }
   .finder-side { display: flex; overflow-x: auto; padding: 0; border-right: 0; border-bottom: 1px solid #b9c3cf; }
   .finder-side li { flex: none; }
-  .masonry { columns: 2 140px; }
   .now-title { font-size: 20px; }
   .hero { justify-content: center; padding-top: 28px; }
   .hero-left { flex-direction: column; text-align: center; }
