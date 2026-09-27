@@ -175,7 +175,7 @@ const CONFIG = {
   // Cover art loads from AniList (https://anilist.co) using `search`.
   // To use your own image instead, add  cover: 'assets/anime/name.jpg'  to a show.
   anime: [
-    { title: 'Attack on Titan', search: 'Shingeki no Kyojin', theme: 'aot', tag: 'All-time favorite', status: 'Completed',
+    { title: 'Attack on Titan', search: 'Shingeki no Kyojin', cover: 'assets/anime/attack-on-titan.jpg', theme: 'aot', tag: 'All-time favorite', status: 'Completed',
       facts: ['Wit Studio / MAPPA', '2013–2023', 'Action · Dark fantasy'],
       favorite: 'Eren',
       note: '' },   // e.g. why you love it
