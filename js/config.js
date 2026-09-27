@@ -22,7 +22,7 @@ const CONFIG = {
 
   // Leave a link empty ('') to hide it everywhere on the site.
   links: {
-    email: '',     // hidden to avoid spam: messages reach you through Web3Forms (messageKey) instead
+    email: 'victoriaaehi@gmail.com', // shown only on the Contact page
     linkedin: 'https://www.linkedin.com/in/victoriaagyare',
     github: 'https://github.com/victoriaagy',
     spotify: '',   // e.g. 'https://open.spotify.com/user/your-id'

@@ -27,6 +27,8 @@ const LINK_META = {
   resume: { label: 'Résumé', icon: '📄' },
 };
 const activeLinks = () => Object.keys(LINK_META).filter((k) => LINKS[k]);
+// the email address only appears on the Contact page, not in Messenger or the footer
+const sharedLinks = () => activeLinks().filter((k) => k !== 'email');
 const linkHref = (k) => (k === 'email' ? `mailto:${LINKS.email}` : LINKS[k]);
 
 let toastTimer = null;
@@ -769,7 +771,7 @@ $('#contact-form').addEventListener('submit', async (e) => {
 
 $('#link-list').innerHTML = activeLinks().map((k) =>
   `<li><a href="${esc(linkHref(k))}" ${k === 'email' ? '' : 'target="_blank" rel="noopener"'}>${LINK_META[k].label}</a>${k === 'email' ? ` <small>${esc(LINKS.email)}</small>` : ''}</li>`).join('');
-$('#world-select').insertAdjacentHTML('beforeend', activeLinks().map((k) => `<option value="${k}">${LINK_META[k].label}</option>`).join(''));
+$('#world-select').insertAdjacentHTML('beforeend', sharedLinks().map((k) => `<option value="${k}">${LINK_META[k].label}</option>`).join(''));
 $('#world-select').addEventListener('change', (e) => {
   const k = e.target.value;
   e.target.value = '';
@@ -820,7 +822,7 @@ function renderBuddies() {
   const vPsm = victoriaMessage();
   const groups = [
     { name: 'Tori (1/1)', key: 'v', rows: [{ kind: 'chat', name: 'Tori', psm: vPsm, status: 'available' }] },
-    { name: `Find Tori (${activeLinks().length})`, key: 'links', rows: activeLinks().map((k) => ({ kind: 'link', key: k, name: LINK_META[k].label, psm: k === 'email' ? LINKS.email : '' })) },
+    { name: `Find Tori (${sharedLinks().length})`, key: 'links', rows: sharedLinks().map((k) => ({ kind: 'link', key: k, name: LINK_META[k].label, psm: k === 'email' ? LINKS.email : '' })) },
   ];
   const box = $('#buddy-list');
   box.innerHTML = '';
