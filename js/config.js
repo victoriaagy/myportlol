@@ -11,7 +11,7 @@ const CONFIG = {
   profilePhoto: 'assets/profile.jpg', // small avatar: sign-in window + Messenger
   homePhoto: 'assets/home.jpg',    // big photo on the home page
   aboutPhoto: 'assets/about.jpg', // the Polaroid on the About page
-  nightPhoto: 'assets/profile-night.jpg', // home page photo while Nap mode is on
+  nightPhoto: '', // optional: a different home page photo while Nap mode is on
   // Your Messenger personal message (shown when you're not playing anything on Spotify)
   personalMessage: "i think i'm pretty cool, ngl",
 
@@ -169,7 +169,6 @@ const CONFIG = {
     { src: 'assets/pins/boba-tiger.jpg', title: 'Glaze Tea, round two', board: 'Boba' },
     { src: 'assets/pins/nature-late-fall.jpg', title: 'Late fall', board: 'Nature' },
     { src: 'assets/pins/sunset-silhouettes.jpg', title: 'Tree silhouettes at dusk', board: 'Sunsets', ratio: 0.75 },
-    { src: 'assets/pins/me-night-out.jpg', title: 'Night out 🌙', board: 'Me' },
   ],
 
   // Cover art loads from AniList (https://anilist.co) using `search`.
