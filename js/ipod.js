@@ -1,84 +1,191 @@
 /* ============================================================
-   iPod.js — a working 1st-gen iPod (2001) music player
+   iPod.js — a working 1st-gen iPod (2001)
+   Plays Victoria's Spotify songs through Spotify's official
+   embed player (iFrame API), and falls back to built-in
+   chiptunes (Chiptune.js) when Spotify isn't connected yet.
    ============================================================ */
 
-/* ✎ ADD YOUR OWN SONGS HERE
-   Drop .mp3 files into the /music folder, then list them below.
-   They'll show up first in the Songs menu. Example:
-   { title: 'My Favorite Song', artist: 'Some Artist', src: 'music/my-favorite-song.mp3' },
-*/
-const MY_SONGS = [
+const DEMO_SONGS = [
+  { title: 'Wall Maria Sunset', artist: 'Chiptune Demo', gen: { seed: 104, bpm: 150, root: 69, scale: 'minor', progression: [0, 5, 2, 6], lead: 'square', rest: 0.2, busyKick: true } },
+  { title: 'Notebook Theory', artist: 'Chiptune Demo', gen: { seed: 31, bpm: 104, root: 62, scale: 'harmonic', progression: [0, 3, 4, 0], lead: 'triangle', rest: 0.35 } },
+  { title: 'Domain Expansion', artist: 'Chiptune Demo', gen: { seed: 777, bpm: 172, root: 64, scale: 'minor', progression: [0, 6, 5, 4], lead: 'sawtooth', rest: 0.15, busyKick: true } },
+  { title: 'Peachtree St. Nights', artist: 'Chiptune Demo', gen: { seed: 2028, bpm: 118, root: 65, scale: 'major', progression: [0, 4, 5, 3], lead: 'square', rest: 0.3 } },
 ];
 
-/* Built-in original chiptunes, generated in the browser by Chiptune.js
-   so the iPod always has something to play. */
-const DEMO_SONGS = [
-  { title: 'Wall Maria Sunset', artist: 'Victoria & the Scouts', gen: { seed: 104, bpm: 150, root: 69, scale: 'minor', progression: [0, 5, 2, 6], lead: 'square', rest: 0.2, busyKick: true } },
-  { title: 'Notebook Theory', artist: 'L & the Apples', gen: { seed: 31, bpm: 104, root: 62, scale: 'harmonic', progression: [0, 3, 4, 0], lead: 'triangle', rest: 0.35 } },
-  { title: 'Domain Expansion', artist: 'Cursed Energy Club', gen: { seed: 777, bpm: 172, root: 64, scale: 'minor', progression: [0, 6, 5, 4], lead: 'sawtooth', rest: 0.15, busyKick: true } },
-  { title: 'Peachtree St. Nights', artist: 'Panther Pop', gen: { seed: 2028, bpm: 118, root: 65, scale: 'major', progression: [0, 4, 5, 3], lead: 'square', rest: 0.3 } },
-  { title: 'Class of 2028', artist: 'Victoria Agyare', gen: { seed: 5, bpm: 132, root: 67, scale: 'major', progression: [3, 4, 2, 5], lead: 'triangle', rest: 0.25 } },
-];
+/* ---------- Spotify embed backend ---------- */
+const SpotifyEmbed = (() => {
+  let controller = null;
+  let readyPromise = null;
+  let onUpdate = () => {};
+  let state = { paused: true, position: 0, duration: 0, buffering: false };
+  let currentUri = null;
+
+  function load(host, firstUri) {
+    if (readyPromise) return readyPromise;
+    readyPromise = new Promise((resolve, reject) => {
+      window.onSpotifyIframeApiReady = (IFrameAPI) => {
+        IFrameAPI.createController(host, { uri: firstUri, width: '100%', height: 80 }, (c) => {
+          controller = c;
+          currentUri = firstUri;
+          c.addListener('playback_update', (e) => {
+            const d = e.data || {};
+            const prev = state;
+            state = { paused: !!d.isPaused, position: (d.position || 0) / 1000, duration: (d.duration || 0) / 1000, buffering: !!d.isBuffering };
+            onUpdate(state, prev);
+          });
+          resolve(c);
+        });
+      };
+      const s = document.createElement('script');
+      s.src = 'https://open.spotify.com/embed/iframe-api/v1';
+      s.async = true;
+      s.onerror = () => reject(new Error('Spotify player failed to load'));
+      document.head.append(s);
+    });
+    return readyPromise;
+  }
+
+  function waitForReady(c) {
+    return new Promise((resolve) => {
+      let done = false;
+      const finish = () => { if (!done) { done = true; resolve(); } };
+      c.addListener('ready', finish);
+      setTimeout(finish, 1500);
+    });
+  }
+
+  async function play(uri) {
+    const c = await readyPromise;
+    if (uri !== currentUri) {
+      currentUri = uri;
+      state = { paused: true, position: 0, duration: 0, buffering: true };
+      const ready = waitForReady(c);
+      c.loadUri(uri);
+      await ready;
+    }
+    c.play();
+  }
+
+  return {
+    load,
+    play,
+    pause() { if (controller && !state.paused) controller.togglePlay(); },
+    resume() { if (controller) controller.resume(); },
+    seek(sec) { if (controller) controller.seek(Math.max(0, sec)); },
+    set onUpdate(fn) { onUpdate = fn; },
+    get state() { return state; },
+    get ready() { return !!controller; },
+  };
+})();
 
 const IPod = (() => {
   const VISIBLE_ROWS = 6;
-  const tracks = [...MY_SONGS, ...DEMO_SONGS].map((t) => ({ ...t }));
   const audio = new Audio();
   audio.preload = 'auto';
 
+  let tracks = [];
+  let lists = { recent: [], picks: [], demo: [] }; // arrays of indexes into tracks
+  let liveIndex = -1; // track Victoria is playing on Spotify right now
   let el = {};
   let stack = [];
   let current = -1;
   let shuffle = false;
-  let repeat = 'All'; // Off | All | One
+  let repeat = 'All';
   let clicker = true;
-  let backlight = 'Timer'; // Off | Timer | Always
+  let backlight = 'Timer';
   let lightTimer = null;
-  let volumeTimer = null;
-  let showVolume = false;
+  let overlayTimer = null;
+  let overlay = null; // 'volume' | 'scrub'
   let loading = false;
   let onChange = () => {};
 
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const fmt = (s) => {
     if (!isFinite(s) || s < 0) s = 0;
-    const m = Math.floor(s / 60);
-    return `${m}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+    return `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+  };
+  const track = () => tracks[current];
+  const isSpotify = (t = track()) => t && t.kind === 'spotify';
+
+  /* ---------- unified playback state ---------- */
+  const paused = () => (isSpotify() ? SpotifyEmbed.state.paused : audio.paused);
+  const position = () => (isSpotify() ? SpotifyEmbed.state.position : audio.currentTime);
+  const duration = () => {
+    if (isSpotify()) return SpotifyEmbed.state.duration || (track().durationMs || 0) / 1000;
+    return audio.duration;
   };
 
-  /* ---------- audio ---------- */
-  function ensureUrl(track) {
-    if (track.url) return Promise.resolve(track.url);
-    if (track.src) { track.url = track.src; return Promise.resolve(track.url); }
-    if (!track.pending) {
-      track.pending = Chiptune.render(track.gen).then((u) => (track.url = u));
-    }
-    return track.pending;
-  }
+  /* ---------- library ---------- */
+  function setLibrary({ recent = [], picks = [], nowPlaying = null } = {}) {
+    tracks = [];
+    lists = { recent: [], picks: [], demo: [] };
+    liveIndex = -1;
+    const add = (t) => { tracks.push(t); return tracks.length - 1; };
+    const ids = new Map();
+    const addSpotify = (t) => {
+      if (ids.has(t.uri)) return ids.get(t.uri);
+      const i = add({ kind: 'spotify', ...t });
+      ids.set(t.uri, i);
+      return i;
+    };
+    if (nowPlaying) liveIndex = addSpotify(nowPlaying);
+    recent.forEach((t) => lists.recent.push(addSpotify(t)));
+    picks.forEach((t) => lists.picks.push(addSpotify(t)));
+    if (!tracks.length) DEMO_SONGS.forEach((t) => lists.demo.push(add({ kind: 'audio', ...t })));
 
-  async function play(index) {
-    if (!tracks.length) return;
-    current = (index + tracks.length) % tracks.length;
-    const track = tracks[current];
-    goNowPlaying();
-    if (!track.url) { loading = true; render(); }
-    try {
-      const url = await ensureUrl(track);
-      if (tracks[current] !== track) return; // user skipped while loading
-      loading = false;
-      audio.src = url;
-      await audio.play();
-    } catch (err) {
-      loading = false;
-      console.warn('iPod could not play', track, err);
+    current = -1;
+    stack = [mainMenu()];
+    if (tracks.some((t) => t.kind === 'spotify')) {
+      el.dock.hidden = false;
+      SpotifyEmbed.load(el.embed, tracks.find((t) => t.kind === 'spotify').uri).catch(() => {
+        el.dockNote.textContent = 'Spotify player could not load. Check your connection or ad blocker.';
+      });
+    } else {
+      el.dock.hidden = true;
     }
     render();
     emit();
   }
 
+  function ensureUrl(t) {
+    if (t.url) return Promise.resolve(t.url);
+    if (!t.pending) t.pending = Chiptune.render(t.gen).then((u) => (t.url = u));
+    return t.pending;
+  }
+
+  async function play(index) {
+    if (!tracks.length) return;
+    const prevWasSpotify = isSpotify();
+    current = (index + tracks.length) % tracks.length;
+    const t = track();
+    goNowPlaying();
+    loading = true;
+    render();
+    try {
+      if (t.kind === 'spotify') {
+        audio.pause();
+        await SpotifyEmbed.play(t.uri);
+      } else {
+        if (prevWasSpotify) SpotifyEmbed.pause();
+        const url = await ensureUrl(t);
+        if (track() !== t) return;
+        audio.src = url;
+        await audio.play();
+      }
+    } catch (err) {
+      console.warn('iPod could not play', t, err);
+    }
+    loading = false;
+    render();
+    emit();
+  }
+
   function togglePlay() {
-    if (current < 0) { play(shuffle ? randomIndex() : 0); return; }
-    if (audio.paused) audio.play().catch(() => {}); else audio.pause();
+    if (current < 0) { play(liveIndex >= 0 ? liveIndex : 0); return; }
+    if (isSpotify()) {
+      if (paused()) SpotifyEmbed.resume(); else SpotifyEmbed.pause();
+    } else if (audio.paused) audio.play().catch(() => {});
+    else audio.pause();
   }
   const randomIndex = () => {
     if (tracks.length < 2) return 0;
@@ -90,35 +197,32 @@ const IPod = (() => {
     if (current < 0) return play(0);
     if (auto && repeat === 'One') return play(current);
     if (shuffle) return play(randomIndex());
-    if (auto && repeat === 'Off' && current === tracks.length - 1) { audio.pause(); emit(); render(); return; }
+    if (auto && repeat === 'Off' && current === tracks.length - 1) return;
     play(current + 1);
   }
   function prev() {
     if (current < 0) return play(tracks.length - 1);
-    if (audio.currentTime > 3) { audio.currentTime = 0; return; }
+    if (position() > 3) { seekTo(0); return; }
     play(current - 1);
+  }
+  function seekTo(sec) {
+    if (isSpotify()) SpotifyEmbed.seek(sec);
+    else audio.currentTime = sec;
   }
 
   function emit() {
-    onChange(current >= 0 ? tracks[current] : null, !audio.paused);
+    onChange(current >= 0 ? track() : null, current >= 0 && !paused());
   }
 
   /* ---------- menus ---------- */
-  function listScreen(title, itemsFn) {
-    return { type: 'list', title, items: itemsFn, sel: 0, top: 0 };
-  }
-
-  const songsMenu = () => listScreen('Songs', () =>
-    tracks.map((t, i) => ({ label: t.title, onSelect: () => play(i) })));
+  const listScreen = (title, items) => ({ type: 'list', title, items, sel: 0, top: 0 });
+  const songList = (title, idxs) => listScreen(title, () => idxs.map((i) => ({ label: tracks[i].title, track: i, onSelect: () => play(i) })));
 
   const artistsMenu = () => listScreen('Artists', () => {
-    const artists = [...new Set(tracks.map((t) => t.artist))];
+    const artists = [...new Set(tracks.map((t) => t.artist))].sort((a, b) => a.localeCompare(b));
     return artists.map((a) => ({
       label: a, arrow: true,
-      onSelect: () => push(listScreen(a, () => tracks
-        .map((t, i) => ({ t, i }))
-        .filter(({ t }) => t.artist === a)
-        .map(({ t, i }) => ({ label: t.title, onSelect: () => play(i) })))),
+      onSelect: () => push(songList(a, tracks.map((t, i) => (t.artist === a ? i : -1)).filter((i) => i >= 0))),
     }));
   });
 
@@ -132,33 +236,34 @@ const IPod = (() => {
   const aboutMenu = () => listScreen('About', () => [
     { label: "Victoria's iPod" },
     { label: `Songs: ${tracks.length}` },
-    { label: 'Owner: V. Agyare' },
+    { label: lists.demo.length ? 'Source: Demo' : 'Source: Spotify' },
     { label: 'Georgia State' },
     { label: 'Class of 2028' },
-    { label: 'Capacity: ∞ vibes' },
   ]);
 
-  const mainMenu = () => listScreen('iPod', () => [
-    { label: 'Songs', arrow: true, onSelect: () => push(songsMenu()) },
-    { label: 'Artists', arrow: true, onSelect: () => push(artistsMenu()) },
-    { label: 'Shuffle Songs', onSelect: () => { shuffle = true; play(randomIndex()); } },
-    { label: 'Now Playing', arrow: true, onSelect: () => (current >= 0 ? goNowPlaying() : play(0)) },
-    { label: 'Settings', arrow: true, onSelect: () => push(settingsMenu()) },
-    { label: 'About', arrow: true, onSelect: () => push(aboutMenu()) },
-    { label: 'Add Songs…', onSelect: () => el.file && el.file.click() },
-  ]);
+  const mainMenu = () => listScreen('iPod', () => {
+    const items = [];
+    if (liveIndex >= 0) items.push({ label: 'Listening Now', live: true, onSelect: () => play(liveIndex) });
+    if (lists.recent.length) items.push({ label: 'Recently Played', arrow: true, onSelect: () => push(songList('Recently Played', lists.recent)) });
+    if (lists.picks.length) items.push({ label: "Victoria's Picks", arrow: true, onSelect: () => push(songList("Victoria's Picks", lists.picks)) });
+    items.push(
+      { label: 'Songs', arrow: true, onSelect: () => push(songList('Songs', tracks.map((_, i) => i))) },
+      { label: 'Artists', arrow: true, onSelect: () => push(artistsMenu()) },
+      { label: 'Shuffle Songs', onSelect: () => { shuffle = true; play(randomIndex()); } },
+      { label: 'Now Playing', arrow: true, onSelect: () => (current >= 0 ? goNowPlaying() : play(liveIndex >= 0 ? liveIndex : 0)) },
+      { label: 'Settings', arrow: true, onSelect: () => push(settingsMenu()) },
+      { label: 'About', arrow: true, onSelect: () => push(aboutMenu()) },
+    );
+    return items;
+  });
 
+  const top = () => stack[stack.length - 1];
   function push(screen) { stack.push(screen); render(); }
   function goNowPlaying() {
     if (top().type !== 'now') stack.push({ type: 'now', title: 'Now Playing' });
     render();
   }
-  const top = () => stack[stack.length - 1];
-
-  function menu() {
-    if (stack.length > 1) stack.pop();
-    render();
-  }
+  function menu() { if (stack.length > 1) stack.pop(); render(); }
   function select() {
     const s = top();
     if (s.type !== 'list') { togglePlay(); return; }
@@ -166,14 +271,24 @@ const IPod = (() => {
     if (item && item.onSelect) item.onSelect();
     render();
   }
+  function showOverlay(kind) {
+    overlay = kind;
+    clearTimeout(overlayTimer);
+    overlayTimer = setTimeout(() => { overlay = null; render(); }, 1500);
+  }
   function scroll(dir) {
     const s = top();
     tick();
     if (s.type === 'now') {
-      audio.volume = Math.max(0, Math.min(1, Math.round((audio.volume + dir * 0.05) * 100) / 100));
-      showVolume = true;
-      clearTimeout(volumeTimer);
-      volumeTimer = setTimeout(() => { showVolume = false; render(); }, 1500);
+      if (current < 0) return;
+      if (isSpotify()) {
+        // Spotify's embed has no volume control, so the wheel scrubs instead
+        seekTo(Math.max(0, Math.min(duration() - 1, position() + dir * 5)));
+        showOverlay('scrub');
+      } else {
+        audio.volume = Math.max(0, Math.min(1, Math.round((audio.volume + dir * 0.05) * 100) / 100));
+        showOverlay('volume');
+      }
       render();
       return;
     }
@@ -184,19 +299,21 @@ const IPod = (() => {
 
   /* ---------- rendering ---------- */
   function render() {
+    if (!el.content || !stack.length) return;
     const s = top();
     el.title.textContent = s.title;
-    el.indicator.textContent = current >= 0 ? (audio.paused ? '❚❚' : '▶') : '';
+    el.indicator.textContent = current >= 0 ? (paused() ? '❚❚' : '▶') : '';
 
     if (s.type === 'list') {
       const items = s.items();
+      if (s.sel >= items.length) s.sel = Math.max(0, items.length - 1);
       if (s.sel < s.top) s.top = s.sel;
       if (s.sel >= s.top + VISIBLE_ROWS) s.top = s.sel - VISIBLE_ROWS + 1;
       const rows = items.slice(s.top, s.top + VISIBLE_ROWS).map((it, i) => {
         const idx = s.top + i;
-        const playing = s.title === 'Songs' && idx === current && !audio.paused;
+        const playing = it.track !== undefined && it.track === current && !paused();
         return `<div class="ipod-row${idx === s.sel ? ' sel' : ''}" data-idx="${idx}">
-            <span class="ipod-row-label">${playing ? '♪ ' : ''}${esc(it.label)}</span>${it.arrow ? '<b>›</b>' : ''}
+            <span class="ipod-row-label">${playing ? '♪ ' : ''}${it.live ? '<i class="live-dot"></i>' : ''}${esc(it.label)}</span>${it.arrow ? '<b>›</b>' : ''}
           </div>`;
       }).join('');
       let bar = '';
@@ -209,36 +326,41 @@ const IPod = (() => {
       return;
     }
 
-    // Now Playing
-    const t = tracks[current];
+    const t = track();
     if (!t) { el.content.innerHTML = '<div class="ipod-now"><p>No song selected</p></div>'; return; }
-    const dur = audio.duration;
-    const pos = audio.currentTime;
+    const dur = duration();
+    const pos = position();
     const pct = isFinite(dur) && dur > 0 ? (pos / dur) * 100 : 0;
-    const meter = showVolume
-      ? `<div class="ipod-volume"><span>🔈</span><div class="ipod-bar"><span style="width:${audio.volume * 100}%"></span></div><span>🔊</span></div>`
-      : `<div class="ipod-bar"><span style="width:${pct}%"></span></div>
+    let meter;
+    if (overlay === 'volume') {
+      meter = `<div class="ipod-volume"><span>🔈</span><div class="ipod-bar"><span style="width:${audio.volume * 100}%"></span></div><span>🔊</span></div>`;
+    } else {
+      meter = `<div class="ipod-bar${overlay === 'scrub' ? ' scrub' : ''}"><span style="width:${pct}%"></span></div>
          <div class="ipod-times"><span>${fmt(pos)}</span><span>-${fmt((dur || 0) - pos)}</span></div>`;
+    }
     el.content.innerHTML = `
-      <div class="ipod-now">
+      <div class="ipod-now${t.art ? ' has-art' : ''}">
         <p class="ipod-count">${current + 1} of ${tracks.length}</p>
-        <p class="ipod-song"><span>${esc(t.title)}</span></p>
-        <p class="ipod-artist">${loading ? 'Loading…' : esc(t.artist)}</p>
+        <div class="ipod-now-main">
+          ${t.art ? `<img class="ipod-art" src="${esc(t.art)}" alt="">` : ''}
+          <div class="ipod-now-text">
+            <p class="ipod-song"><span>${esc(t.title)}</span></p>
+            <p class="ipod-artist">${loading ? 'Loading…' : esc(t.artist)}</p>
+          </div>
+        </div>
         ${meter}
       </div>`;
     const song = el.content.querySelector('.ipod-song');
-    const span = song.firstElementChild;
-    if (span.scrollWidth > song.clientWidth) song.classList.add('marquee');
+    if (song.firstElementChild.scrollWidth > song.clientWidth) song.classList.add('marquee');
   }
 
-  // cheap progress-only redraw while playing
   function updateProgress() {
-    if (top().type !== 'now' || showVolume) return;
+    if (!stack.length || top().type !== 'now' || overlay === 'volume') return;
     const bar = el.content.querySelector('.ipod-bar span');
     const times = el.content.querySelectorAll('.ipod-times span');
     if (!bar || times.length < 2) return;
-    const dur = audio.duration;
-    const pos = audio.currentTime;
+    const dur = duration();
+    const pos = position();
     bar.style.width = `${isFinite(dur) && dur > 0 ? (pos / dur) * 100 : 0}%`;
     times[0].textContent = fmt(pos);
     times[1].textContent = `-${fmt((dur || 0) - pos)}`;
@@ -287,19 +409,17 @@ const IPod = (() => {
       while (acc >= STEP) { scroll(1); acc -= STEP; }
       while (acc <= -STEP) { scroll(-1); acc += STEP; }
     });
-    const end = () => {
+    wheel.addEventListener('pointerup', () => {
       if (!dragging) return;
       dragging = false;
-      if (moved < 10) {
-        tick();
-        const a = downAngle;
-        if (a > -135 && a < -45) menu();
-        else if (a >= -45 && a <= 45) next();
-        else if (a > 45 && a < 135) togglePlay();
-        else prev();
-      }
-    };
-    wheel.addEventListener('pointerup', end);
+      if (moved >= 10) return;
+      tick();
+      const a = downAngle;
+      if (a > -135 && a < -45) menu();
+      else if (a >= -45 && a <= 45) next();
+      else if (a > 45 && a < 135) togglePlay();
+      else prev();
+    });
     wheel.addEventListener('pointercancel', () => { dragging = false; });
 
     el.center.addEventListener('click', () => { tick(); select(); });
@@ -323,23 +443,10 @@ const IPod = (() => {
     el.content.addEventListener('click', (e) => {
       const row = e.target.closest('.ipod-row');
       if (!row) return;
-      const s = top();
-      s.sel = Number(row.dataset.idx);
+      top().sel = Number(row.dataset.idx);
       tick();
       select();
     });
-  }
-
-  function addFiles(files) {
-    const added = [];
-    [...files].forEach((f) => {
-      if (!f.type.startsWith('audio')) return;
-      const t = { title: f.name.replace(/\.[^.]+$/, ''), artist: 'Added by you', url: URL.createObjectURL(f) };
-      tracks.push(t);
-      added.push(t);
-    });
-    render();
-    return added.length;
   }
 
   function init(opts = {}) {
@@ -352,10 +459,11 @@ const IPod = (() => {
       indicator: document.getElementById('ipod-play-indicator'),
       wheel: document.getElementById('wheel'),
       center: document.getElementById('wheel-center'),
-      file: document.getElementById('ipod-file'),
+      dock: document.getElementById('spotify-dock'),
+      dockNote: document.getElementById('spotify-note'),
+      embed: document.getElementById('spotify-embed'),
     };
     audio.volume = 0.7;
-    stack = [mainMenu()];
 
     audio.addEventListener('timeupdate', updateProgress);
     audio.addEventListener('loadedmetadata', render);
@@ -363,18 +471,37 @@ const IPod = (() => {
     audio.addEventListener('pause', () => { render(); emit(); });
     audio.addEventListener('ended', () => next(true));
 
+    SpotifyEmbed.onUpdate = (s, prevState) => {
+      if (!isSpotify()) return;
+      if (s.paused !== prevState.paused) { render(); emit(); }
+      else updateProgress();
+      // the embed pauses and rewinds when a song finishes
+      const finished = !prevState.paused && s.paused && prevState.duration > 0
+        && (s.position === 0 || s.duration - s.position < 1.5) && prevState.position > 1;
+      if (finished) next(true);
+    };
+
     bindWheel();
-    render();
+    setLibrary();
   }
 
-  // Pre-render the generated songs in the background so playback is instant.
-  async function warmUp() {
-    for (const t of tracks) {
-      if (t.gen) {
-        try { await ensureUrl(t); } catch (e) { /* rendered lazily on play instead */ }
+  function warmUp() {
+    (async () => {
+      for (const i of lists.demo) {
+        try { await ensureUrl(tracks[i]); } catch (e) { /* rendered on play instead */ }
       }
-    }
+    })();
   }
 
-  return { init, warmUp, addFiles, togglePlay, pause: () => audio.pause(), next, prev, play, get tracks() { return tracks; } };
+  function playUri(uri) {
+    const i = tracks.findIndex((t) => t.uri === uri);
+    if (i >= 0) play(i);
+  }
+
+  function pause() {
+    audio.pause();
+    SpotifyEmbed.pause();
+  }
+
+  return { init, setLibrary, warmUp, play, playUri, pause, togglePlay, next, prev, get tracks() { return tracks; } };
 })();

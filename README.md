@@ -1,31 +1,52 @@
 # Victoria Agyare · Retro Portfolio ✿
 
-A 2000s-inspired portfolio: you sign in through a Messenger-style login window, then land on a portfolio styled like apple.com in 2001, with a working click-wheel iPod.
+A 2000s-inspired portfolio: you sign in through a Messenger-style window, then land on a portfolio styled like apple.com in 2001. It has a click-wheel iPod that plays what I've actually been listening to on Spotify.
 
-No build step. Open `index.html` in a browser, or serve the folder:
+Plain HTML, CSS and JavaScript, with no build step. To preview it locally:
 
 ```bash
 python3 -m http.server 8000   # then visit http://localhost:8000
 ```
 
-It also works on GitHub Pages: Settings → Pages → deploy from branch, root folder.
+Locally (and on GitHub Pages) the iPod plays built-in demo songs. Deploy to **Vercel** to connect Spotify.
 
-## Making it yours
+## Editing content
 
-| What | Where |
+Almost everything personal is in **`js/config.js`**: links, bio facts, skills, experience, projects, favorite artists, hobbies, pins and anime. The longer "About" paragraph is in `index.html`.
+
+| What | How |
 | --- | --- |
-| Profile photo | Put your photo in `assets/` (e.g. `assets/profile.jpg`) and set `PROFILE_PHOTO` at the top of `js/app.js` |
-| LinkedIn / GitHub / email / résumé | `SOCIAL_LINKS` in `js/app.js` (the contact form sends to the email you set) |
-| Your songs on the iPod | Put `.mp3` files in `music/` and list them in `MY_SONGS` at the top of `js/ipod.js` |
-| About blurb, projects | `index.html` (sections `data-page="about"` and `data-page="projects"`) |
-| Hot News headlines | `HEADLINES` in `js/app.js` |
-| Buddy list characters and replies | `CONTACTS` in `js/app.js` |
+| NYC conference photos | Put them in `assets/nyc/` and set each `src` under `experience → gallery` in `config.js` |
+| Moodboard pins | Put images in `assets/pins/`, then add `src: 'assets/pins/name.jpg'` to a pin (or add new ones). Pins without `src` show as color tiles |
+| Pinterest / Spotify profile links | `links.pinterest`, `links.spotify` |
+| Résumé | Add a PDF to `assets/` and set `links.resume`. Consider removing your phone number from the public copy first |
+| Project links | `projects → link` |
+| Anime details | `anime → favorite`, `note` |
+
+## Connect Spotify (recently played + now playing)
+
+Your Spotify login has to stay secret, so it lives in a small serverless function (`api/spotify.js`) instead of the browser.
+
+1. Go to <https://developer.spotify.com/dashboard>, create an app, and add this Redirect URI: `http://127.0.0.1:8888/callback`. Select "Web API".
+2. Copy the app's **Client ID** and **Client Secret**, then run this once on your computer (Node 18+):
+   ```bash
+   SPOTIFY_CLIENT_ID=xxx SPOTIFY_CLIENT_SECRET=yyy node scripts/spotify-token.mjs
+   ```
+   Open the link it prints, click Agree, and copy the `SPOTIFY_REFRESH_TOKEN` it prints.
+3. Import this repo at <https://vercel.com/new>. Under **Environment Variables**, add `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET` and `SPOTIFY_REFRESH_TOKEN`, then deploy.
+
+The iPod then shows **Listening Now** and **Recently Played** (refreshed every minute) and plays songs through Spotify's official embedded player. Visitors logged in to Spotify hear full songs; everyone else hears previews.
+
+No Vercel? Paste Spotify track links into `spotify.picks` in `config.js`. They play through the same Spotify player without the API.
 
 ## What's in here
 
-- **Sign-in screen**: avatar with a status glow, a working "Sign in as" status picker, a signing-in spinner, and a sign-in chime.
-- **Portfolio**: Aqua tabs, a rotating Hot News ticker, promo boxes, an "About" page built around a spinning disc, a Projects page, anime flip cards with a poll, and a Mail-style contact form.
-- **iPod**: drag around the click wheel to scroll (or use the mouse wheel or arrow keys). It has Songs, Artists, Shuffle, Now Playing (scroll to change volume), Settings (repeat, backlight, clicker), and a button to add your own songs. Five original chiptunes are generated in the browser so it plays something out of the box.
-- **Messenger buddy list**: anime characters you can chat with (they reply), nudges that shake the window, winks, and an editable personal message that switches to "♫ now playing" while music is on.
-
-Files: `index.html`, `css/style.css`, `js/app.js` (sign-in, pages, messenger), `js/ipod.js` (player), `js/chiptune.js` (song generator), `js/sfx.js` (sound effects).
+- `index.html`: page structure
+- `css/style.css`: all styling, including Nap mode
+- `js/config.js`: your content
+- `js/app.js`: sign-in, pages, Messenger, moodboard, projects, Spotify data
+- `js/ipod.js`: the iPod and Spotify player control
+- `js/chiptune.js`: demo songs generated in the browser (used before Spotify is connected)
+- `js/sfx.js`: sound effects
+- `api/spotify.js`: serverless Spotify endpoint
+- `scripts/spotify-token.mjs`: one-time refresh token helper
