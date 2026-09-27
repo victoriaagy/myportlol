@@ -365,7 +365,7 @@ setInterval(nextHeadline, 5000);
    ABOUT
    ============================================================ */
 const orbit = $('#orbit');
-CONFIG.hobbies.slice(0, 7).forEach((h, i) => {
+CONFIG.hobbies.slice(0, 8).forEach((h, i) => {
   const b = document.createElement('button');
   b.className = `orbit-item o${i + 1}`;
   b.innerHTML = `<span class="o-icon">${h.icon}</span>${esc(h.label)}`;
@@ -596,6 +596,10 @@ $('#anime-grid').innerHTML = CONFIG.anime.map((a) => {
     aot: '<span class="icard-emblem aot-emblem" aria-hidden="true"><span></span><span></span></span>',
     dn: '<span class="icard-emblem dn-emblem" aria-hidden="true">DEATH<br>NOTE</span>',
     jjk: '<span class="icard-emblem jjk-emblem" aria-hidden="true"><span></span></span>',
+    ad: '<span class="icard-emblem emoji-emblem" aria-hidden="true">🌿</span>',
+    hq: '<span class="icard-emblem emoji-emblem" aria-hidden="true">🏐</span>',
+    lie: '<span class="icard-emblem emoji-emblem" aria-hidden="true">🎹</span>',
+    erased: '<span class="icard-emblem emoji-emblem" aria-hidden="true">❄️</span>',
   }[a.theme] || '<span class="icard-emblem"></span>';
   return `<button class="icard" data-theme="${esc(a.theme)}" aria-label="${esc(a.title)}: flip for details">
     <span class="icard-inner">
@@ -604,7 +608,7 @@ $('#anime-grid').innerHTML = CONFIG.anime.map((a) => {
         <span class="icard-tag">${esc(a.tag)}</span>
       </span>
       <span class="icard-back">
-        <span class="icard-row"><b>Status</b> ${esc(a.status)}</span>
+        ${a.status ? `<span class="icard-row"><b>Status</b> ${esc(a.status)}</span>` : ''}
         ${a.facts.map((f) => `<span class="icard-row">${esc(f)}</span>`).join('')}
         ${a.favorite ? `<span class="icard-row"><b>Favorite character</b> ${esc(a.favorite)}</span>` : ''}
         ${a.note ? `<span class="icard-quote">${esc(a.note)}</span>` : ''}

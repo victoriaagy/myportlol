@@ -30,15 +30,18 @@ const CONFIG = {
     { name: 'Malcolm Todd', url: '' },
     { name: 'The Marías', url: '' },
     { name: 'Radiohead', url: '' },
+    { name: '2hollis', url: '' },
+    { name: 'Rommulas', url: '' },
   ],
 
   hobbies: [
     { icon: '🧋', label: 'Boba', text: 'New York turned me into a boba person. Tiger brown sugar milk tea from Glaze Tea is the current favorite (see the Boba board on my Pins page).' },
-    { icon: '🎧', label: 'Music', text: 'Malcolm Todd, The Marías and Radiohead are always in rotation. My iPod shows what I\'ve actually been playing.' },
+    { icon: '🎧', label: 'Music', text: 'Malcolm Todd, The Marías, Radiohead, 2hollis and Rommulas are always in rotation. My iPod shows what I\'ve actually been playing.' },
     { icon: '📌', label: 'Pinterest', text: 'I can scroll Pinterest for hours: outfits, room ideas, anime edits. Some of it ends up on my moodboard.' },
     { icon: '🛍️', label: 'Vinted finds', text: 'Most of my free time goes to hunting for clothes on Vinted.' },
     { icon: '💤', label: 'Naps', text: 'A good nap is part of the routine. Try Nap mode in the menu bar.' },
-    { icon: '⚔️', label: 'Anime', text: 'Attack on Titan, Death Note and Jujutsu Kaisen are my favorites.' },
+    { icon: '⚔️', label: 'Anime', text: 'Attack on Titan (Eren is my favorite), Death Note, Jujutsu Kaisen, The Apothecary Diaries, Haikyuu!!, Your Lie in April and Erased. See the Anime tab.' },
+    { icon: '🍏', label: 'Apple', text: 'I love Apple: the old iPods, the Aqua buttons, the whole look. That\'s why this site is styled like apple.com in the early 2000s.' },
     { icon: '💻', label: 'Building', text: 'I build full-stack web apps with React, Next.js, Flask and Node.' },
   ],
 
@@ -131,9 +134,14 @@ const CONFIG = {
   spotify: {
     // The serverless function in /api/spotify.js (see README → "Connect Spotify").
     apiUrl: '/api/spotify',
-    // Optional: songs to use if the API isn't set up yet. Paste Spotify track links:
-    // { title: 'Song', artist: 'Artist', url: 'https://open.spotify.com/track/...' },
+    // "Victoria's Picks" on the iPod. They play in this order after the theme song.
+    // startAt (seconds) makes a song begin partway through, e.g. 95 = 1:35.
     picks: [
+      { title: 'back & forth', artist: 'nate sib, 2hollis', url: 'https://open.spotify.com/track/6LK6tRsPgSZ3yKpY5zxrAw' },
+      { title: 'The Peace', artist: 'underscores', url: 'https://open.spotify.com/track/6BnKiSuM1mWELxeRpyVufi' },
+      { title: 'I Know You', artist: 'Faye Webster', url: 'https://open.spotify.com/track/71BWZa1liIRyUiuJ3MB66o' },
+      // TODO: set startAt to where "erase me from here and set me free" begins (seconds)
+      { title: 'homesick', artist: 'wave to earth', url: 'https://open.spotify.com/track/3pGoYGGOTvThnFcJpBh293', startAt: 0 },
     ],
   },
 
@@ -166,13 +174,25 @@ const CONFIG = {
   anime: [
     { title: 'Attack on Titan', theme: 'aot', tag: 'All-time favorite', status: 'Completed',
       facts: ['Wit Studio / MAPPA', '2013–2023', 'Action · Dark fantasy'],
-      favorite: '', // e.g. 'Levi'
+      favorite: 'Eren',
       note: '' },   // e.g. why you love it
     { title: 'Death Note', theme: 'dn', tag: 'Classic', status: 'Completed',
       facts: ['Madhouse', '2006–2007 · 37 episodes', 'Psychological thriller'],
       favorite: '', note: '' },
     { title: 'Jujutsu Kaisen', theme: 'jjk', tag: 'Currently watching', status: 'Watching',
       facts: ['MAPPA', '2020–present', 'Action · Supernatural'],
+      favorite: '', note: '' },
+    { title: 'The Apothecary Diaries', theme: 'ad', tag: 'Palace mysteries', status: '',
+      facts: ['TOHO animation Studio / OLM', '2023–present', 'Mystery · Historical drama'],
+      favorite: '', note: '' },
+    { title: 'Haikyuu!!', theme: 'hq', tag: 'Volleyball', status: '',
+      facts: ['Production I.G', '2014–2020', 'Sports'],
+      favorite: '', note: '' },
+    { title: 'Your Lie in April', theme: 'lie', tag: 'Music & heartbreak', status: '',
+      facts: ['A-1 Pictures', '2014–2015 · 22 episodes', 'Drama · Music'],
+      favorite: '', note: '' },
+    { title: 'Erased', theme: 'erased', tag: 'Time-travel thriller', status: '',
+      facts: ['A-1 Pictures', '2016 · 12 episodes', 'Mystery · Thriller'],
       favorite: '', note: '' },
   ],
 };
