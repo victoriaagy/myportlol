@@ -316,11 +316,13 @@
           </div>
           <div class="mail-fields">
             <label>To: <span class="mail-to">Victoria Agyare</span></label>
-            <label for="c-name">From: <input id="c-name" required placeholder="Your name"></label>
+            <label for="c-name">From: <input id="c-name" required placeholder="Your name" autocomplete="name"></label>
+            <label for="c-email">Email: <input id="c-email" type="email" required placeholder="you@example.com" autocomplete="email"></label>
             <label for="c-subject">Subject: <input id="c-subject" required placeholder="Hi Tori!"></label>
           </div>
           <textarea id="c-msg" required placeholder="Write your message…" aria-label="Message"></textarea>
-          <div class="mail-actions"><button class="aqua-btn aqua-blue" type="submit">Send</button></div>
+          <input type="checkbox" name="botcheck" class="sr-only" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <div class="mail-actions"><span class="mail-status" id="c-status" aria-live="polite"></span><button class="aqua-btn aqua-blue" type="submit" id="c-send">Send</button></div>
         </form>
 
         <div class="aqua-panel links-panel">
@@ -397,9 +399,10 @@
     <div class="chat-toolbar">
       <button id="chat-nudge" title="Send a nudge">📳 Nudge</button>
       <button id="chat-wink" title="Send a wink">😉 Wink</button>
-      <span class="chat-hint">Messages open in your email app.</span>
+      <span class="chat-hint">Messages go straight to Tori's inbox.</span>
     </div>
     <form class="chat-input" id="chat-form">
+      <input id="chat-email" type="email" placeholder="Your email (so Tori can reply)" aria-label="Your email" autocomplete="email">
       <textarea id="chat-text" rows="2" placeholder="Type a message to Tori…" aria-label="Message"></textarea>
       <button class="aero-btn" type="submit">Send</button>
     </form>

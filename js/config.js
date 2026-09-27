@@ -15,6 +15,11 @@ const CONFIG = {
   // Your Messenger personal message (shown when you're not playing anything on Spotify)
   personalMessage: "i think i'm pretty cool, ngl",
 
+  // Web3Forms access key: messages from the Messenger chat and Contact form are
+  // emailed to you (web3forms.com). It only allows sending *to* your inbox, so it's
+  // safe to have in the page. Leave '' to fall back to opening the visitor's email app.
+  messageKey: '8a83ce84-804e-40bd-a5b5-617b90035e20',
+
   // Leave a link empty ('') to hide it everywhere on the site.
   links: {
     email: 'victoriaaehi@gmail.com', // the Messenger chat + contact form send here

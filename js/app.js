@@ -698,14 +698,49 @@ loadAnimeCovers();
 /* ============================================================
    CONTACT + LINKS
    ============================================================ */
+/** Send a message to Tori's inbox via Web3Forms. Resolves true on success. */
+async function sendMessage({ subject, name, email, message }) {
+  if (!CONFIG.messageKey) return false;
+  try {
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        access_key: CONFIG.messageKey,
+        subject, from_name: name || 'Portfolio visitor', name: name || 'Portfolio visitor',
+        ...(email ? { email } : {}), message,
+      }),
+    });
+    const data = await res.json().catch(() => ({}));
+    return res.ok && data.success !== false;
+  } catch (e) {
+    return false;
+  }
+}
+
 function mailto(subject, body) {
   if (!LINKS.email) return false;
   location.href = `mailto:${LINKS.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   return true;
 }
-$('#contact-form').addEventListener('submit', (e) => {
+$('#contact-form').addEventListener('submit', async (e) => {
   e.preventDefault();
-  mailto($('#c-subject').value, `${$('#c-msg').value}\n\n- ${$('#c-name').value}`);
+  if (e.target.botcheck.checked) return; // spam bot filled the hidden box
+  const status = $('#c-status');
+  const btn = $('#c-send');
+  const msg = { subject: `Portfolio: ${$('#c-subject').value}`, name: $('#c-name').value, email: $('#c-email').value, message: $('#c-msg').value };
+  btn.disabled = true;
+  status.textContent = 'Sending…';
+  const ok = await sendMessage(msg);
+  btn.disabled = false;
+  if (ok) {
+    status.textContent = 'Message sent ✓';
+    Sfx.message();
+    e.target.reset();
+  } else {
+    status.textContent = "Couldn't send, opening your email app instead.";
+    mailto(msg.subject, `${msg.message}\n\n- ${msg.name}`);
+  }
 });
 
 $('#link-list').innerHTML = activeLinks().map((k) =>
@@ -818,7 +853,7 @@ function addLine(who, text, cls = '') {
 function openChat() {
   $('#chat-psm').textContent = victoriaMessage();
   if (!$('#chat-log').children.length) {
-    addLine('', 'Write Tori a message. When you press Send, it opens in your email app so she gets it directly.', 'system');
+    addLine('', "Write Tori a message and it goes straight to her inbox. Add your email if you'd like a reply.", 'system');
   }
   chatWindow.hidden = false;
   $('#chat-text').focus();
@@ -830,7 +865,14 @@ $('#chat-form').addEventListener('submit', (e) => {
   addLine('You', v, 'me');
   $('#chat-text').value = '';
   Sfx.message();
-  if (mailto('Hi Tori! (from your portfolio)', v)) addLine('', 'Opening your email app...', 'system');
+  const email = $('#chat-email').value.trim();
+  if (email && !$('#chat-email').checkValidity()) { addLine('', 'That email address looks off. Check it so Tori can reply.', 'system'); return; }
+  addLine('', 'Sending...', 'system sending');
+  sendMessage({ subject: 'Portfolio Messenger message', name: email || 'Messenger visitor', email, message: v }).then((ok) => {
+    $$('.sending', $('#chat-log')).forEach((n) => n.remove());
+    if (ok) addLine('', email ? 'Delivered to Tori. She can reply to your email.' : 'Delivered to Tori.', 'system');
+    else if (mailto('Hi Tori! (from your portfolio)', v)) addLine('', "Couldn't send directly, so your email app is opening instead.", 'system');
+  });
 });
 $('#chat-text').addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); $('#chat-form').requestSubmit(); }
