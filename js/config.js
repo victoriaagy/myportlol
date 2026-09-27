@@ -142,8 +142,8 @@ const CONFIG = {
       { title: 'back & forth', artist: 'nate sib, 2hollis', url: 'https://open.spotify.com/track/6LK6tRsPgSZ3yKpY5zxrAw' },
       { title: 'The Peace', artist: 'underscores', url: 'https://open.spotify.com/track/6BnKiSuM1mWELxeRpyVufi' },
       { title: 'I Know You', artist: 'Faye Webster', url: 'https://open.spotify.com/track/71BWZa1liIRyUiuJ3MB66o' },
-      // TODO: set startAt to where "erase me from here and set me free" begins (seconds)
-      { title: 'homesick', artist: 'wave to earth', url: 'https://open.spotify.com/track/3pGoYGGOTvThnFcJpBh293', startAt: 0 },
+      // starts at the chorus, "erase me from here and set me free" (1:43)
+      { title: 'homesick', artist: 'wave to earth', url: 'https://open.spotify.com/track/3pGoYGGOTvThnFcJpBh293', startAt: 103 },
       { title: 'Go Slowly', artist: 'Radiohead', url: 'https://open.spotify.com/track/6yiSyupeI7KYdBZKJdnIUO' },
     ],
   },
