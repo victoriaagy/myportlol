@@ -1066,6 +1066,10 @@ body.nap .artist-chip a { color: #e0e0e0; }
 body.nap .artist-play { background: #3a3a3a; border-color: #444; color: #e0e0e0; }
 body.nap .search input { background: #111; border-color: #444; color: #eee; }
 body.nap .aqua-select { background: var(--n-gel); color: #fff; border-color: #222; }
+/* the open dropdown list is drawn by the browser: give options readable colors */
+body.nap .aqua-select { color-scheme: dark; }
+body.nap .aqua-select option { background: #2a2a2a; color: #eee; }
+.aqua-select option { background: #fff; color: #111; }
 body.nap .mail-fields input, body.nap .mail-window textarea { background: transparent; color: #f0f0f0; }
 body.nap .mail-fields label { border-color: var(--n-line); color: var(--n-dim); }
 body.nap .mail-to { background: #3a3a3a; border-color: #555; color: #eee; }
