@@ -10,17 +10,18 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/aqua-polish.css">
 </head>
 <body>
 
 <!-- ==========================================================
-     1. SIGN-IN SCREEN  (Messenger, circa 2008)
+     1. WELCOME SCREEN (Aqua desktop)
      ========================================================== -->
-<div id="login-screen" class="desktop">
+<div id="login-screen" class="desktop aqua-desktop">
   <div class="wlm-window" id="login-window" role="dialog" aria-labelledby="login-title">
     <div class="wlm-titlebar">
       <span class="wlm-title-icon" aria-hidden="true"><span class="buddy buddy-green"></span><span class="buddy buddy-blue"></span></span>
-      <span class="wlm-title-text">Tori Live Messenger</span>
+      <span class="wlm-title-text">Tori’s Macintosh</span>
       <div class="wlm-controls">
         <button class="wlm-ctrl" id="login-min" aria-label="Minimize">&#8211;</button>
         <button class="wlm-ctrl" id="login-max" aria-label="Maximize">&#9633;</button>
@@ -36,22 +37,12 @@
         <h1 class="login-name">Victoria Agyare</h1>
         <p class="login-now" id="login-now" hidden></p>
 
-        <h2 id="login-title" class="login-heading">Sign in</h2>
-        <p class="login-sub">Sign in to view Tori's complete portfolio.</p>
+        <h2 id="login-title" class="login-heading">Welcome to my desktop.</h2>
+        <p class="login-sub">Some things I’ve made and some things I’m into. No account needed.</p>
 
         <form id="login-form" autocomplete="off">
-          <label class="sr-only" for="login-email">Live ID</label>
-          <div class="wlm-input wlm-combo">
-            <input id="login-email" type="text" value="guest@victoria.live" spellcheck="false">
-            <span class="combo-arrow" aria-hidden="true">&#9662;</span>
-          </div>
-          <label class="sr-only" for="login-pass">Password</label>
-          <div class="wlm-input">
-            <input id="login-pass" type="password" value="georgiastate2028">
-          </div>
-
           <div class="signin-as">
-            Sign in as:
+            Desktop status:
             <button type="button" class="status-picker" id="status-picker" aria-haspopup="listbox" aria-expanded="false">
               <span class="status-dot available"></span><span class="status-label">Available</span> &#9662;
             </button>
@@ -63,10 +54,10 @@
             </ul>
           </div>
 
-          <label class="wlm-check"><input type="checkbox" id="remember-me" checked> Remember me</label>
-          <label class="wlm-check"><input type="checkbox" id="auto-signin"> Sign me in automatically</label>
+          <label class="wlm-check"><input type="checkbox" id="remember-me" checked> Remember my status</label>
+          <label class="wlm-check"><input type="checkbox" id="auto-signin"> Skip this screen next time</label>
 
-          <button type="submit" class="aero-btn signin-btn">Sign in</button>
+          <button type="submit" class="aero-btn signin-btn">Explore the portfolio →</button>
         </form>
       </div>
 
@@ -77,7 +68,7 @@
         <div class="spinner" aria-hidden="true">
           <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
         </div>
-        <p class="loading-text" id="loading-text" aria-live="polite">Signing in...</p>
+        <p class="loading-text" id="loading-text" aria-live="polite">Opening your desktop...</p>
         <button type="button" class="aero-btn" id="cancel-signin">Cancel</button>
       </div>
     </div>
@@ -89,15 +80,15 @@
   </div>
 
   <div class="taskbar">
-    <span class="orb" aria-hidden="true">V</span>
-    <button class="task-item" id="task-messenger"><span class="buddy buddy-green"></span> Tori Live Messenger</button>
+    <span class="orb" aria-hidden="true">V</span><span class="mac-menu-name">Tori OS</span>
+    <button class="task-item" id="task-messenger"><span class="buddy buddy-green"></span> Tori’s Macintosh</button>
     <span class="task-clock" id="task-clock"></span>
   </div>
 </div>
 
 <!-- Messenger-style toast -->
 <div class="toast" id="toast" role="status" aria-live="polite" hidden>
-  <div class="toast-head"><span class="buddy buddy-green"></span> Tori Live Messenger</div>
+  <div class="toast-head"><span class="buddy buddy-green"></span> Tori’s iChat</div>
   <div class="toast-body" id="toast-body"></div>
 </div>
 
@@ -114,7 +105,6 @@
       <a href="#ipod" class="tab" data-page="ipod">iPod</a>
       <a href="#pins" class="tab" data-page="pins">Pins</a>
       <a href="#anime" class="tab" data-page="anime">Anime</a>
-      <a href="#contact" class="tab" data-page="contact">Contact</a>
     </nav>
     <div class="subnav" aria-hidden="true"></div>
   </header>
@@ -125,7 +115,7 @@
     <section class="page" data-page="home">
       <div class="hero">
         <div class="hero-left">
-          <div class="hero-photo"><img id="home-photo" src="assets/home.jpg" alt="Victoria Agyare"></div>
+          <div class="hero-photo"><img id="home-photo" src="assets/home-portrait.jpg" alt="Victoria Agyare"></div>
           <div>
             <h1 class="garamond hero-name">Victoria<br>Agyare</h1>
             <p class="hero-meta">Computer Science · Georgia State University</p>
@@ -164,7 +154,7 @@
           <a class="promo" href="#projects" data-page="projects">
             <span class="promo-art trophy" aria-hidden="true">1st</span>
             <span class="garamond promo-title">Hackathon winner.</span>
-            <span class="promo-sub">Quest · 1st place, Cox track</span>
+            <span class="promo-sub">Quest · 1st place, Social Good track</span>
           </a>
           <a class="promo" href="#ipod" data-page="ipod">
             <span class="promo-art ipod-mini" aria-hidden="true"><span class="ipm-screen"></span><span class="ipm-wheel"></span></span>
@@ -172,9 +162,9 @@
             <span class="promo-sub">My recently played, straight from Spotify</span>
           </a>
           <a class="promo" href="#pins" data-page="pins">
-            <span class="promo-art pin-stack" aria-hidden="true"><span></span><span></span><span></span></span>
-            <span class="garamond promo-title">The moodboard.</span>
-            <span class="promo-sub">Sunsets, nature, boba and everything I've pinned</span>
+            <span class="promo-art pin-stack photo-stack" aria-hidden="true"><span><img src="assets/pins/sunset-street.jpg" alt="" loading="lazy"></span><span><img src="assets/pins/hacklanta-nash-sweeya.jpg" alt="" loading="lazy"></span><span><img src="assets/pins/boba-glaze.jpg" alt="" loading="lazy"></span></span>
+            <span class="garamond promo-title">Tori&#39;s camera roll.</span>
+            <span class="promo-sub">Friends, sunsets, and probably boba</span>
           </a>
         </div>
       </div>
@@ -182,14 +172,14 @@
 
     <!-- ---------- ABOUT ---------- -->
     <section class="page" data-page="about" hidden>
-      <h1 class="garamond page-title">The center of my<br>digital lifestyle.</h1>
+      <h1 class="garamond page-title">A bit about me.</h1>
 
       <div class="orbit" id="orbit">
         <div class="orbit-disc">
           <div class="disc">
             <div class="disc-hole"></div>
             <span class="disc-label garamond">Tori</span>
-            <span class="disc-badge"><small>Class of</small>2028</span>
+            <span class="disc-badge"><small>The not so niche interests of</small>a CS major</span>
           </div>
         </div>
       </div>
@@ -198,11 +188,12 @@
       <div class="about-grid">
         <div class="aqua-panel">
           <h3>About Tori</h3>
-          <figure class="polaroid"><img id="about-photo" src="assets/about.jpg" alt="Victoria Agyare"><figcaption>Tori · GSU '28</figcaption></figure>
-          <p>Hi, I'm <strong>Victoria Agyare</strong>, but everyone calls me <strong>Tori</strong>. I study <strong>Computer Science at Georgia State University</strong> in Atlanta and graduate in <strong>May 2028</strong>.</p>
-          <p>I build full-stack web apps, most recently as an SEO Tech Developer Intern, and I won 1st place in the Cox track at a hackathon with Quest. I'm also a Career Prep Tech Fellow with MLT and on the executive board of the Programming Club at GSU.</p>
-          <p>Outside of class I'm usually listening to Malcolm Todd, The Marías, Radiohead, 2hollis or Rommulas, scrolling Pinterest, looking for clothes on Vinted, or taking a nap. I love being outside in nature, and I'll always stop for a good sunset. Since my trip to New York, I'm also always on the hunt for good boba.</p>
-          <p>I've loved Apple for as long as I can remember, from the iPod to the old Aqua look. That's why this site is styled like apple.com from the early 2000s.</p>
+          <figure class="polaroid"><img id="about-photo" src="assets/home-portrait.jpg" alt="Victoria Agyare"><figcaption>Tori · GSU '28</figcaption></figure>
+          <p>Hi, I'm <strong>Victoria Agyare</strong>, but I normally go by <strong>Tori</strong>. I study <strong>Computer Science at Georgia State University</strong> in Atlanta and graduate in <strong>May 2028</strong>.</p>
+          <p>I build full-stack apps, but I’m mostly interested in making them look good too. I like figuring out the colors, layout, and small details that make an app fun to use.</p>
+          <p>I was an SEO Tech Developer Intern this summer, and my project Quest won 1st place in the Social Good track at Hacklanta I. I’m also part of SEO EDGE and MLT Career Prep. At GSU, I’m the Community Coordinator for progsu and helped organize Hacklanta II. The photos are in Experience if you want to see!</p>
+          <p>Outside of class, I’m usually listening to music, scrolling Pinterest, looking for clothes on Vinted, or taking a nap. I’m also constantly buying Smiskis lol. I love being outside, taking sunset pictures, and finding good boba spots, especially since my trip to New York.</p>
+          <p>I’ve loved Apple since I was a kid, so that’s where the idea for this portfolio came from. I love the old iPods and the whole early-2000s Apple look. This is my excuse to put all of that in one place.</p>
           <div class="artist-row" id="artist-row-about"></div>
         </div>
         <div class="aqua-panel profiler">
@@ -231,7 +222,7 @@
     <!-- ---------- PROJECTS ---------- -->
     <section class="page" data-page="projects" hidden>
       <h1 class="garamond page-title">Projects.</h1>
-      <p class="page-sub">Filter by technology, or click a project for details.</p>
+      <p class="page-sub">A few things I’ve built. Click a screenshot for a closer look, or Details for how I made it.</p>
       <div class="chips" id="project-filters"></div>
       <div class="product-grid" id="project-grid"></div>
     </section>
@@ -282,8 +273,8 @@
 
     <!-- ---------- PINS ---------- -->
     <section class="page" data-page="pins" hidden>
-      <h1 class="garamond page-title">The moodboard.</h1>
-      <p class="page-sub">A few things I've saved while scrolling. Tap ♥ to save your favorites.</p>
+      <h1 class="garamond page-title">Tori&#39;s camera roll.</h1>
+      <p class="page-sub">Photos and things I wanted to save. Tap ♥ if you like one too.</p>
       <div class="pins-toolbar">
         <div class="chips" id="board-filters"></div>
         <div class="pins-actions">
@@ -303,38 +294,13 @@
       <p class="anime-credit">Cover art © its respective studios and publishers.</p>
     </section>
 
-    <!-- ---------- CONTACT ---------- -->
-    <section class="page" data-page="contact" hidden>
-      <h1 class="garamond page-title">Let's talk.</h1>
-      <p class="page-sub">Internships, projects, or music recommendations. My inbox is open.</p>
-
-      <div class="contact-wrap">
-        <form class="mail-window" id="contact-form">
-          <div class="mail-titlebar">
-            <span class="traffic"><i></i><i></i><i></i></span>
-            New Message
-          </div>
-          <div class="mail-fields">
-            <label>To: <span class="mail-to">Victoria Agyare</span></label>
-            <label for="c-name">From: <input id="c-name" required placeholder="Your name" autocomplete="name"></label>
-            <label for="c-email">Email: <input id="c-email" type="email" required placeholder="you@example.com" autocomplete="email"></label>
-            <label for="c-subject">Subject: <input id="c-subject" required placeholder="Hi Tori!"></label>
-          </div>
-          <textarea id="c-msg" required placeholder="Write your message…" aria-label="Message"></textarea>
-          <input type="checkbox" name="botcheck" class="sr-only" tabindex="-1" autocomplete="off" aria-hidden="true">
-          <div class="captcha" id="c-captcha"></div>
-          <div class="mail-actions"><span class="mail-status" id="c-status" aria-live="polite"></span><button class="aqua-btn aqua-blue" type="submit" id="c-send">Send</button></div>
-        </form>
-
-        <div class="aqua-panel links-panel">
-          <h3>Find me online</h3>
-          <ul class="link-list" id="link-list"></ul>
-        </div>
-      </div>
-    </section>
   </main>
 
-  <footer class="site-footer">
+  <footer class="site-footer" id="contact">
+    <div class="footer-contact">
+      <h2 class="garamond">You could reach me on these.</h2>
+      <ul class="footer-contact-links" id="link-list"><li><a href="mailto:victoriaaehi@gmail.com">victoriaaehi@gmail.com</a></li><li><a href="https://www.linkedin.com/in/victoriaagyare" target="_blank" rel="noopener">LinkedIn</a></li><li><a href="https://github.com/victoriaagy" target="_blank" rel="noopener">GitHub</a></li></ul>
+    </div>
     <form class="search" id="site-search" role="search">
       <label class="sr-only" for="search-input">Search</label>
       <input id="search-input" type="search" list="search-hints">
@@ -344,10 +310,6 @@
       <button class="aqua-btn" type="submit">Search</button>
     </form>
     <p class="small-links" id="sitemap"></p>
-    <p>Find Tori elsewhere:</p>
-    <select class="aqua-select" id="world-select" aria-label="Find Tori elsewhere">
-      <option value="">Choose…</option>
-    </select>
     <p class="small-links">Copyright &copy; <span id="year"></span> Victoria Agyare. All rights reserved.</p>
     <p class="powered">Designed and built by Victoria Agyare · inspired by apple.com, 2000–2001</p>
   </footer>
@@ -356,7 +318,7 @@
   <aside class="wlm-window buddy-window" id="buddy-window" hidden>
     <div class="wlm-titlebar" data-drag="buddy-window">
       <span class="wlm-title-icon" aria-hidden="true"><span class="buddy buddy-green"></span><span class="buddy buddy-blue"></span></span>
-      <span class="wlm-title-text">Tori Live Messenger</span>
+      <span class="wlm-title-text">Tori’s iChat</span>
       <div class="wlm-controls">
         <button class="wlm-ctrl" id="buddy-min" aria-label="Minimize">&#8211;</button>
         <button class="wlm-ctrl wlm-close" id="buddy-close" aria-label="Close">&#10005;</button>
@@ -381,13 +343,13 @@
       <span class="ad-small">Open Tori's iPod ▸</span>
     </button>
   </aside>
-  <button class="buddy-tab" id="buddy-tab" hidden><span class="buddy buddy-green"></span> Messenger</button>
+  <button class="buddy-tab" id="buddy-tab" hidden><span class="buddy buddy-green"></span> iChat</button>
 
   <!-- conversation window -->
   <aside class="wlm-window chat-window" id="chat-window" hidden>
     <div class="wlm-titlebar" data-drag="chat-window">
       <span class="wlm-title-icon" aria-hidden="true"><span class="buddy buddy-green"></span></span>
-      <span class="wlm-title-text">Tori - Conversation</span>
+      <span class="wlm-title-text">Tori — iChat</span>
       <div class="wlm-controls">
         <button class="wlm-ctrl wlm-close" id="chat-close" aria-label="Close">&#10005;</button>
       </div>
@@ -398,8 +360,8 @@
     </div>
     <div class="chat-log" id="chat-log" aria-live="polite"></div>
     <div class="chat-toolbar">
-      <button id="chat-nudge" title="Send a nudge">📳 Nudge</button>
-      <button id="chat-wink" title="Send a wink">😉 Wink</button>
+      <button id="chat-nudge" title="Send a ping">♪ Ping</button>
+      <button id="chat-wink" title="Send a smile">☺ Smile</button>
       <span class="chat-hint">Messages go straight to Tori's inbox.</span>
     </div>
     <form class="chat-input" id="chat-form">
@@ -419,7 +381,7 @@
         <div class="iphone-clock" id="iphone-clock"></div>
         <div class="iphone-apps">
           <button type="button" class="app" id="nap-toggle" aria-pressed="false"><span class="app-icon app-nap">☾</span><span class="app-label" id="nap-label">Nap</span></button>
-          <button type="button" class="app" id="open-messenger"><span class="app-icon app-msn"><span class="buddy buddy-green"></span><span class="buddy buddy-blue"></span></span><span class="app-label">Messenger</span></button>
+          <button type="button" class="app" id="open-messenger"><span class="app-icon app-msn"><span class="buddy buddy-green"></span><span class="buddy buddy-blue"></span></span><span class="app-label">iChat</span></button>
           <button type="button" class="app" data-page="ipod"><span class="app-icon app-ipod">♫</span><span class="app-label">iPod</span></button>
           <button type="button" class="app" id="sign-out"><span class="app-icon app-exit">⏻</span><span class="app-label">Sign out</span></button>
         </div>

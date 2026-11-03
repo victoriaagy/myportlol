@@ -64,11 +64,11 @@ const SpotifyEmbed = (() => {
 
   async function play(uri, startAt = 0) {
     const c = await readyPromise;
-    if (uri !== currentUri) {
+    if (uri !== currentUri || startAt > 0) {
       currentUri = uri;
       state = { paused: true, position: 0, duration: 0, buffering: true };
       const ready = waitForReady(c);
-      c.loadUri(uri);
+      c.loadUri(uri, false, startAt);
       await ready;
     }
     pendingSeek = startAt > 0 ? startAt : null;
@@ -134,7 +134,11 @@ const IPod = (() => {
     const add = (t) => { tracks.push(t); return tracks.length - 1; };
     const ids = new Map();
     const addSpotify = (t) => {
-      if (ids.has(t.uri)) return ids.get(t.uri);
+      if (ids.has(t.uri)) {
+        const i = ids.get(t.uri);
+        if (t.startAt !== undefined) tracks[i].startAt = t.startAt;
+        return i;
+      }
       const i = add({ kind: 'spotify', ...t });
       ids.set(t.uri, i);
       return i;
@@ -150,9 +154,7 @@ const IPod = (() => {
     if (current >= 0 && wasOnNowPlaying) stack.push({ type: 'now', title: 'Now Playing' });
     if (tracks.some((t) => t.kind === 'spotify')) {
       el.dock.hidden = false;
-      SpotifyEmbed.load(el.embed, tracks.find((t) => t.kind === 'spotify').uri).catch(() => {
-        el.dockNote.textContent = 'Spotify player could not load. Check your connection or ad blocker.';
-      });
+      el.dockNote.textContent = 'Press Play to start listening. Your visit begins quietly.';
     } else {
       el.dock.hidden = true;
     }
@@ -177,6 +179,7 @@ const IPod = (() => {
     try {
       if (t.kind === 'spotify') {
         audio.pause();
+        await SpotifyEmbed.load(el.embed, t.uri);
         await SpotifyEmbed.play(t.uri, t.startAt || 0);
       } else {
         if (prevWasSpotify) SpotifyEmbed.pause();

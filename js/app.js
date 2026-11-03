@@ -261,15 +261,15 @@ $('#remember-me').addEventListener('change', (e) => { if (!e.target.checked) sto
 function startSignIn() {
   $('#login-form-view').hidden = true;
   $('#login-loading-view').hidden = false;
-  const steps = ['Signing in...', 'Loading portfolio...', 'Syncing Spotify...'];
+  const steps = ['Opening your desktop...', 'Loading my portfolio...', 'You’re in!'];
   let i = 0;
   $('#loading-text').textContent = steps[0];
   signInTimer = setInterval(() => {
     i = Math.min(i + 1, steps.length - 1);
     $('#loading-text').textContent = steps[i];
   }, 600);
-  const minWait = new Promise((r) => setTimeout(r, 1800));
-  Promise.all([minWait, spotifyPromise]).then(() => {
+  const minWait = new Promise((r) => setTimeout(r, 650));
+  minWait.then(() => {
     if ($('#login-loading-view').hidden) return; // cancelled
     clearInterval(signInTimer);
     enterSite(true);
@@ -277,7 +277,6 @@ function startSignIn() {
 }
 $('#login-form').addEventListener('submit', (e) => {
   e.preventDefault();
-  if (themeTrack && CONFIG.themeSong.playOnSignIn) IPod.playUri(themeTrack.uri);
   startSignIn();
 });
 $('#cancel-signin').addEventListener('click', () => {
@@ -289,7 +288,7 @@ $('#cancel-signin').addEventListener('click', () => {
 function enterSite(animate) {
   session.set('signedIn', '1');
   if (animate) {
-    Sfx.signIn();
+    // Enter quietly; music starts only from a music control.
     loginScreen.classList.add('leaving');
     setTimeout(() => { loginScreen.hidden = true; loginScreen.classList.remove('leaving'); }, 600);
   } else {
@@ -319,10 +318,14 @@ $('#sign-out').addEventListener('click', () => {
 /* ============================================================
    ROUTER
    ============================================================ */
-const PAGES = ['home', 'about', 'experience', 'projects', 'ipod', 'pins', 'anime', 'contact'];
-const PAGE_NAMES = { home: 'Home', about: 'About', experience: 'Experience', projects: 'Projects', ipod: 'iPod', pins: 'Pins', anime: 'Anime', contact: 'Contact' };
+const PAGES = ['home', 'about', 'experience', 'projects', 'ipod', 'pins', 'anime'];
+const PAGE_NAMES = { home: 'Home', about: 'About', experience: 'Experience', projects: 'Projects', ipod: 'iPod', pins: 'Pins', anime: 'Anime' };
 
 function showPage(name, scroll = true) {
+  if (name === 'contact') {
+    requestAnimationFrame(() => $('#contact').scrollIntoView({ behavior: 'smooth' }));
+    return;
+  }
   if (!PAGES.includes(name)) name = 'home';
   $$('.page').forEach((p) => (p.hidden = p.dataset.page !== name));
   $$('.tab').forEach((t) => t.classList.toggle('active', t.dataset.page === name));
@@ -347,13 +350,13 @@ let headlineIdx = 0;
 function buildHeadlines() {
   const f = featuredTrack();
   headlines = [
-    { text: '1st place: Quest wins the Cox track at the hackathon.', page: 'projects' },
+    { text: '1st place: Quest wins the Social Good track at Hacklanta I.', page: 'projects' },
     { text: 'Tori completes the SEO Tech Developer program, Summer 2026.', page: 'experience' },
     ...(f ? [{ text: `${f.live ? 'Now playing' : 'Recently played'}: ${f.t.title} by ${f.t.artist}.`, page: 'ipod' }] : []),
     { text: 'Selected as an MLT Career Prep Tech Fellow.', page: 'experience' },
     { text: 'New builds: Kindred and Groundtruth.', page: 'projects' },
-    { text: 'Programming Club at GSU: now on the executive board.', page: 'experience' },
-    { text: 'New on the moodboard: Sunsets, Nature and Boba boards.', page: 'pins' },
+    { text: 'Helped organize Hacklanta II for 1,000+ student attendees.', page: 'experience' },
+    { text: 'New in the camera roll: friends, sunsets and boba.', page: 'pins' },
   ];
 }
 function nextHeadline() {
@@ -432,7 +435,7 @@ function renderExperience() {
       <ul class="exp-bullets">${x.bullets.map((b) => `<li>${esc(b)}</li>`).join('')}</ul>`;
   if (x.gallery && x.gallery.photos.length) {
     html += `<h3 class="gallery-title">📷 ${esc(x.gallery.title)}</h3><div class="gallery">${x.gallery.photos.map((p, i) =>
-      `<button class="photo${p.video ? ' is-video' : ''}" data-i="${i}">${p.src ? `<img src="${esc(p.src)}" alt="${esc(p.caption)}" loading="lazy">` : '<span class="photo-ph"></span>'}
+      `<button class="photo${p.video ? ' is-video' : ''}" data-i="${i}">${p.video ? `<video src="${esc(p.video)}" poster="${esc(p.src || '')}" autoplay muted loop playsinline preload="metadata" aria-label="${esc(p.caption)}"></video>` : p.src ? `<img src="${esc(p.src)}" alt="${esc(p.caption)}" loading="lazy">` : '<span class="photo-ph"></span>'}
         <span class="photo-cap">${esc(p.caption)}</span></button>`).join('')}</div>`;
   }
   $('#finder-pane').innerHTML = html;
@@ -477,7 +480,8 @@ function renderProjects() {
   $('#project-grid').innerHTML = CONFIG.projects.map((p, i) => {
     const show = projectFilter === 'All' || p.tags.includes(projectFilter);
     return `<article class="product${show ? '' : ' dim'}" data-i="${i}">
-      <div class="product-art ${esc(p.art)}"><span class="garamond">${esc(p.name)}</span>${p.badge ? `<span class="ribbon">${esc(p.badge)}</span>` : ''}</div>
+      <div class="product-art ${esc(p.art)}${p.gallery?.length ? ' has-preview' : ''}">${p.gallery?.length ? `<button class="project-preview" data-project="${i}" data-photo="0" aria-label="View ${esc(p.name)} screenshots"><img src="${esc(p.gallery[0].src)}" alt="${esc(p.gallery[0].caption)}" loading="lazy"></button>` : ''}<span class="garamond">${esc(p.name)}</span>${p.badge ? `<span class="ribbon">${esc(p.badge)}</span>` : ''}</div>
+      ${p.gallery?.length ? `<div class="project-thumbs">${p.gallery.map((photo, n) => `<button data-project="${i}" data-photo="${n}" aria-label="${esc(photo.caption)}"><img src="${esc(photo.src)}" alt="${esc(photo.caption)}" loading="lazy"></button>`).join('')}</div>` : ''}
       <p class="product-date">${esc(p.date)}</p>
       <p class="product-sum">${esc(p.summary)}</p>
       <ul class="product-more" hidden>${p.bullets.map((b) => `<li>${esc(b)}</li>`).join('')}</ul>
@@ -492,6 +496,11 @@ function renderProjects() {
 document.addEventListener('click', (e) => {
   const tagBtn = e.target.closest('#project-filters [data-tag], #project-grid .tags [data-tag]');
   if (tagBtn) { setProjectFilter(tagBtn.dataset.tag === projectFilter ? 'All' : tagBtn.dataset.tag); return; }
+  const preview = e.target.closest('#project-grid [data-photo]');
+  if (preview) {
+    Lightbox.open(CONFIG.projects[Number(preview.dataset.project)].gallery, Number(preview.dataset.photo));
+    return;
+  }
   const more = e.target.closest('.js-more');
   if (more) {
     const card = more.closest('.product');
@@ -585,22 +594,25 @@ renderPins();
 const Lightbox = (() => {
   let items = [];
   let idx = 0;
+  let previousFocus = null;
   const box = $('#lightbox');
   function show() {
     const it = items[idx];
     if (it.video) IPod.pause(); // don't play two things at once
     $('#lb-media').innerHTML = it.video
-      ? `<video poster="${esc(it.src || '')}" controls autoplay muted loop playsinline aria-label="${esc(it.caption)}">
-          <source src="${esc(it.video)}" type="video/mp4">
-          <source src="${esc(it.video.replace(/\.mp4$/, '.webm'))}" type="video/webm">
-        </video>`
+      ? `<video src="${esc(it.video)}" poster="${esc(it.src || '')}" controls autoplay muted loop playsinline preload="auto" aria-label="${esc(it.caption)}"></video>`
       : it.src
       ? `<img src="${esc(it.src)}" alt="${esc(it.caption)}">`
       : `<span class="lb-ph" style="background:linear-gradient(160deg,${it.colors[0]},${it.colors[1]})"></span>`;
     $('#lb-caption').textContent = `${it.caption}  (${idx + 1}/${items.length})`;
+    const video = $('#lb-media video');
+    if (video) {
+      video.muted = true;
+      video.play().catch(() => { /* Native controls allow manual playback. */ });
+    }
   }
-  function open(list, i) { items = list; idx = Math.max(0, i); box.hidden = false; show(); $('#lb-close').focus(); }
-  function close() { box.hidden = true; $('#lb-media').innerHTML = ''; }
+  function open(list, i) { previousFocus = document.activeElement; document.body.classList.add('viewer-open'); items = list; idx = Math.max(0, i); box.hidden = false; show(); $('#lb-close').focus(); }
+  function close() { box.hidden = true; $('#lb-media').innerHTML = ''; document.body.classList.remove('viewer-open'); if (previousFocus?.isConnected) previousFocus.focus(); }
   function step(d) { idx = (idx + d + items.length) % items.length; show(); }
   $('#lb-close').addEventListener('click', close);
   $('#lb-prev').addEventListener('click', () => step(-1));
@@ -609,6 +621,12 @@ const Lightbox = (() => {
   document.addEventListener('keydown', (e) => {
     if (box.hidden) return;
     if (e.key === 'Escape') close();
+    if (e.key === 'Tab') {
+      const controls = [...box.querySelectorAll('button, video[controls]')];
+      const first = controls[0], last = controls[controls.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
     if (e.key === 'ArrowLeft') step(-1);
     if (e.key === 'ArrowRight') step(1);
   });
@@ -705,7 +723,7 @@ loadAnimeCovers();
 const CAPTCHA_SITEKEY = '50b2fe65-b00b-4b9e-ad62-3ba471098be2';
 const captchaIds = {};
 function renderCaptchas() {
-  ['c-captcha', 'chat-captcha'].forEach((id) => {
+  ['chat-captcha'].forEach((id) => {
     if (captchaIds[id] !== undefined) return;
     try { captchaIds[id] = window.hcaptcha.render(id, { sitekey: CAPTCHA_SITEKEY }); } catch (e) { /* ignore */ }
   });
@@ -747,38 +765,8 @@ function mailto(subject, body) {
   location.href = `mailto:${LINKS.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   return true;
 }
-$('#contact-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  if (e.target.botcheck.checked) return; // spam bot filled the hidden box
-  const status = $('#c-status');
-  const btn = $('#c-send');
-  const captcha = captchaToken('c-captcha');
-  if (captcha === '') { status.textContent = 'Please tick "I am human" first.'; return; }
-  const msg = { subject: `Portfolio: ${$('#c-subject').value}`, name: $('#c-name').value, email: $('#c-email').value, message: $('#c-msg').value, captcha };
-  btn.disabled = true;
-  status.textContent = 'Sending…';
-  const ok = await sendMessage(msg);
-  btn.disabled = false;
-  resetCaptcha('c-captcha');
-  if (ok) {
-    status.textContent = 'Message sent ✓';
-    Sfx.message();
-    e.target.reset();
-  } else if (!mailto(msg.subject, `${msg.message}\n\n- ${msg.name}`)) {
-    status.textContent = "Couldn't send right now. Please try again, or reach Tori on LinkedIn.";
-  }
-});
-
 $('#link-list').innerHTML = activeLinks().map((k) =>
-  `<li><a href="${esc(linkHref(k))}" ${k === 'email' ? '' : 'target="_blank" rel="noopener"'}>${LINK_META[k].label}</a>${k === 'email' ? ` <small>${esc(LINKS.email)}</small>` : ''}</li>`).join('');
-$('#world-select').insertAdjacentHTML('beforeend', sharedLinks().map((k) => `<option value="${k}">${LINK_META[k].label}</option>`).join(''));
-$('#world-select').addEventListener('change', (e) => {
-  const k = e.target.value;
-  e.target.value = '';
-  if (!k) return;
-  if (k === 'email') location.href = linkHref(k); else window.open(linkHref(k), '_blank', 'noopener');
-});
-
+  `<li><a href="${esc(linkHref(k))}" ${k === 'email' ? '' : 'target="_blank" rel="noopener"'}>${k === 'email' ? esc(LINKS.email) : LINK_META[k].label}</a></li>`).join('');
 /* ---------- search ---------- */
 $('#site-search').addEventListener('submit', (e) => {
   e.preventDefault();
@@ -791,7 +779,7 @@ $('#site-search').addEventListener('submit', (e) => {
   if (project) { setProjectFilter('All'); showPage('projects'); return; }
   const map = [
     [/resume|résumé|cv/, LINKS.resume ? 'resume' : 'experience'],
-    [/experience|intern|seo|mlt|nyc|rise|club|job|work/, 'experience'],
+    [/experience|intern|seo|mlt|nyc|rise|club|hacklanta|job|work/, 'experience'],
     [/music|ipod|song|spotify|listen|marías|marias|radiohead|malcolm/, 'ipod'],
     [/pin|pinterest|mood|fit|vinted|outfit/, 'pins'],
     [/anime|titan|aot|death note|jujutsu|jjk/, 'anime'],
@@ -896,7 +884,7 @@ $('#chat-form').addEventListener('submit', (e) => {
   const email = $('#chat-email').value.trim();
   if (email && !$('#chat-email').checkValidity()) { addLine('', 'That email address looks off. Check it so Tori can reply.', 'system'); return; }
   addLine('', 'Sending...', 'system sending');
-  sendMessage({ subject: 'Portfolio Messenger message', name: email || 'Messenger visitor', email, message: v, captcha }).then((ok) => {
+  sendMessage({ subject: 'Portfolio iChat message', name: email || 'iChat visitor', email, message: v, captcha }).then((ok) => {
     $$('.sending', $('#chat-log')).forEach((n) => n.remove());
     resetCaptcha('chat-captcha');
     if (ok) addLine('', email ? 'Delivered to Tori. She can reply to your email.' : 'Delivered to Tori.', 'system');

@@ -9,8 +9,8 @@ const CONFIG = {
   location: 'Atlanta, GA',
 
   profilePhoto: 'assets/profile.jpg', // small avatar: sign-in window + Messenger
-  homePhoto: 'assets/home.jpg',    // big photo on the home page
-  aboutPhoto: 'assets/about.jpg', // the Polaroid on the About page
+  homePhoto: 'assets/home-portrait.jpg',    // big photo on the home page
+  aboutPhoto: 'assets/home-portrait.jpg', // the Polaroid on the About page
   nightPhoto: '', // optional: a different home page photo while Nap mode is on
   // Your Messenger personal message (shown when you're not playing anything on Spotify)
   personalMessage: "i think i'm pretty cool, ngl",
@@ -31,7 +31,7 @@ const CONFIG = {
   },
 
   degree: 'B.S. in Computer Science',
-  gpa: '3.97 / 4.3', // set to '' to hide
+  gpa: '3.97 / 4.0', // set to '' to hide
 
   // Shown on the About + iPod pages. Links open a Spotify search unless you paste the artist's page.
   favoriteArtists: [
@@ -43,92 +43,261 @@ const CONFIG = {
   ],
 
   hobbies: [
-    { icon: '🧋', label: 'Boba', text: 'New York turned me into a boba person. Tiger brown sugar milk tea from Glaze Tea is the current favorite (see the Boba board on my Pins page).' },
-    { icon: '🎧', label: 'Music', text: 'Malcolm Todd, The Marías, Radiohead, 2hollis and Rommulas are always in rotation. My iPod shows what I\'ve actually been playing.' },
-    { icon: '📌', label: 'Pinterest', text: 'I can scroll Pinterest for hours: outfits, room ideas, anime edits. Some of it ends up on my moodboard.' },
-    { icon: '🛍️', label: 'Vinted finds', text: 'Most of my free time goes to hunting for clothes on Vinted.' },
-    { icon: '💤', label: 'Naps', text: 'A good nap is part of the routine. Try Nap mode in the menu bar.' },
-    { icon: '⚔️', label: 'Anime', text: 'Attack on Titan (Eren is my favorite), Death Note, Jujutsu Kaisen, The Apothecary Diaries, Haikyuu!!, Your Lie in April and Erased. See the Anime tab.' },
-    { icon: '🌅', label: 'Nature & sunsets', text: 'I love nature a lot, and I will always stop to take a picture of a good sunset. My favorites are on the Sunsets and Nature boards on my Pins page.' },
-    { icon: '🍏', label: 'Apple', text: 'I love Apple: the old iPods, the Aqua buttons, the whole look. That\'s why this site is styled like apple.com in the early 2000s.' },
-    { icon: '💻', label: 'Building', text: 'I build full-stack web apps with React, Next.js, Flask and Node.' },
+    { icon: '🛒', label: 'Buying stuff I don’t need', text: "Most of the time you’ll catch me buying a new digicam or a Smiski lol." },
+    { icon: '🧋', label: 'Boba', text: "New York turned me into a boba person. My favorite right now is the tiger brown sugar milk tea from Glaze Tea." },
+    { icon: '🎧', label: 'Music', text: "Malcolm Todd, The Marías, Radiohead, 2hollis and Rommulas are always in rotation. You can listen on the iPod tab." },
+    { icon: '📌', label: 'Pinterest', text: "I can scroll Pinterest for hours. Mostly outfits, room ideas, and anime edits." },
+    { icon: '🛍️', label: 'Vinted finds', text: "Usually on Vinted looking for clothes." },
+    { icon: '💤', label: 'Naps', text: "I love a good nap. There’s a Nap button on the little iPhone too." },
+    { icon: '⚔️', label: 'Anime', text: "Attack on Titan (Eren is my favorite), Death Note, Jujutsu Kaisen, The Apothecary Diaries, Haikyuu!!, Your Lie in April and Erased." },
+    { icon: '🌅', label: 'Nature & sunsets', text: "I love being outside, and I’ll always stop to take a sunset picture. Some of them are in my camera roll." },
+    { icon: '🍏', label: 'Apple', text: "I’ve loved Apple since I was a kid. The old iPods and early-2000s look inspired this portfolio." },
+    { icon: '💻', label: 'Building', text: "I build apps with React, Next.js, Flask and Node. Making them look good is my favorite part." },
   ],
 
   skills: {
-    Languages: ['Python', 'JavaScript', 'Java', 'C', 'TypeScript', 'SQL', 'HTML', 'CSS'],
-    'Frameworks & Libraries': ['React', 'Node.js', 'Next.js', 'Flask', 'Tailwind CSS', 'Prisma'],
-    Databases: ['PostgreSQL', 'MySQL', 'Supabase'],
-    'Developer Tools': ['Git', 'GitHub', 'VS Code', 'Figma', 'Trello', 'Vercel'],
+    "Languages": [
+      "Python",
+      "TypeScript",
+      "JavaScript",
+      "Java",
+      "C",
+      "C++",
+      "SQL",
+      "HTML",
+      "CSS"
+    ],
+    "Frameworks & Libraries": [
+      "React",
+      "Node.js",
+      "Next.js",
+      "Flask",
+      "Tailwind CSS",
+      "Prisma"
+    ],
+    "Databases": [
+      "PostgreSQL",
+      "MySQL",
+      "Supabase"
+    ],
+    "Developer Tools": [
+      "Git",
+      "GitHub",
+      "VS Code",
+      "Figma",
+      "Trello",
+      "Vercel"
+    ]
   },
 
   experience: [
-    { org: 'Sponsors for Educational Opportunity (SEO)', short: 'SEO', role: 'Tech Developer Intern', dates: 'May 2026 – July 2026', icon: '🗽',
-      bullets: [
-        'Completed 300+ hours of software engineering training in data structures, algorithms and full-stack web development through SEO\'s competitive Tech Developer program.',
-        'Developed a full-stack web application with HTML, CSS, JavaScript, Flask and MySQL, building responsive frontend features on a Scrum team.',
-        'Integrated REST APIs and authenticated workflows, using GitHub for version control and testing to cut post-deployment bug tickets by 20%.',
+    {
+      "org": "Sponsors for Educational Opportunity (SEO)",
+      "short": "SEO",
+      "role": "Tech Developer Intern",
+      "dates": "May 2026 – July 2026",
+      "icon": "🗽",
+      "bullets": [
+        "Spent 300+ hours learning data structures, algorithm optimization, and full-stack web development.",
+        "Built a full-stack app with REST APIs and secure user workflows. Server-side validation helped reduce bug tickets after deployment by 20%.",
+        "Built reusable React components with hooks and Context API and connected them to backend services, helping the team ship features 15% faster."
       ],
-      // Photos live in assets/nyc/. Add more by appending { src, caption }.
-      gallery: {
-        title: 'SEO Tech Developer <tech devcon> · New York City',
-        photos: [
-          { src: 'assets/nyc/1-flight.jpg', caption: 'Flying ATL → Dallas → New York' },
-          { src: 'assets/nyc/2-devcon.jpg', caption: 'SEO Tech Developer <tech devcon>' },
-          { src: 'assets/nyc/3-badge.jpg', caption: 'My devcon badge: Tech Developer Student' },
-          { src: 'assets/nyc/4-midtown.jpg', caption: 'Walking through Midtown Manhattan' },
-          { src: 'assets/nyc/5-library.jpg', caption: 'New York Public Library' },
-          { src: 'assets/nyc/6-flags.jpg', caption: 'Midtown at dusk' },
-          { src: 'assets/nyc/7-i-love-ny.jpg', caption: 'I ❤ NY, on the sidewalk' },
-          { src: 'assets/nyc/8-28th-street.jpg', caption: '28th Street subway station' },
-          // Videos: an .mp4 (plus an optional .webm with the same name) and a poster image for the thumbnail
-          { video: 'assets/nyc/9-statue-of-liberty.mp4', src: 'assets/nyc/9-statue-of-liberty-poster.jpg', caption: 'The Statue of Liberty at night, from the water' },
-        ],
-      } },
-    { org: 'Management Leadership for Tomorrow (MLT)', short: 'MLT', role: 'Career Prep Tech Fellow', dates: 'March 2026 – Present', icon: '🎓',
-      bullets: [
-        'Selected for a competitive 18-month career development program with technical coaching, mentorship and professional development for emerging technology leaders.',
-        'Engage with partner organizations including LinkedIn, Bloomberg and Deloitte through networking, career preparation and industry programming.',
-      ] },
-    { org: 'Programming Club at Georgia State University', short: 'Programming Club', role: 'Executive Board Member, Community Coordinator', dates: 'May 2026 – Present', icon: '👩🏾‍💻',
-      bullets: [
-        'Lead growth and engagement by organizing 10+ technical workshops, industry panels and wellness programs, raising member retention by 30% in a community of 75+ women in computer science.',
-      ] },
-    { org: 'RISE in Computing', short: 'RISE', role: 'Committee Member', dates: 'September 2025 – April 2026', icon: '🏅',
-      bullets: [
-        'Received the Outstanding Growth and Achievement Award and the Program Completion Award among a cohort of 50 students.',
-        'Took part in 15+ technical workshops on software development and research, collaborating on coding projects and outreach to mentor and retain women in computer science.',
-      ] },
+      "gallery": {
+        "title": "SEO Tech Developer <tech devcon> · New York City",
+        "photos": [
+          {
+            "src": "assets/nyc/1-flight.jpg",
+            "caption": "Flying ATL → Dallas → New York"
+          },
+          {
+            "src": "assets/nyc/2-devcon.jpg",
+            "caption": "SEO Tech Developer <tech devcon>"
+          },
+          {
+            "src": "assets/nyc/3-badge.jpg",
+            "caption": "My devcon badge: Tech Developer Student"
+          },
+          {
+            "src": "assets/nyc/4-midtown.jpg",
+            "caption": "Walking through Midtown Manhattan"
+          },
+          {
+            "src": "assets/nyc/5-library.jpg",
+            "caption": "New York Public Library"
+          },
+          {
+            "src": "assets/nyc/6-flags.jpg",
+            "caption": "Midtown at dusk"
+          },
+          {
+            "src": "assets/nyc/7-i-love-ny.jpg",
+            "caption": "I ❤ NY, on the sidewalk"
+          },
+          {
+            "src": "assets/nyc/8-28th-street.jpg",
+            "caption": "28th Street subway station"
+          },
+          {
+            "video": "assets/nyc/9-statue-of-liberty.mp4",
+            "src": "assets/nyc/9-statue-of-liberty-poster.jpg",
+            "caption": "The Statue of Liberty at night, from the water"
+          }
+        ]
+      }
+    },
+    {
+      "org": "Programming Club at Georgia State University (progsu)",
+      "short": "Programming Club",
+      "role": "Executive Board Member & Community Coordinator",
+      "dates": "May 2026 – Present",
+      "icon": "👩🏾‍💻",
+      "bullets": [
+        "Helped organize Hacklanta II, a 36-hour hackathon with 1,000+ student attendees. I worked on event logistics and technical workshops.",
+        "Promoted the club across multiple channels, helping increase active member engagement by 40% across the CS department."
+      ],
+      "gallery": {
+        "title": "Behind the scenes at Hacklanta II · October 2026",
+        "photos": [
+          {
+            "src": "assets/hacklanta/organizing-team.jpg",
+            "video": "assets/hacklanta/organizing-team.mp4",
+            "caption": "hacklanta group pic!! (spot me lol)"
+          },
+          {
+            "src": "assets/hacklanta/staff-badges.jpg",
+            "caption": "coolest staff badges ever"
+          },
+          {
+            "src": "assets/hacklanta/community.jpg",
+            "caption": "helped run progirls tabling with cool bracelets"
+          },
+          {
+            "src": "assets/hacklanta/ceremony.jpg",
+            "caption": "A full house at the ceremony"
+          },
+          {
+            "src": "assets/hacklanta/closing-ceremony.jpg",
+            "caption": "Ready for the closing ceremony"
+          }
+        ]
+      }
+    },
+    {
+      "org": "Management Leadership for Tomorrow (MLT)",
+      "short": "MLT",
+      "role": "Career Prep Tech Fellow",
+      "dates": "March 2026 – Present",
+      "icon": "🎓",
+      "bullets": [
+        "Selected for an 18-month career prep program with technical coaching, mentorship, and professional development.",
+        "Take part in networking and career prep with partner organizations including LinkedIn, Bloomberg, and Deloitte."
+      ]
+    },
+    {
+      "org": "SEO Career",
+      "short": "SEO EDGE",
+      "role": "SEO EDGE Participant",
+      "dates": "August 2026 – Present",
+      "icon": "💼",
+      "bullets": [
+        "Work on interview prep and core business concepts through coaching for internship recruiting.",
+        "Take industry-specific training to build my technical skills and learn more about the roles I’m interested in."
+      ]
+    },
+    {
+      "org": "RISE in Computing",
+      "short": "RISE",
+      "role": "Committee Member",
+      "dates": "September 2025 – April 2026",
+      "icon": "🏅",
+      "bullets": [
+        "Received the Outstanding Growth and Achievement Award and the Program Completion Award in a cohort of 50 students.",
+        "Attended 15+ software development and research workshops, worked on coding projects, and helped with outreach and mentoring for women in CS."
+      ]
+    }
   ],
 
   projects: [
-    { name: 'Quest', badge: '1st Place · Cox Track', date: 'March 2026', art: 'art-gold',
-      summary: 'A hackathon app that plans personalized multi-stop adventures from your preferences and location.',
-      bullets: [
-        'Interactive React frontend that captures preferences and geolocation, backed by Node.js, generating 50+ custom multi-stop itineraries.',
-        'Google Maps API for dynamic routes and Gemini API recommendations across 5+ waypoints per trip.',
+    {
+      "name": "Quest",
+      "gallery": [{"src":"assets/projects/quest-home.png","caption":"Quest · your boredom slayer"},{"src":"assets/projects/quest-mission.png","caption":"Quest · choose your time and activities to plan an adventure"}],
+      "badge": "1st Place · Social Good Track",
+      "date": "March 2026",
+      "art": "art-gold",
+      "summary": "An app for when you want to go out but don’t know what to do. It plans a multi-stop trip in under two minutes.",
+      "bullets": [
+        "Built a React (Vite) frontend for a travel-routing platform, winning 1st place in the Social Good track at Hacklanta I.",
+        "Created an interactive itinerary timeline and location-aware routes using the Google Maps JavaScript, Places and Geocoding APIs with a Node.js backend for 3–5 customized stops."
       ],
-      tags: ['React', 'Node.js', 'Google Maps API', 'Gemini API'], link: '' },
-    { name: 'Kindred', badge: '', date: 'July 2026', art: 'art-pink',
-      summary: 'A social app with real-time messaging and secure user profiles.',
-      bullets: [
-        'Responsive Next.js + Tailwind CSS interfaces on a Supabase and Prisma backend managing profile data for 100+ test users.',
-        'Real-time messaging with the Stream Chat API, with delivery latency consistently under 250 ms.',
+      "tags": [
+        "React",
+        "Vite",
+        "Node.js",
+        "Google Maps API"
       ],
-      tags: ['Next.js', 'Tailwind CSS', 'Supabase', 'Prisma', 'Stream Chat'], link: '' },
-    { name: 'Groundtruth', badge: '', date: 'July 2026', art: 'art-blue',
-      summary: 'A data dashboard with an AI chat assistant for quick insights.',
-      bullets: [
-        'Next.js frontend that visualizes 500+ daily data points from public REST APIs with interactive trend cards and comparison views.',
-        'AI chat interface powered by the Groq API, returning answers in under 1.5 seconds per query.',
+      "link": ""
+    },
+    {
+      "name": "Kindred",
+      "gallery": [{"src":"assets/projects/kindred-home.png","caption":"Kindred · meet people at your own pace"},{"src":"assets/projects/kindred-how-it-works.png","caption":"Kindred · from shared interests to building confidence"}],
+      "badge": "",
+      "date": "July 2026",
+      "art": "art-pink",
+      "summary": "A place to practice meeting people at your own pace, with live chat and games.",
+      "bullets": [
+        "Built responsive, accessible interfaces with Next.js 16 and Tailwind CSS.",
+        "Used Supabase Realtime (PostgreSQL) to keep chat and games in sync, with message latency under 50 ms for 20+ users at once.",
+        "Used React Hook Form and Zod to manage the onboarding forms and check inputs before submission."
       ],
-      tags: ['Next.js', 'REST APIs', 'Groq API'], link: '' },
-    { name: 'This Portfolio', badge: '', date: '2026', art: 'art-green',
-      summary: 'A retro Messenger + early-2000s Apple portfolio with an iPod that plays my Spotify.',
-      bullets: [
-        'Vanilla HTML, CSS and JavaScript with a click-wheel iPod driven by the Spotify iFrame API.',
-        'Serverless function on Vercel that reads my recently played songs from the Spotify Web API.',
+      "tags": [
+        "Next.js",
+        "Tailwind CSS",
+        "Supabase",
+        "PostgreSQL",
+        "React Hook Form",
+        "Zod"
       ],
-      tags: ['JavaScript', 'HTML', 'CSS', 'Spotify API', 'Vercel'], link: 'https://github.com/victoriaagy/myportlol' },
+      "link": ""
+    },
+    {
+      "name": "Groundtruth",
+      "gallery": [{"src":"assets/projects/groundtruth-home.png","caption":"Groundtruth · global progress beyond the headlines"}],
+      "badge": "",
+      "date": "July 2026",
+      "art": "art-blue",
+      "summary": "A dashboard for looking at global progress, with a 3D globe and a chat where you can ask about the data.",
+      "bullets": [
+        "Used Next.js and React Server Components to reduce initial page load times by 30%.",
+        "Built a dynamic 3D globe and trend visualizations with data from OWID and GDELT public REST APIs.",
+        "Added a chat using the Groq API (Llama 3) so users can ask about the data and get answers in under 1.5 seconds."
+      ],
+      "tags": [
+        "Next.js",
+        "React",
+        "REST APIs",
+        "Groq API"
+      ],
+      "link": ""
+    },
+    {
+      "name": "This Portfolio",
+      "badge": "",
+      "date": "2026",
+      "art": "art-green",
+      "summary": "My take on early-2000s Apple, with an iPod for my music and a camera roll for everything else.",
+      "bullets": [
+        "Vanilla HTML, CSS and JavaScript with an Aqua desktop and click-wheel iPod driven by the Spotify iFrame API.",
+        "Serverless function on Vercel that reads my recently played songs from the Spotify Web API."
+      ],
+      "tags": [
+        "JavaScript",
+        "HTML",
+        "CSS",
+        "Spotify API",
+        "Vercel"
+      ],
+      "link": "https://github.com/victoriaagy/myportlol"
+    }
   ],
 
   // Plays when a visitor clicks "Sign in". startAt is in seconds (68 = 1:08, where the
@@ -137,7 +306,7 @@ const CONFIG = {
     title: 'Lovebird', artist: 'Malcolm Todd',
     url: 'https://open.spotify.com/track/27K5vumkmzbBAjw3JMbcJ2',
     startAt: 68,
-    playOnSignIn: true,
+    playOnSignIn: false,
   },
 
   spotify: {
@@ -146,6 +315,12 @@ const CONFIG = {
     // "Victoria's Picks" on the iPod. They play in this order after the theme song.
     // startAt (seconds) makes a song begin partway through, e.g. 95 = 1:35.
     picks: [
+      {"title":"Back To You","artist":"Not For Radio","url":"https://open.spotify.com/track/47rCs1JJXC6AG20WKbyOUR"},
+      {"title":"Please Do Not Lean","artist":"Daniel Caesar, BADBADNOTGOOD","url":"https://open.spotify.com/track/0BYuy4jQEMJzyo6rySSQpC","startAt":120},
+      {"title":"X's & O's","artist":"Malcolm Todd","url":"https://open.spotify.com/track/6uODtGnQWkgxFFEwPgd2LZ"},
+      {"title":"the feeling","artist":"Steve Lacy","url":"https://open.spotify.com/track/3SoarlzPEiF7NgSeGsh44S"},
+      {"title":"show you me","artist":"Steve Lacy","url":"https://open.spotify.com/track/4f50UTC41M2Ah5itifSGE5"},
+      {"title":"Powerlines","artist":"beabadoobee, Brendan Yates","url":"https://open.spotify.com/track/7uvsxYvJwAGTdxMNJrgtbQ"},
       { title: 'back & forth', artist: 'nate sib, 2hollis', url: 'https://open.spotify.com/track/6LK6tRsPgSZ3yKpY5zxrAw' },
       { title: 'The Peace', artist: 'underscores', url: 'https://open.spotify.com/track/6BnKiSuM1mWELxeRpyVufi' },
       { title: 'I Know You', artist: 'Faye Webster', url: 'https://open.spotify.com/track/71BWZa1liIRyUiuJ3MB66o' },
@@ -161,11 +336,13 @@ const CONFIG = {
   // Boards only appear once they have at least one pin.
   boards: ['Me', 'Sunsets', 'Nature', 'Boba', 'Fits', 'Anime', 'Music', 'Mood'],
   pins: [
+    { src: 'assets/pins/hacklanta-nash-sweeya.jpg', title: 'big presi nash, sweeyaa & me!!', board: 'Me', ratio: 0.66625 },
+    { src: 'assets/pins/natural-aegyo.jpg', title: 'a little aegyo for the camera lol', board: 'Me', ratio: 0.66625 },
     { src: 'assets/pins/sunset-street.jpg', title: 'That sky', board: 'Sunsets' },
     { src: 'assets/pins/boba-glaze.jpg', title: 'Tiger brown sugar milk tea', board: 'Boba' },
     { src: 'assets/pins/nature-fall-downtown.jpg', title: 'Fall colors downtown', board: 'Nature' },
     { src: 'assets/pins/meme-whole-point.jpg', title: 'Almost forgot this is the whole point ❤️', board: 'Mood' },
-    { src: 'assets/pins/sunset-plane.jpg', title: 'Sunset from the window seat', board: 'Sunsets', ratio: 0.75 }, // ratio = height / width, for landscape photos
+    { src: 'assets/pins/sunset-plane.jpg', title: 'your usual window seat pic', board: 'Sunsets', ratio: 0.75 }, // ratio = height / width, for landscape photos
     { src: 'assets/pins/nature-summer-tree.jpg', title: 'Big tree, summer day', board: 'Nature' },
     { src: 'assets/pins/sunset-moon-palms.jpg', title: 'Moon over the palms', board: 'Sunsets' },
     { src: 'assets/pins/nature-rainbow.jpg', title: 'Rainbow after the rain', board: 'Nature' },
