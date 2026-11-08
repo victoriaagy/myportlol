@@ -1,6 +1,6 @@
-# Victoria Agyare · Retro Portfolio ✿
+# Victoria Agyare · Retro Portfolio **⌘**
 
-A 2000s-inspired portfolio: you sign in through a Messenger-style window, then land on a portfolio styled like apple.com in 2001. The main navigation focuses on About, Experience, and Projects, with music, photos, and anime grouped under **For fun**. A tiny Command-key charm adds a Mac-inspired wink to the home page.
+A 2000s-inspired portfolio: sign in through a retro Mac OS X-style login window, then land on a portfolio styled like apple.com in 2001. The main navigation focuses on About, Experience, and Projects, with more personal details like music, photos, and fav animes grouped under **For fun**. A tiny Command-key charm adds a Mac-inspired wink to the home page.
 
 Plain HTML, CSS and JavaScript, with no build step.
 
