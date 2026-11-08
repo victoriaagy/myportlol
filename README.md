@@ -1,6 +1,6 @@
 # Victoria Agyare · Retro Portfolio ✿
 
-A 2000s-inspired portfolio: you sign in through a Messenger-style window, then land on a portfolio styled like apple.com in 2001. It has a click-wheel iPod that plays what I've actually been listening to on Spotify.
+A 2000s-inspired portfolio: you sign in through a Messenger-style window, then land on a portfolio styled like apple.com in 2001. The main navigation focuses on About, Experience, and Projects, with music, photos, and anime grouped under **For fun**. A tiny Command-key charm adds a Mac-inspired wink to the home page.
 
 Plain HTML, CSS and JavaScript, with no build step.
 
@@ -25,7 +25,7 @@ Every push to GitHub updates the live site automatically. The music (your picks 
 
 ## Editing content
 
-Almost everything personal is in **`js/config.js`**: links, bio facts, skills, experience, projects, favorite artists, hobbies, pins and anime. The longer "About" paragraph is in `index.html`.
+Almost everything personal is in **`js/config.js`**: links, bio facts, skills, experience, projects, favorite artists, hobbies, pins and anime. The "About" copy and the For fun page links are in `index.html`.
 
 | What | How |
 | --- | --- |

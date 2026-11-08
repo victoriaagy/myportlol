@@ -318,8 +318,9 @@ $('#sign-out').addEventListener('click', () => {
 /* ============================================================
    ROUTER
    ============================================================ */
-const PAGES = ['home', 'about', 'experience', 'projects', 'ipod', 'pins', 'anime'];
-const PAGE_NAMES = { home: 'Home', about: 'About', experience: 'Experience', projects: 'Projects', ipod: 'iPod', pins: 'Pins', anime: 'Anime' };
+const PAGES = ['home', 'about', 'experience', 'projects', 'fun', 'ipod', 'pins', 'anime'];
+const PAGE_NAMES = { home: 'Home', about: 'About', experience: 'Experience', projects: 'Projects', fun: 'For fun' };
+const SITE_LINKS = ['home', 'about', 'experience', 'projects', 'fun'];
 
 function showPage(name, scroll = true) {
   if (name === 'contact') {
@@ -328,7 +329,7 @@ function showPage(name, scroll = true) {
   }
   if (!PAGES.includes(name)) name = 'home';
   $$('.page').forEach((p) => (p.hidden = p.dataset.page !== name));
-  $$('.tab').forEach((t) => t.classList.toggle('active', t.dataset.page === name));
+  $$('.tab').forEach((t) => t.classList.toggle('active', t.dataset.page === name || (t.dataset.page === 'fun' && ['ipod', 'pins', 'anime'].includes(name))));
   if (location.hash.slice(1) !== name) history.replaceState(null, '', `#${name}`);
   if (scroll) window.scrollTo({ top: 0, behavior: 'smooth' });
   if (name === 'ipod') setTimeout(() => $('#ipod').focus({ preventScroll: true }), 50);
@@ -342,7 +343,7 @@ document.addEventListener('click', (e) => {
 });
 window.addEventListener('hashchange', () => { if (!site.hidden) showPage(location.hash.slice(1)); });
 
-$('#sitemap').innerHTML = PAGES.map((p) => `<a href="#${p}" data-page="${p}">${PAGE_NAMES[p]}</a>`).join(' | ');
+$('#sitemap').innerHTML = SITE_LINKS.map((p) => `<a href="#${p}" data-page="${p}">${PAGE_NAMES[p]}</a>`).join(' | ');
 
 /* ---------- hot news ---------- */
 let headlines = [];
@@ -954,11 +955,48 @@ function setNap(on, announce = true) {
 $('#nap-toggle').addEventListener('click', () => setNap(!document.body.classList.contains('nap')));
 if (store.get('nap')) setNap(true, false);
 
-/* ---------- mini iPhone: home button tucks it away ---------- */
+/* ---------- mini iPhone: movable quick controls ---------- */
 const iphone = $('#iphone');
+const iphoneDrag = $('#iphone-drag');
 // remembered choice; otherwise start tucked on small screens so it doesn't cover the page
 const iphonePref = store.get('iphoneHidden');
 if (iphonePref === '1' || (iphonePref === null && window.innerWidth <= 700)) iphone.classList.add('tucked');
+function moveIphone(left, top) {
+  iphone.classList.add('moved');
+  const rect = iphone.getBoundingClientRect();
+  iphone.style.left = `${Math.max(0, Math.min(window.innerWidth - rect.width, left))}px`;
+  iphone.style.top = `${Math.max(0, Math.min(window.innerHeight - rect.height, top))}px`;
+  iphone.style.right = 'auto';
+  iphone.style.bottom = 'auto';
+}
+let iphoneDragState = null;
+iphoneDrag.addEventListener('pointerdown', (e) => {
+  if (e.button !== 0) return;
+  iphone.classList.remove('tucked');
+  iphone.classList.add('moved');
+  store.set('iphoneHidden', '0');
+  const rect = iphone.getBoundingClientRect();
+  iphoneDragState = { pointerId: e.pointerId, x: e.clientX, y: e.clientY, left: rect.left, top: rect.top };
+  iphoneDrag.setPointerCapture(e.pointerId);
+  e.preventDefault();
+});
+iphoneDrag.addEventListener('pointermove', (e) => {
+  if (!iphoneDragState || e.pointerId !== iphoneDragState.pointerId) return;
+  moveIphone(iphoneDragState.left + e.clientX - iphoneDragState.x, iphoneDragState.top + e.clientY - iphoneDragState.y);
+});
+function endIphoneDrag(e) {
+  if (iphoneDragState && e.pointerId === iphoneDragState.pointerId) iphoneDragState = null;
+}
+iphoneDrag.addEventListener('pointerup', endIphoneDrag);
+iphoneDrag.addEventListener('pointercancel', endIphoneDrag);
+iphoneDrag.addEventListener('keydown', (e) => {
+  const offsets = { ArrowUp: [0, -20], ArrowDown: [0, 20], ArrowLeft: [-20, 0], ArrowRight: [20, 0] };
+  const offset = offsets[e.key];
+  if (!offset) return;
+  e.preventDefault();
+  const rect = iphone.getBoundingClientRect();
+  moveIphone(rect.left + offset[0], rect.top + offset[1]);
+});
 $('#iphone-home').addEventListener('click', () => {
   store.set('iphoneHidden', iphone.classList.toggle('tucked') ? '1' : '0');
 });

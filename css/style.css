@@ -349,9 +349,17 @@ main { max-width: 760px; margin: 0 auto; padding: 0 16px; }
 .hero-right { text-align: left; flex: 0 1 250px; }
 .tagline { margin: 0; font-size: clamp(28px, 5vw, 40px); line-height: 1.05; }
 .pull-quote { margin: 0; font-size: clamp(28px, 4vw, 34px); line-height: 1.08; text-align: center; text-indent: -0.4em; }
-.quote-by { margin: 8px 0 0; text-align: center; font-style: italic; color: var(--grey); font-size: 17px; }
 .save { margin: 12px 0 0; font-size: 26px; text-align: right; }
 .save em { font-size: 34px; color: var(--pink); }
+.command-charm {
+  display: inline-grid; place-items: center; width: 34px; height: 34px; margin-left: 5px;
+  border: 1px solid rgba(214, 36, 122, 0.35); border-radius: 11px;
+  background: linear-gradient(145deg, #ffd2e7, #ff78ae 58%, #e6488d);
+  color: #fff; font: 24px/1 "Apple Symbols", "Segoe UI Symbol", sans-serif;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18), inset 0 1px 1px rgba(255, 255, 255, 0.7);
+  transform: rotate(8deg); vertical-align: 2px;
+}
 
 .timestamp { text-align: right; color: #999; font-size: 12px; margin: 10px 0 4px; }
 .hotnews {
@@ -371,6 +379,8 @@ main { max-width: 760px; margin: 0 auto; padding: 0 16px; }
 @keyframes fadeText { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 
 .promos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 12px 0 30px; }
+.home-grid .promos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.fun-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .promo {
   display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
   height: 176px; padding: 10px 8px; text-align: center; text-decoration: none; color: #222;
@@ -383,6 +393,7 @@ main { max-width: 760px; margin: 0 auto; padding: 0 16px; }
 .promo-art { flex: 1; display: grid; place-items: center; width: 100%; }
 .promo-title { font-size: 21px; line-height: 1.05; }
 .promo-sub { font-size: 10.5px; color: #555; margin-top: 3px; line-height: 1.25; }
+.fun-anime { color: #df609f; font: 64px/1 var(--serif); text-shadow: 0 2px 0 #f7d8e8; }
 
 .ipod-mini {
   width: 44px; height: 70px; flex: none; margin: 4px auto; border-radius: 7px;
@@ -857,7 +868,16 @@ main { max-width: 760px; margin: 0 auto; padding: 0 16px; }
   border: 3px solid #c9ccd1;
   box-shadow: 0 0 0 1px #8d9097, inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 12px 26px rgba(0, 0, 0, 0.35);
 }
-.iphone-speaker { position: absolute; top: 9px; left: 50%; width: 26px; height: 3px; margin-left: -13px; border-radius: 2px; background: #3a3a3a; box-shadow: inset 0 1px 1px #000; }
+.iphone-speaker {
+  position: absolute; z-index: 2; top: 0; left: 0; width: 100%; height: 24px; padding: 0;
+  border: 0; background: transparent; touch-action: none;
+  cursor: grab; -webkit-tap-highlight-color: transparent;
+}
+.iphone-speaker::before {
+  content: ""; position: absolute; left: calc(50% - 13px); width: 26px; top: 9px; height: 3px;
+  border-radius: 2px; background: #3a3a3a; box-shadow: inset 0 1px 1px #000;
+}
+.iphone-speaker:active { cursor: grabbing; }
 .iphone-screen {
   position: relative; height: 150px; border-radius: 2px; overflow: hidden;
   background: radial-gradient(ellipse at 50% 20%, #2d6fb8, #0d2a55 70%, #061429);
@@ -896,6 +916,7 @@ main { max-width: 760px; margin: 0 auto; padding: 0 16px; }
   .iphone { left: 8px; bottom: 8px; transform-origin: bottom left; transform: scale(0.82); }
   .iphone.tucked { transform: scale(0.82) translateY(calc(100% - 44px)) rotate(-4deg); }
 }
+.iphone.moved { transform: none; }
 
 /* home */
 .hero-meta { margin: 18px 0 0; color: #666; font-size: 13px; }
@@ -1089,7 +1110,7 @@ body.nap {
   background: repeating-linear-gradient(#181818 0 2px, #1b1b1b 2px 4px);
   color: var(--n-text);
 }
-body.nap .grey, body.nap .page-sub, body.nap .hero-meta, body.nap .timestamp, body.nap .quote-by { color: var(--n-dim); }
+body.nap .grey, body.nap .page-sub, body.nap .hero-meta, body.nap .timestamp { color: var(--n-dim); }
 body.nap a, body.nap .site-footer a, body.nap .link-list a { color: var(--n-link); }
 
 /* tabs + menu bar */
@@ -1180,6 +1201,7 @@ body.nap .hero-photo { box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5), 0 0 0 6px #2a
 }
 @media (max-width: 760px) {
   .promos { grid-template-columns: repeat(2, 1fr); }
+  .fun-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .product-grid, .anime-grid, .about-grid, .contact-wrap { grid-template-columns: 1fr; }
   .finder-body { grid-template-columns: 1fr; }
   .finder-side { display: flex; overflow-x: auto; padding: 0; border-right: 0; border-bottom: 1px solid #b9c3cf; }

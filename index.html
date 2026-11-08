@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Victoria Agyare · Portfolio</title>
-  <meta name="description" content="Victoria Agyare: Computer Science at Georgia State University, Class of 2028. Projects, experience, and what's on my iPod.">
+  <meta name="description" content="Victoria Agyare: Computer Science student at Georgia State University, Class of 2028. Full-stack development experience, selected projects, and contact information.">
   <link rel="icon" href="assets/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -102,9 +102,7 @@
       <a href="#about" class="tab" data-page="about">About</a>
       <a href="#experience" class="tab" data-page="experience">Experience</a>
       <a href="#projects" class="tab" data-page="projects">Projects</a>
-      <a href="#ipod" class="tab" data-page="ipod">iPod</a>
-      <a href="#pins" class="tab" data-page="pins">Pins</a>
-      <a href="#anime" class="tab" data-page="anime">Anime</a>
+      <a href="#fun" class="tab" data-page="fun">For fun</a>
     </nav>
     <div class="subnav" aria-hidden="true"></div>
   </header>
@@ -123,8 +121,7 @@
         </div>
         <div class="hero-right">
           <blockquote class="garamond pull-quote">“I think I'm pretty cool, ngl.”</blockquote>
-          <p class="garamond quote-by">Victoria Agyare, Georgia State University</p>
-          <p class="garamond save">Class of <em>2028</em></p>
+          <p class="garamond save">Class of <em>2028</em> <span class="command-charm" role="img" aria-label="Command key">⌘</span></p>
         </div>
       </div>
 
@@ -156,16 +153,6 @@
             <span class="garamond promo-title">Hackathon winner.</span>
             <span class="promo-sub">Quest · 1st place, Social Good track</span>
           </a>
-          <a class="promo" href="#ipod" data-page="ipod">
-            <span class="promo-art ipod-mini" aria-hidden="true"><span class="ipm-screen"></span><span class="ipm-wheel"></span></span>
-            <span class="garamond promo-title">Say hello to iPod.</span>
-            <span class="promo-sub">My recently played, straight from Spotify</span>
-          </a>
-          <a class="promo" href="#pins" data-page="pins">
-            <span class="promo-art pin-stack photo-stack" aria-hidden="true"><span><img src="assets/pins/sunset-street.jpg" alt="" loading="lazy"></span><span><img src="assets/pins/hacklanta-nash-sweeya.jpg" alt="" loading="lazy"></span><span><img src="assets/pins/boba-glaze.jpg" alt="" loading="lazy"></span></span>
-            <span class="garamond promo-title">Tori&#39;s camera roll.</span>
-            <span class="promo-sub">Friends, sunsets, and probably boba</span>
-          </a>
         </div>
       </div>
     </section>
@@ -173,17 +160,6 @@
     <!-- ---------- ABOUT ---------- -->
     <section class="page" data-page="about" hidden>
       <h1 class="garamond page-title">A bit about me.</h1>
-
-      <div class="orbit" id="orbit">
-        <div class="orbit-disc">
-          <div class="disc">
-            <div class="disc-hole"></div>
-            <span class="disc-label garamond">Tori</span>
-            <span class="disc-badge"><small>The not so niche interests of</small>a CS major</span>
-          </div>
-        </div>
-      </div>
-      <p class="fact-bubble" id="fact-bubble">Click an icon to see what I'm into.</p>
 
       <div class="about-grid">
         <div class="aqua-panel">
@@ -201,6 +177,17 @@
           <div id="profiler"></div>
         </div>
       </div>
+
+      <div class="orbit" id="orbit">
+        <div class="orbit-disc">
+          <div class="disc">
+            <div class="disc-hole"></div>
+            <span class="disc-label garamond">Tori</span>
+            <span class="disc-badge"><small>The not so niche interests of</small>a CS major</span>
+          </div>
+        </div>
+      </div>
+      <p class="fact-bubble" id="fact-bubble">Click an icon to see what I'm into.</p>
     </section>
 
     <!-- ---------- EXPERIENCE ---------- -->
@@ -225,6 +212,29 @@
       <p class="page-sub">A few things I’ve built. Click a screenshot for a closer look, or Details for how I made it.</p>
       <div class="chips" id="project-filters"></div>
       <div class="product-grid" id="project-grid"></div>
+    </section>
+
+    <!-- ---------- FOR FUN ---------- -->
+    <section class="page" data-page="fun" hidden>
+      <h1 class="garamond page-title">For fun.</h1>
+      <p class="page-sub">A few things I enjoy beyond code.</p>
+      <div class="promos fun-grid">
+        <a class="promo" href="#ipod" data-page="ipod">
+          <span class="promo-art ipod-mini" aria-hidden="true"><span class="ipm-screen"></span><span class="ipm-wheel"></span></span>
+          <span class="garamond promo-title">On my iPod.</span>
+          <span class="promo-sub">Music in rotation</span>
+        </a>
+        <a class="promo" href="#pins" data-page="pins">
+          <span class="promo-art pin-stack photo-stack" aria-hidden="true"><span><img src="assets/pins/sunset-street.jpg" alt="" loading="lazy"></span><span><img src="assets/pins/hacklanta-nash-sweeya.jpg" alt="" loading="lazy"></span><span><img src="assets/pins/boba-glaze.jpg" alt="" loading="lazy"></span></span>
+          <span class="garamond promo-title">Camera roll.</span>
+          <span class="promo-sub">Photos and saved things</span>
+        </a>
+        <a class="promo" href="#anime" data-page="anime">
+          <span class="promo-art fun-anime" aria-hidden="true">✦</span>
+          <span class="garamond promo-title">Anime I love.</span>
+          <span class="promo-sub">A few favorite shows</span>
+        </a>
+      </div>
     </section>
 
     <!-- ---------- IPOD ---------- -->
@@ -338,9 +348,9 @@
       </div>
     </div>
     <div class="buddy-list" id="buddy-list"></div>
-    <button class="buddy-ad" data-page="ipod">
+    <button class="buddy-ad" data-page="fun">
       <span class="ad-big" id="ad-big">RECENTLY PLAYED</span>
-      <span class="ad-small">Open Tori's iPod ▸</span>
+      <span class="ad-small">Explore for fun ▸</span>
     </button>
   </aside>
   <button class="buddy-tab" id="buddy-tab" hidden><span class="buddy buddy-green"></span> iChat</button>
@@ -375,14 +385,14 @@
   <!-- mini original iPhone (2007): site controls -->
   <aside class="iphone" id="iphone" aria-label="Quick controls">
     <div class="iphone-body">
-      <span class="iphone-speaker" aria-hidden="true"></span>
+      <button type="button" class="iphone-speaker" id="iphone-drag" aria-label="Drag the top bezel or use arrow keys to move quick controls."></button>
       <div class="iphone-screen">
         <div class="iphone-status"><span>Tori</span><span id="iphone-time"></span><span class="iphone-batt" aria-hidden="true"></span></div>
         <div class="iphone-clock" id="iphone-clock"></div>
         <div class="iphone-apps">
           <button type="button" class="app" id="nap-toggle" aria-pressed="false"><span class="app-icon app-nap">☾</span><span class="app-label" id="nap-label">Nap</span></button>
           <button type="button" class="app" id="open-messenger"><span class="app-icon app-msn"><span class="buddy buddy-green"></span><span class="buddy buddy-blue"></span></span><span class="app-label">iChat</span></button>
-          <button type="button" class="app" data-page="ipod"><span class="app-icon app-ipod">♫</span><span class="app-label">iPod</span></button>
+          <button type="button" class="app" data-page="fun"><span class="app-icon app-ipod">♫</span><span class="app-label">For fun</span></button>
           <button type="button" class="app" id="sign-out"><span class="app-icon app-exit">⏻</span><span class="app-label">Sign out</span></button>
         </div>
       </div>
